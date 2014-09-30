@@ -1,0 +1,17 @@
+{
+  "name": "strip",
+  "title": "Strip",
+  "version": "1.0.0",
+  "description": "A Less Intrusive Responsive Lightbox",
+  "author": {
+    "name": "Nick Stakenburg",
+    "url": "http://www.nickstakenburg.com"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-clean": "~0.4.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.0"
+  }
+}
