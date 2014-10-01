@@ -5,9 +5,9 @@ var Page = (function() {
 var Page = function() { return this.initialize.apply(this, _slice.call(arguments)); };
 $.extend(Page.prototype, {
   initialize: function(view, position, total) {
-  	this.view = view;
-  	this.dimensions = { width: 0, height: 0 };
-  	this.uid = uid++;
+    this.view = view;
+    this.dimensions = { width: 0, height: 0 };
+    this.uid = uid++;
 
     // store position/total views for later use
     this._position = position;
@@ -16,8 +16,8 @@ $.extend(Page.prototype, {
     this.animated = false;
     this.visible = false;
 
-  	this.queues = {};
-  	this.queues.showhide = $({});
+    this.queues = {};
+    this.queues.showhide = $({});
   },
 
   // create the page, this doesn't mean it's loaded
@@ -55,11 +55,11 @@ $.extend(Page.prototype, {
     }
 
     switch (this.view.type) {
-    	case 'image':
+      case 'image':
         this.container.append(this.content = $('<img>')
                    .attr({ src: this.view.url })
                  );
-    	  break;
+        break;
 
       case 'vimeo':
       case 'youtube':
@@ -144,14 +144,14 @@ $.extend(Page.prototype, {
   // the purpose of load is to set dimensions
   // we use it to set dimensions even for content that doesn't load like youtube
   load: function(callback, isPreload) {
-  	// make sure the page is created
+    // make sure the page is created
     this.create();
 
     
     // exit early if already loaded
     if (this.loaded) {
-    	if (callback) callback();
-    	return;
+      if (callback) callback();
+      return;
     }
 
     // abort possible previous (pre)load
@@ -287,7 +287,7 @@ $.extend(Page.prototype, {
   },
 
   show: function(callback) {
-  	var shq = this.queues.showhide;
+    var shq = this.queues.showhide;
     shq.queue([]); // clear queue
 
     this.animated = true;
@@ -296,7 +296,7 @@ $.extend(Page.prototype, {
 
     shq.queue(function(next_stopped_inactive) {
       Pages.stopInactive();
-  	  next_stopped_inactive();
+      next_stopped_inactive();
     });
 
     shq.queue($.proxy(function(next_side) {
@@ -317,11 +317,11 @@ $.extend(Page.prototype, {
       this.load($.proxy(function() {
         this.preloadSurroundingImages();
         next_loaded();
-  	  }, this));
+      }, this));
     }, this));
 
     shq.queue($.proxy(function(next_utility) {
-    	this.raise();
+      this.raise();
 
       Window.setSkin(this.view.options.skin);
       Window.bindUI(); // enable ui controls
@@ -355,12 +355,12 @@ $.extend(Page.prototype, {
       }, duration);
 
       this._show(function() {
-      	if (--fx < 1) next_shown_and_resized();
-  	  }, duration);
+        if (--fx < 1) next_shown_and_resized();
+      }, duration);
 
-  	  Window.adjustPrevNext(function(){
-  	  	if (--fx < 1) next_shown_and_resized();
-  	  }, duration);
+      Window.adjustPrevNext(function(){
+        if (--fx < 1) next_shown_and_resized();
+      }, duration);
 
       // we don't sync this because hovering UI can stop it and cancel the callback
       // if someone decides to hover the UI before it faded it this'll instantly show it
@@ -378,7 +378,7 @@ $.extend(Page.prototype, {
 
       this.animated = false;
 
-    	this.visible = true;
+      this.visible = true;
 
       Window.startUITimer();
 
@@ -465,8 +465,8 @@ $.extend(Page.prototype, {
 
   abort: function() {
     if (this.imageReady && !this.preloading) {
-    	this.imageReady.abort();
-    	this.imageReady = null;
+      this.imageReady.abort();
+      this.imageReady = null;
     }
 
     if (this.vimeoReady) {
@@ -496,7 +496,7 @@ $.extend(Page.prototype, {
   },
 
   fitToWindow: function() {
-  	var page = this.element,
+    var page = this.element,
         dimensions = this._getDimensionsFitToView(),
         viewport = Bounds.viewport(),
         bounds = $.extend({}, viewport),

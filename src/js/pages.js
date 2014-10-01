@@ -1,14 +1,14 @@
 var Pages = {
-	initialize: function(element) {
-	  this.element = element;
-	  this.pages = {};
-	  this.uid = 1;
+  initialize: function(element) {
+    this.element = element;
+    this.pages = {};
+    this.uid = 1;
 
     this._loading = {};
-	},
+  },
 
-	add: function(views) {
-		this.uid++;
+  add: function(views) {
+    this.uid++;
 
     this.views = views;
 
@@ -16,11 +16,11 @@ var Pages = {
 
     // add pages for all these views
     $.each(views, $.proxy(function(i, view) {
-    	this.pages[this.uid].push(new Page(view, i + 1, this.views.length));
+      this.pages[this.uid].push(new Page(view, i + 1, this.views.length));
     }, this));
-	},
+  },
 
-	show: function(position, callback) {
+  show: function(position, callback) {
     var page = this.pages[this.uid][position - 1];
 
     // never try to reload the exact same frame
@@ -30,7 +30,7 @@ var Pages = {
 
     this.removeHiddenAndLoadingInactive();
     page.show(callback);
-	},
+  },
 
   getLoadingCount: function() {
     // we only stop loading if all the frames we have are not loading anymore
@@ -61,48 +61,48 @@ var Pages = {
   },
 
   // remove pages not matching the current id
-	removeExpired: function(instantly) {
+  removeExpired: function(instantly) {
     $.each(this.pages, function(id, pages) {
-    	if (id != this._id) {
-	    	$.each(pages, function(j, page) {
-	        page.remove(instantly);  
-	    	});
+      if (id != this._id) {
+        $.each(pages, function(j, page) {
+          page.remove(instantly);  
+        });
       }
     });
-	},
+  },
 
 
   // Window.hide will call thise when fully closed
-	removeAll: function() {
+  removeAll: function() {
     $.each(this.pages, function(id, pages) {
-    	$.each(pages, function(j, page) {
+      $.each(pages, function(j, page) {
         page.remove();
-	    });
+      });
     });
 
     // empty out pages
     this.pages = {};
-	},
+  },
 
-	hideVisibleInactive: function(alternateDuration) {
-		$.each(this.pages, $.proxy(function(id, pages) {
-    	$.each(pages, $.proxy(function(j, page) {
-	        if (page.uid != this.page.uid) {
-	        	page.hide(null, alternateDuration);
-	        }
-	    }, this));
+  hideVisibleInactive: function(alternateDuration) {
+    $.each(this.pages, $.proxy(function(id, pages) {
+      $.each(pages, $.proxy(function(j, page) {
+          if (page.uid != this.page.uid) {
+            page.hide(null, alternateDuration);
+          }
+      }, this));
     }, this));
-	},
+  },
 
-	stopInactive: function() {
-		$.each(this.pages, $.proxy(function(id, pages) {
-    	$.each(pages, $.proxy(function(j, page) {
+  stopInactive: function() {
+    $.each(this.pages, $.proxy(function(id, pages) {
+      $.each(pages, $.proxy(function(j, page) {
         if (page.uid != this.page.uid && !page.preloading) {
-        	page.stop();
+          page.stop();
         }
-	    }, this));
+      }, this));
     }, this));
-	},
+  },
 
   // TODO: might be nice to have a hide animation before removal, it's instant now
   removeHiddenAndLoadingInactive: function() {
@@ -138,11 +138,11 @@ var Pages = {
 
   },
 
-	stop: function() {
-		$.each(this.pages, function(id, pages) {
-    	$.each(pages, function(j, page) {
-      	page.stop();
-	    });
+  stop: function() {
+    $.each(this.pages, function(id, pages) {
+      $.each(pages, function(j, page) {
+        page.stop();
+      });
     });
-	}
+  }
 };

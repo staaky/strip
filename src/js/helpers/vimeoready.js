@@ -3,8 +3,8 @@ var VimeoReady = (function() {
 var VimeoReady = function() { return this.initialize.apply(this, _slice.call(arguments)); };
 $.extend(VimeoReady.prototype, {
   initialize: function(url, callback) {
-  	this.url = url;
-  	this.callback = callback;
+    this.url = url;
+    this.callback = callback;
 
     this.load();
   },
@@ -38,9 +38,9 @@ $.extend(VimeoReady.prototype, {
 
   abort: function() {
     if (this._xhr) {
-  		this._xhr.abort();
-  		this._xhr = null;
-  	}
+      this._xhr.abort();
+      this._xhr = null;
+    }
   }
 });
 

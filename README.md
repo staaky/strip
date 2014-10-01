@@ -10,7 +10,7 @@ See [stripjs.com](http://www.stripjs.com) for demos and docs.
 
 ## License
 
-Strip may be used in commercial projects and applications with the one-time purchase of a commercial license. If you are paid to do your job, and part of your job is implementing Strip, a commercial license is required.
+Strip may be used in commercial projects and applications with a one-time purchase of a commercial license. If you are paid to do your job, and part of your job is implementing Strip, a commercial license is required.
 
 http://www.stripjs.com/license
 

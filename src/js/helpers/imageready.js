@@ -8,7 +8,7 @@ $.extend(ImageReady.prototype, {
 
   initialize: function(img, callback, errorCallback) {
     this.img = $(img);
-  	this.callback = callback;
+    this.callback = callback;
     this.errorCallback = errorCallback;
 
     // fallback for browsers without support for naturalWidth/Height
@@ -20,28 +20,28 @@ $.extend(ImageReady.prototype, {
 
     this.img.bind('error', $.proxy(this.error, this));
 
-  	this.intervals = [
-	  	[1 * 1000, 10],
-	  	[2 * 1000, 50],
-	  	[4 * 1000, 100],
+    this.intervals = [
+      [1 * 1000, 10],
+      [2 * 1000, 50],
+      [4 * 1000, 100],
       [20 * 1000, 500]
-	  ];
+    ];
 
     // for testing, 2sec delay
     //this.intervals = [[20 * 1000, 2000]];
 
-  	this._ipos = 0;
-  	this._time = 0;
-  	this._delay = this.intervals[this._ipos][1];
+    this._ipos = 0;
+    this._time = 0;
+    this._delay = this.intervals[this._ipos][1];
 
     this.tick();
   },
 
   tick: function() {
-  	this._ticking = setTimeout($.proxy(function() {
+    this._ticking = setTimeout($.proxy(function() {
       if (this.img[0].naturalWidth > 0) {
-      	this.callback(this.img[0]);
-      	return;
+        this.callback(this.img[0]);
+        return;
       }
 
       // update time spend
@@ -52,8 +52,8 @@ $.extend(ImageReady.prototype, {
         // if there's no next interval, we asume
         // the image image errored out
         if (!this.intervals[this._ipos + 1]) {
-        	this.error();
-        	return;
+          this.error();
+          return;
         }
 
         this._ipos++;
@@ -63,7 +63,7 @@ $.extend(ImageReady.prototype, {
       }
 
       this.tick();
-  	}, this), this._delay);
+    }, this), this._delay);
   },
 
   fallback: function() {
@@ -90,10 +90,10 @@ $.extend(ImageReady.prototype, {
       this._fallbackImg.onload = function() { };
     }
 
-  	if (this._ticking) {
-  		clearTimeout(this._ticking);
-  		this._ticking = 0;
-  	}
+    if (this._ticking) {
+      clearTimeout(this._ticking);
+      this._ticking = 0;
+    }
   },
 
   error: function() {
