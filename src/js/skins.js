@@ -12,7 +12,7 @@ Strip.Skins = {
       right: true,
       esc:   true
     },
-    loop: false,
+    loop: true,
     overlap: true,
     preload: [1,2],
     position: true,
