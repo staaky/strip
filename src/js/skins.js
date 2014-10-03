@@ -6,11 +6,17 @@ Strip.Skins = {
       ui: { show: 0, hide: 200 },
       window: { show: 300, hide: 300 }
     },
+    hideOnClickOutside: true,
+    keyboard: {
+      left:  true,
+      right: true,
+      esc:   true
+    },
     loop: false,
+    overlap: true,
     preload: [1,2],
     position: true,
     side: 'right',
-    overlap: true,
     uiDelay: 3000,
     vimeo: {
       autoplay: 1,

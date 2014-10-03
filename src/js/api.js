@@ -104,6 +104,14 @@ var _Strip = {
     }
     if (position > views.length) position = views.length;
 
+    // Allow API events to pass through by disabling hideOnClickOutside.
+    // It is re-enabled when bringing a page into view using a slight delay
+    // allowing a possible click event that triggers this show() function to 
+    // fully bubble up. This is needed when Strip is visible and Strip.show()
+    // is called, the click would otherwise bubble down and instantly hide,
+    // cancelling the show()
+    Window.unbindHideOnClickOutside();
+
     // if we've clicked an element, search for it in the currently open pagegroup
     var positionInAPG;
     if (isElement && (positionInAPG = Pages.getPositionInActivePageGroup(object))) {

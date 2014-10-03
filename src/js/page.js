@@ -326,11 +326,22 @@ $.extend(Page.prototype, {
       Window.setSkin(this.view.options.skin);
       Window.bindUI(); // enable ui controls
 
+      // keyboard
+      Keyboard.enable(this.view.options.keyboard);
+
       this.fitToWindow();
 
       next_utility();
     }, this));
 
+    // we bind hide on click outside with a delay so API calls can pass through.
+    // more in this in api.js
+    shq.queue($.proxy(function(next_bind_hide_on_click_outside) {
+      Window.timers.set('bind-hide-on-click-outside', $.proxy(function() {
+        Window.bindHideOnClickOutside();
+        next_bind_hide_on_click_outside();
+      }, this), 1);
+    }, this));
 
     // vimeo and youtube use this for insertion
     if (this.view.type == 'vimeo' || this.view.type == 'youtube') {

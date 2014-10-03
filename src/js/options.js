@@ -32,7 +32,24 @@ var Options = (function() {
         });
       });
     }
-    
+
+    // disable keyboard left/right when not an image
+    if (MERGED.keyboard) {
+      // when keyboard is true, enable all keys
+      if ($.type(MERGED.keyboard) == 'boolean') {
+        MERGED.keyboard = {};
+        $.each(BASE.keyboard, function(key, bool) {
+          MERGED.keyboard[key] = true;
+        });
+      }
+
+      // disable left and right keys for video, because players like
+      // youtube use these keys
+      if (type == 'vimeo' || type == 'youtube') {
+        $.extend(MERGED.keyboard, { left: false, right: false });
+      }
+    }
+
     // vimeo & youtube always have no overlap
     if (type == 'vimeo' || type == 'youtube') {
       MERGED.overlap = false;

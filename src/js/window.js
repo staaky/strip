@@ -402,12 +402,20 @@ var Window = {
       next_stop();
     }, this));
 
-    shq.queue($.proxy(function(next_unbind_hide_ui) {
+    shq.queue($.proxy(function(next_unbinds) {
+      // ui
       var duration = this.view ? this.view.options.effects.window.hide : 0;
       this.unbindUI();
       this.hideUI(null, duration);
-      next_unbind_hide_ui();
-    }, this));
+
+      // close on click outside
+      this.unbindHideOnClickOutside();
+
+      // keyboard
+      Keyboard.disable();
+
+      next_unbinds();
+    }, this));    
 
     shq.queue($.proxy(function(next_zero) {
       this.resize(0, $.proxy(function() {
@@ -418,6 +426,8 @@ var Window = {
         this.stopObservingResize();
 
         Pages.removeAll();
+
+        this.timers.clear();
 
         this._position = -1;
 
@@ -451,8 +461,8 @@ var Window = {
 
     //Pages.removeExpired();
     this.visible = false;
-    this.timers.clear();
     this.hideUI(null, 0);
+    this.timers.clear('ui');
     this.resetPrevNext();
     this._cachedMouseMoveEvent = null;
   },
@@ -500,6 +510,32 @@ var Window = {
     };
   },
 
+
+  // close when clicking outside of strip or an element opening strip
+  bindHideOnClickOutside: function() {
+    this.unbindHideOnClickOutside();
+    $(document.documentElement).bind('click', this._delegateHideOutsideHandler = $.proxy(this._delegateHideOutside, this));
+  },
+
+  unbindHideOnClickOutside: function() {
+    if (this._delegateHideOutsideHandler) {
+      $(document.documentElement).unbind('click', this._delegateHideOutsideHandler);
+      this._delegateHideOutsideHandler = null;
+    }
+  },
+
+  _delegateHideOutside: function(event) {
+    var page = Pages.page;
+    if (!this.visible || !(page && page.view.options.hideOnClickOutside)) return;
+
+    var element = event.target;
+
+    if (!$(element).closest('.strip, .strp-window')[0]) {
+      this.hide();
+    }
+  },
+
+
   // UI
   bindUI: function() {
     this.unbindUI();
@@ -518,8 +554,6 @@ var Window = {
                  .delegate('.strp-container', 'mouseout', this._onMouseOutHandler = $.proxy(this._onMouseOut, this))
                  .delegate('.strp-container', 'mouseenter', this._onMouseEnterHandler = $.proxy(this._onMouseEnter, this));
 
-      
-      
       $(window).bind('scroll', this._onScrollHandler = $.proxy(this._onScroll, this));
     }
 
@@ -589,9 +623,9 @@ var Window = {
   },
 
   _getEventSide: function(event) {
-    var offsetLeft = this._offsetLeft || this.element.offset().left;
-    var left = event.pageX - offsetLeft;
-    var width = this._outerWidth || this.element.outerWidth();    
+    var offsetLeft = this._offsetLeft || this.element.offset().left,
+        left = event.pageX - offsetLeft,
+        width = this._outerWidth || this.element.outerWidth();
 
     return left < .5 * width ? 'Previous' : 'Next';
   },
@@ -613,7 +647,7 @@ var Window = {
       if ($.type(callback) == 'function') callback();
     }, this));
   },
-  
+
   hideUI: function(callback, alternateDuration) {
     var elements = this.element.find('.strp-nav-button');
 

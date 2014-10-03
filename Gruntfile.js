@@ -33,6 +33,7 @@ module.exports = function(grunt) {
         'src/js/pages.js',
         'src/js/page.js',
         'src/js/window.js',
+        'src/js/keyboard.js',
 
         'src/js/api.js',
 

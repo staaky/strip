@@ -9,18 +9,20 @@ $.extend(Timers.prototype, {
   },
 
   get: function(name) {
-    return this._timers[name];  
+    return this._timers[name];
   },
-  
+
   clear: function(name) {
-    if (this._timers[name]) {
-      clearTimeout(this._timers[name]);
-      delete this._timers[name];
+    if (name) {
+      if (this._timers[name]) {
+        clearTimeout(this._timers[name]);
+        delete this._timers[name];
+      }
     } else {
       this.clearAll();
     }
   },
-  
+
   clearAll: function() {
     $.each(this._timers, function(i, timer) {
       clearTimeout(timer);
