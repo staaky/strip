@@ -11,6 +11,9 @@ module.exports = function(grunt) {
 
     concat: {
       production: {
+        options: {
+          process: true
+        },
         src: [
         'src/js/intro.js',
         'src/js/setup.js',
