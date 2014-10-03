@@ -61,17 +61,17 @@ var Window = {
 
 
     // events
-    this._close.bind('click', $.proxy(function(event) {
+    this._close.on('click', $.proxy(function(event) {
       event.preventDefault();
       this.hide();
     }, this));
 
-    this._previous.bind('click', $.proxy(function(event) {
+    this._previous.on('click', $.proxy(function(event) {
       this.previous();
       this._onMouseMove(event); // update cursor
     }, this));
 
-    this._next.bind('click', $.proxy(function(event) {
+    this._next.on('click', $.proxy(function(event) {
       this.next();
       this._onMouseMove(event); // update cursor
     }, this));
@@ -113,14 +113,14 @@ var Window = {
     if (this._isObservingResize) return;
 
     this._onWindowResizeHandler = $.proxy(this._onWindowResize, this);
-    $(window).bind('resize orientationchange', this._onWindowResizeHandler);
+    $(window).on('resize orientationchange', this._onWindowResizeHandler);
 
     this._isObservingResize = true;
   },
 
   stopObservingResize: function() {
     if (this._onWindowResizeHandler) {
-      $(window).unbind('resize orientationchange', this._onWindowResizeHandler);
+      $(window).off('resize orientationchange', this._onWindowResizeHandler);
       this._onWindowResizeHandler = null;
     }
 
@@ -171,6 +171,10 @@ var Window = {
       // add opening class
       this.element.addClass('strp-opening');
       this.opening = true;
+
+      // only show the UI when opening
+      // mouse movement will toggle it when open
+      this.showUI(null, duration);
     } else if ($.type(alternateDuration) == 'number') {
       // alternate when set
       duration =  alternateDuration;
@@ -464,7 +468,10 @@ var Window = {
     this.hideUI(null, 0);
     this.timers.clear('ui');
     this.resetPrevNext();
-    this._cachedMouseMoveEvent = null;
+
+    // clear cached mousemove
+    this._x = -1;
+    this._y = -1;
   },
 
   // Previous / Next 
@@ -514,12 +521,12 @@ var Window = {
   // close when clicking outside of strip or an element opening strip
   bindHideOnClickOutside: function() {
     this.unbindHideOnClickOutside();
-    $(document.documentElement).bind('click', this._delegateHideOutsideHandler = $.proxy(this._delegateHideOutside, this));
+    $(document.documentElement).on('click', this._delegateHideOutsideHandler = $.proxy(this._delegateHideOutside, this));
   },
 
   unbindHideOnClickOutside: function() {
     if (this._delegateHideOutsideHandler) {
-      $(document.documentElement).unbind('click', this._delegateHideOutsideHandler);
+      $(document.documentElement).off('click', this._delegateHideOutsideHandler);
       this._delegateHideOutsideHandler = null;
     }
   },
@@ -541,41 +548,66 @@ var Window = {
     this.unbindUI();
 
     if (!Support.mobileTouch) {
-      this.element.bind('mouseenter', this._showUIHandler = $.proxy(this.showUI, this))
-                  .bind('mouseleave', this._hideUIHandler = $.proxy(this.hideUI, this));
+      this.element.on('mouseenter', this._showUIHandler = $.proxy(this.showUI, this))
+                  .on('mouseleave', this._hideUIHandler = $.proxy(this.hideUI, this));
     
-      this.element.bind('mousemove', this._mousemoveUIHandler = $.proxy(function() {
+      this.element.on('mousemove', this._mousemoveUIHandler = $.proxy(function(event) {
+        // Chrome has a bug that triggers a mousemove events incorrectly
+        // we have to work around this by comparing cursor positions 
+        // so only true mousemove events pass through:
+        // https://code.google.com/p/chromium/issues/detail?id=420032
+        var x = event.pageX,
+            y = event.pageY;
+
+        if (this._hoveringNav || (y == this._y && x == this._x)) {
+          return;
+        }
+
+        // cache x/y
+        this._x = x;
+        this._y = y;
+
         this.showUI();
         this.startUITimer();
       }, this));
 
-      // <> mousemove/click states
-      this._pages.delegate('.strp-container', 'mousemove', this._onMouseMoveHandler = $.proxy(this._onMouseMove, this))
-                 .delegate('.strp-container', 'mouseout', this._onMouseOutHandler = $.proxy(this._onMouseOut, this))
-                 .delegate('.strp-container', 'mouseenter', this._onMouseEnterHandler = $.proxy(this._onMouseEnter, this));
+      // delegate <> mousemove/click states
+      this._pages.on('mousemove', '.strp-container', this._onMouseMoveHandler = $.proxy(this._onMouseMove, this))
+                 .on('mouseleave', '.strp-container', this._onMouseLeaveHandler = $.proxy(this._onMouseLeave, this))
+                 .on('mouseenter', '.strp-container', this._onMouseEnterHandler = $.proxy(this._onMouseEnter, this));
 
-      $(window).bind('scroll', this._onScrollHandler = $.proxy(this._onScroll, this));
+      // delegate moving onto the <> buttons
+      // keeping the mouse on them should keep the buttons visible
+      this.element.on('mouseenter', '.strp-nav', this._onNavMouseEnterHandler = $.proxy(this._onNavMouseEnter, this))
+                  .on('mouseleave', '.strp-nav', this._onNavMouseLeaveHandler = $.proxy(this._onNavMouseLeave, this));
+
+      $(window).on('scroll', this._onScrollHandler = $.proxy(this._onScroll, this));
     }
 
-    this._pages.delegate('.strp-container', 'click', this._onClickHandler = $.proxy(this._onClick, this));
+    this._pages.on('click', '.strp-container', this._onClickHandler = $.proxy(this._onClick, this));
   },
 
   // TODO: switch to jQuery.on/off
   unbindUI: function() {
     if (this._showUIHandler) {
-      this.element.unbind('mouseenter', this._showUIHandler)
-                  .unbind('mouseleave', this._hideUIHandler)
-                  .unbind('mousemove', this._mousemoveUIHandler);
+      this.element.off('mouseenter', this._showUIHandler)
+                  .off('mouseleave', this._hideUIHandler)
+                  .off('mousemove', this._mousemoveUIHandler);
 
-      this._pages.undelegate('.strp-container', 'mousemove', this._onMouseMoveHandler)
-                 .undelegate('.strp-container', 'mouseout', this._onMouseOutHandler)
-                 .undelegate('.strp-container', 'mouseenter', this._onMouseEnterHandler);
+      this._pages.off('mousemove', '.strp-container', this._onMouseMoveHandler)
+                 .off('mouseleave', '.strp-container', this._onMouseLeaveHandler)
+                 .off('mouseenter', '.strp-container', this._onMouseEnterHandler);
 
-      $(window).unbind('scroll', this._onScrollHandler);
+      this.element.off('mouseenter', '.strp-nav', this._onNavMouseEnter)
+                  .off('mouseleave', '.strp-nav', this._onNavMouseLeave);
+
+      $(window).off('scroll', this._onScrollHandler);
+
+      this._showUIHandler = null;
     }
 
     if (this._onClickHandler) {
-      this._pages.undelegate('.strp-container', 'click', this._onClickHandler);
+      this._pages.off('click', '.strp-container', this._onClickHandler);
       this._onClickHandler = null;
     }
   },
@@ -596,7 +628,7 @@ var Window = {
     this._next[(side == 'next' ? 'add' : 'remove') + 'Class']('strp-nav-next-hover strp-nav-hover');
   },
 
-  _onMouseOut: function(event) {
+  _onMouseLeave: function(event) {
     this.element.removeClass('strp-hovering-clickable');
     this._previous.removeClass('strp-nav-previous-hover')
                   .add(this._next.removeClass('strp-nav-next-hover'))
@@ -628,6 +660,16 @@ var Window = {
         width = this._outerWidth || this.element.outerWidth();
 
     return left < .5 * width ? 'Previous' : 'Next';
+  },
+
+  _onNavMouseEnter: function(event) {
+    this._hoveringNav = true;
+    this.clearUITimer();
+  },
+
+  _onNavMouseLeave: function(event) {
+    this._hoveringNav = false;
+    this.startUITimer();
   },
 
   // Actual UI actions

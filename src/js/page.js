@@ -374,9 +374,10 @@ $.extend(Page.prototype, {
       }, duration);
 
       // we don't sync this because hovering UI can stop it and cancel the callback
-      // if someone decides to hover the UI before it faded it this'll instantly show it
+      // if someone decides to hover the UI before it faded this'll instantly show it
       // instead of waiting for a possibly longer window.transition
-      Window.showUI(null, duration);
+      // NOTE: disabled to allow the UI to fade out at all times
+      // Window.showUI(null, duration);
 
       // we also don't track this
       Pages.hideVisibleInactive(duration);
@@ -391,7 +392,8 @@ $.extend(Page.prototype, {
 
       this.visible = true;
 
-      Window.startUITimer();
+      // NOTE: disabled to allow the UI to fade out at all times
+      //Window.startUITimer();
 
       if (callback) callback();
 

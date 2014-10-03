@@ -16,8 +16,8 @@ var Keyboard = {
 
     if (!enabled) return;
 
-    $(document).bind('keydown', this._onKeyDownHandler = $.proxy(this.onKeyDown, this))
-               .bind('keyup', this._onKeyUpHandler = $.proxy(this.onKeyUp, this));
+    $(document).on('keydown', this._onKeyDownHandler = $.proxy(this.onKeyDown, this))
+               .on('keyup', this._onKeyUpHandler = $.proxy(this.onKeyUp, this));
 
     this.enabled = enabled;
   },
@@ -26,8 +26,8 @@ var Keyboard = {
     this.enabled = false;
 
     if (this._onKeyUpHandler) {
-      $(document).unbind('keyup', this._onKeyUpHandler)
-                 .unbind('keydown', this._onKeyDownHandler);
+      $(document).off('keyup', this._onKeyUpHandler)
+                 .off('keydown', this._onKeyDownHandler);
       this._onKeyUpHandler = this._onKeyDownHandler = null;
     }
   },
