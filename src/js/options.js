@@ -33,7 +33,7 @@ var Options = (function() {
       });
     }
 
-    // disable keyboard left/right when not an image
+    // keyboard
     if (MERGED.keyboard) {
       // when keyboard is true, enable all keys
       if ($.type(MERGED.keyboard) == 'boolean') {

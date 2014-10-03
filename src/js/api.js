@@ -115,7 +115,14 @@ var _Strip = {
     // if we've clicked an element, search for it in the currently open pagegroup
     var positionInAPG;
     if (isElement && (positionInAPG = Pages.getPositionInActivePageGroup(object))) {
-        Window.setPosition(positionInAPG);
+      // if we've clicked the exact same element it'll never re-enable 
+      // hideOnClickOutside delegation because Pages.show() won't let it 
+      // through, we re-enable it here in that case
+      if (positionInAPG == Window._position) {
+        Window.bindHideOnClickOutside();
+      }
+
+      Window.setPosition(positionInAPG);
     } else {
       // otherwise start loading and open
       Window.load(views, position);
