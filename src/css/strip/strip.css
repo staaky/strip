@@ -81,6 +81,9 @@
   padding: 0;
   text-align: center;
   background: #292929;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 /* youtube & vimeo use overlap:false, this adds padding 
@@ -167,6 +170,9 @@
   margin: 0 9px;
   margin-top: -36px;
   cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 .strp-nav-previous { left: 0; }
 .strp-nav-next { right: 0; left: auto; }
@@ -203,6 +209,9 @@
   width: 47px;
   height: 47px;
   cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 .strp-close-background,

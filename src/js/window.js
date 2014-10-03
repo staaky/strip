@@ -171,10 +171,6 @@ var Window = {
       // add opening class
       this.element.addClass('strp-opening');
       this.opening = true;
-
-      // only show the UI when opening
-      // mouse movement will toggle it when open
-      this.showUI(null, duration);
     } else if ($.type(alternateDuration) == 'number') {
       // alternate when set
       duration =  alternateDuration;
@@ -192,6 +188,12 @@ var Window = {
           percentage = Math.min(1, distance / viewport[z]);
 
       duration = Math.round(min + (percentage * tdiff));
+    }
+
+    // only show the UI when opening, or when we've switched page groups
+    // mouse movement will toggle it when open
+    if (fromZ == 0 || Pages._switched) {
+      this.showUI(null, duration);
     }
 
     if (wh == 0) {

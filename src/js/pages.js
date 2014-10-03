@@ -18,6 +18,9 @@ var Pages = {
     $.each(views, $.proxy(function(i, view) {
       this.pages[this.uid].push(new Page(view, i + 1, this.views.length));
     }, this));
+
+    // we've switched to a new set of pages
+    this._switched = true;
   },
 
   show: function(position, callback) {
@@ -29,7 +32,11 @@ var Pages = {
     this.page = page; // store
 
     this.removeHiddenAndLoadingInactive();
-    page.show(callback);
+    page.show($.proxy(function() {
+      // once a page has been fully shown we mark Pages as not being switched anymore
+      this._switched = false;
+      if (callback) callback();
+    }, this));
   },
 
   getLoadingCount: function() {
