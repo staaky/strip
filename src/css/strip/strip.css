@@ -3,24 +3,29 @@
 	width: 0;
 	height: 100%;
   overflow: hidden;
-  margin-left: 40px;
   background: #292929;
-  font: 13px/18px "Lucida Sans", "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, sans-serif;
+  font: 13px/20px "Lucida Sans", "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, sans-serif;
 }
 
 .strp-window.strp-vertical {
   height: 0;
   width: 100%;
-  margin-left: 0;
-  margin-bottom: 40px;
 }
 
-/* reduce margins on smaller screen */
+
+/* margin
+   we always have some margin around Strip to keep a visual reference to the underlying page
+*/
+.strp-window { margin-left: 40px; }
+.strp-window.strp-vertical { margin-left: 0; margin-bottom: 40px; }
+
+/* reduce margin on smaller screens */
 @media all and (max-width: 420px),
        all and (max-height: 420px) {
   .strp-window { margin-left: 20px; }
   .strp-window.strp-vertical { margin-bottom: 20px; }
 }
+
 
 /* z-index */
 .strp-window,
