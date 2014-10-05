@@ -180,11 +180,11 @@ var Window = {
       var transition = this.view.options.effects.transition,
           min = transition.min,
           max = transition.max,
-          tdiff = max - min;
+          tdiff = max - min,
 
-      var viewport = Bounds.viewport();
+          viewport = Bounds.viewport(),
       
-      var distance = Math.abs(fromZ - wh),
+          distance = Math.abs(fromZ - wh),
           percentage = Math.min(1, distance / viewport[z]);
 
       duration = Math.round(min + (percentage * tdiff));
@@ -215,11 +215,24 @@ var Window = {
     // afterResize will set it back along with the cached offsetLeft
     this._outerWidth = null;
     this._offsetLeft = null;
+
+    var onResize = this.view.options.onResize,
+        hasOnResize = $.type(onResize) == 'function';
  
-    this.element.stop(true).animate(css, duration, $.proxy(function() {
-      if (--fx < 1) this._afterResize(callback);
-    }, this));
-    
+    this.element.stop(true).animate(css, $.extend({
+      duration: duration,
+      complete: $.proxy(function() {
+        if (--fx < 1) this._afterResize(callback);
+      }, this)
+    }, !hasOnResize ? {} : {
+      // we only add step if there's an onResize callback
+      step: $.proxy(function(now, fx) {
+        if (fx.prop == z) {
+          onResize.call(Strip, fx.prop, now, this.side);
+        }
+      }, this)
+    }));
+
     if (this.spinnerMove) {
       fx++; // sync this effect
       this.spinnerMove.stop(true).animate(css, duration, $.proxy(function() {
