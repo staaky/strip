@@ -26,6 +26,12 @@ To build Strip yourself start by cloning a copy of the main Strip git repo by ru
 git clone git://github.com/staaky/strip.git
 ```
 
+Install dependencies by running `npm install` in the strip directory:
+
+```
+npm install
+```
+
 Install the [grunt command line interface](https://github.com/gruntjs/grunt-cli) as a global package:
 
 ```
