@@ -85,7 +85,7 @@ $.extend(ImageReady.prototype, {
   },
 
   abort: function() {
-    // IE7-8
+    // IE < 9
     if (this._fallbackImg) {
       this._fallbackImg.onload = function() { };
     }

@@ -30,11 +30,7 @@ function px(source) {
   return destination;
 }
 
-function sfcc(c) {
-  return String.fromCharCode.apply(String, c.replace(' ', '').split(','));
-}
-
-//deep extend
+// deep extend
 function deepExtend(destination, source) {
   for (var property in source) {
     if (source[property] && source[property].constructor &&
@@ -48,7 +44,7 @@ function deepExtend(destination, source) {
   return destination;
 }
 
-//deep clone copy
+// deep clone copy
 function deepExtendClone(destination, source) {
   return deepExtend($.extend({}, destination), source);
 }

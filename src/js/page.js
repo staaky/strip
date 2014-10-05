@@ -26,8 +26,7 @@ $.extend(Page.prototype, {
     if (this._created) return;
 
     Pages.element.append(this.element = $('<div>').addClass('strp-page')
-      .append(this.container = $('<div>').addClass('strp-container')
-      )
+      .append(this.container = $('<div>').addClass('strp-container'))
       .css({ opacity: 0 })
       .hide()
     );
@@ -57,8 +56,8 @@ $.extend(Page.prototype, {
     switch (this.view.type) {
       case 'image':
         this.container.append(this.content = $('<img>')
-                   .attr({ src: this.view.url })
-                 );
+          .attr({ src: this.view.url })
+        );
         break;
 
       case 'vimeo':
@@ -85,17 +84,17 @@ $.extend(Page.prototype, {
     var preload;
     if (!(preload = this.view.options.preload)) return [];
 
-    var pages = [];
-
-    var begin = Math.max(1, this._position - preload[0]),
+    var pages = [],
+        begin = Math.max(1, this._position - preload[0]),
         end = Math.min(this._position + preload[1], this._total),
         pos = this._position;
 
-
+    // add the pages after this one first for the preloading order
     for (var i = pos;i<=end;i++) {
       var page = Pages.pages[Pages.uid][i-1];
       if (page._position != pos) pages.push(page);
     }
+
     for (var i = pos;i>=begin;i--) {
       var page = Pages.pages[Pages.uid][i-1];
       if (page._position != pos) pages.push(page);
@@ -450,7 +449,10 @@ $.extend(Page.prototype, {
 
   removeVideo: function() {
     if (this.playerIframe) {
+      // this fixes a bug where sound keep playing after 
+      // removing the iframe in IE10+
       this.playerIframe[0].src = '//about:blank';
+
       this.playerIframe.remove();
       this.player_frame = null;
     }
@@ -524,21 +526,16 @@ $.extend(Page.prototype, {
     Window.element.addClass('strp-measured');
     bounds[z] -= safety;
 
-
     var paddingX = parseInt(container.css('padding-left')) + parseInt(container.css('padding-right')),
-        paddingY = parseInt(container.css('padding-top')) + parseInt(container.css('padding-bottom'));
-
-    var padding = { x: paddingX, y: paddingY };
+        paddingY = parseInt(container.css('padding-top')) + parseInt(container.css('padding-bottom')),
+        padding = { x: paddingX, y: paddingY };
 
     bounds.width -= paddingX;
     bounds.height -= paddingY;
 
-    var fitted = Fit.within(dimensions, bounds);
-
-
-    var contentDimensions = $.extend({}, fitted);
- 
-    var content = this.content;
+    var fitted = Fit.within(dimensions, bounds),
+        contentDimensions = $.extend({}, fitted),
+        content = this.content;
 
     // if we have an error message, use that as content instead
     if (this.error) {
@@ -550,16 +547,18 @@ $.extend(Page.prototype, {
 
     // when there's an info bar size has to be adjusted
     if (info) {
+      // make sure the window and the page are visible during all of this
+      var windowVisible = Window.element.is(':visible');
+      if (!windowVisible) Window.element.show();
+
+      var pageVisible = page.is(':visible');
+      if (!pageVisible) page.show();
+
+      // width
       if (z == 'width') {
         page.css({ width: fitted.width + paddingX + 'px' });
 
         var initialBoundsHeight = bounds.height;
-
-        var windowVisible = Window.element.is(':visible');
-        if (!windowVisible) Window.element.show();
-
-        var pageVisible = page.is(':visible');
-        if (!pageVisible) page.show();
 
         content.hide();
         cH = info.outerHeight();
@@ -577,7 +576,7 @@ $.extend(Page.prototype, {
             shrunkW;
 
         var attempts = 4;
-        ///*
+        
         while (attempts > 0 && (shrunkW = fitted.width - contentDimensions.width)) {
           page.css({ width: (fitted.width + paddingX - shrunkW) + 'px' });
           
@@ -610,19 +609,9 @@ $.extend(Page.prototype, {
 
           attempts--;
         }
-        
-        // restore visibility
-        if (!pageVisible) page.hide();
-        if (!windowVisible) Window.element.hide();
+
       } else {
-
         // height
-        var windowVisible = Window.element.is(':visible');
-        if (!windowVisible) Window.element.show();
-
-        var pageVisible = page.is(':visible');
-        if (!pageVisible) page.show();
-
         content.hide();
         cH = info.outerHeight();
         content.show();
@@ -630,13 +619,13 @@ $.extend(Page.prototype, {
         bounds.height -= cH;
         contentDimensions = Fit.within(dimensions, bounds);
         fitted.height = contentDimensions.height;
-
-        // restore visibility
-        if (!pageVisible) page.hide();
-        if (!windowVisible) Window.element.hide();
-
       }
+
+      // restore visibility
+      if (!pageVisible) page.hide();
+      if (!windowVisible) Window.element.hide();
     }
+
 
     // page needs a fixed width to remain properly static during animation
     if (z == 'width') {

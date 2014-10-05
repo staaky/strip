@@ -32,8 +32,6 @@ $.extend(VimeoReady.prototype, {
       
       if (this.callback) this.callback(data);
     }, this));
-
-
   },
 
   abort: function() {

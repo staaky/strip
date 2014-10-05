@@ -33,17 +33,15 @@ $.extend(Spinner.prototype, {
 
     this._rotate.html('');
 
-    var d = (this.options.length + this.options.radius) * 2;
-    var dimensions = { height: d, width: d };
-
-    var spinner;
+    var d = (this.options.length + this.options.radius) * 2,
+        dimensions = { height: d, width: d };
 
     // we parse stuff below so make sure that happens with a visible spinner
     var is_vis = this.element.is(':visible');
     if (!is_vis) this.element.show();
 
     // find the amount of lines
-     var frame, line;
+    var frame, line;
     this._rotate.append(frame = $('<div>').addClass(this.classPrefix + 'spinner-frame')
       .append(line = $('<div>').addClass(this.classPrefix + 'spinner-line'))
     );

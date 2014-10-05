@@ -53,8 +53,8 @@ var Pages = {
   // used by the API when opening
   // checks if the page is in the currently open group
   getPositionInActivePageGroup: function(element) {
-    var position = 0;
-    var activeGroup = this.pages[this.uid];
+    var position = 0,
+        activeGroup = this.pages[this.uid];
 
     if (activeGroup) {
       $.each(activeGroup, function(i, page) {
