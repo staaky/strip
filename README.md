@@ -16,6 +16,28 @@ http://www.stripjs.com/license
 
 For non-commercial, personal, or open source projects and applications, you may use Strip under the terms of the [GPL v3 License](http://choosealicense.com/licenses/gpl-v3). You may use Strip for free.
 
+## Build
+
+The latest build can be found on [stripjs.com/download](http://www.stripjs.com/download).
+
+To build Strip yourself start by cloning a copy of the main Strip git repo by running:
+
+```
+git clone git://github.com/staaky/strip.git
+```
+
+Install the [grunt command line interface](https://github.com/gruntjs/grunt-cli) as a global package:
+
+```
+npm install -g grunt-cli
+```
+
+Now run the `grunt` command in the strip directory to output the latest build in the `/dist` directory:
+
+```
+grunt
+```
+
 * * *
 
 By [Nick Stakenburg](http://www.nickstakenburg.com)
