@@ -4,7 +4,10 @@
  *
  * http://www.stripjs.com
  *
- * License: http://www.stripjs.com/license
+ * Licensing:
+ * - Commercial: http://www.stripjs.com/license
+ * - Non-commercial: http://creativecommons.org/licenses/by-nc-nd/3.0
+ *
  */
 
 // Use AMD or window
