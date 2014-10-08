@@ -17,6 +17,7 @@ Strip.Skins = {
     preload: [1,2],
     position: true,
     side: 'right',
+    toggle: true,
     uiDelay: 3000,
     vimeo: {
       autoplay: 1,

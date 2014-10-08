@@ -27,7 +27,17 @@ var Pages = {
     var page = this.pages[this.uid][position - 1];
 
     // never try to reload the exact same frame
-    if (this.page && this.page.uid == page.uid) return;
+    if (this.page && this.page.uid == page.uid) {
+      // also hide the window if toggle is enabled
+      if (page.view.options.toggle) {
+        Window.hide();
+        // clear the page so double clicking when hiding will
+        // re-open the window even if it's in a hide animation
+        this.page = null;
+      }
+
+      return;
+    }
 
     this.page = page; // store
 

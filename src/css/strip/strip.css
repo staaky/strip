@@ -14,14 +14,15 @@
 
 
 /* margin
-   we always have some margin around Strip to keep a visual reference to the underlying page
+   margin is added around the window to keep a visual reference 
+   to the underlying page at all times.
 */
 .strp-window { margin-left: 40px; }
 .strp-window.strp-vertical { margin-left: 0; margin-bottom: 40px; }
 
 /* reduce margin on smaller screens */
-@media all and (max-width: 420px),
-       all and (max-height: 420px) {
+@media all and (max-width: 400px),
+       all and (max-height: 400px) {
   .strp-window { margin-left: 20px; }
   .strp-window.strp-vertical { margin-bottom: 20px; }
 }
@@ -327,8 +328,8 @@
 .strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-next .strp-nav-button-icon { background: url('skins/strip/next-hover.png'); }
 
 /* Smaller screens */
-@media all and (max-width: 420px),
-       all and (max-height: 420px) {
+@media all and (max-width: 400px),
+       all and (max-height: 400px) {
   .strp-window-skin-strip .strp-nav {
     width: 40px;
     height: 50px;
