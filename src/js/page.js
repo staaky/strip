@@ -610,6 +610,12 @@ $.extend(Page.prototype, {
         }
 
       } else {
+        // fix IE7 not respecting width:100% in the CSS
+        // so info height is measured correctly
+        if (Browser.IE && Browser.IE < 8) {
+          page.css({ width: Bounds.viewport().width });
+        }
+
         // height
         content.hide();
         cH = info.outerHeight();
