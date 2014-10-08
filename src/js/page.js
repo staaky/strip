@@ -113,7 +113,7 @@ $.extend(Page.prototype, {
   // preload is a non-abortable preloader,
   // so that it doesn't interfere with our regular load
   preload: function() {
-    if (this.preloading || this.preloaded 
+    if (this.preloading || this.preloaded
       || this.view.type != 'image'
       || !this.view.options.preload
       || this.loaded // page might be loaded before it's preloaded so also stop there
@@ -131,7 +131,7 @@ $.extend(Page.prototype, {
       this.loaded = true;
       this.preloading = false;
       this.preloaded = true;
-      
+
       this.dimensions = {
         width: image.naturalWidth,
         height: image.naturalHeight
@@ -145,7 +145,7 @@ $.extend(Page.prototype, {
     // make sure the page is created
     this.create();
 
-    
+
     // exit early if already loaded
     if (this.loaded) {
       if (callback) callback();
@@ -239,14 +239,11 @@ $.extend(Page.prototype, {
   insertVideo: function(callback) {
     switch (this.view.type) {
       case 'vimeo':
-        var playerVars = $.extend({}, this.view.options.vimeo || {});
-    
-        // api should be enabled
-        var queryString = $.param(playerVars);
+        var playerVars = $.extend({}, this.view.options.vimeo || {}),
+            queryString = $.param(playerVars);
 
         this.content.append(this.playerIframe = $('<iframe webkitAllowFullScreen mozallowfullscreen allowFullScreen>').attr({
           src: '//player.vimeo.com/video/' + this.view._data.id + '?' + queryString,
-          
           height: this.contentDimensions.height,
           width: this.contentDimensions.width,
           frameborder: 0
@@ -256,10 +253,9 @@ $.extend(Page.prototype, {
         break;
 
       case 'youtube':
-        var playerVars = this.view.options.youtube || {};
+        var playerVars = this.view.options.youtube || {},
+            queryString = $.param(playerVars);
 
-        var queryString = $.param(playerVars);
-    
         this.content.append(this.playerIframe = $('<iframe webkitAllowFullScreen mozallowfullscreen allowFullScreen>').attr({
           src: '//www.youtube.com/embed/' + this.view._data.id + '?' + queryString,
           height: this.contentDimensions.height,
@@ -349,7 +345,7 @@ $.extend(Page.prototype, {
         }));
       }, this));
     }
-   
+
 
     shq.queue($.proxy(function(next_shown_and_resized) {
       this.animatingWindow = true; // we're modifying Window size
@@ -400,11 +396,11 @@ $.extend(Page.prototype, {
   },
 
   _show: function(callback, alternateDuration) {
-    var duration = !Window.visible ? 0 : 
-                   ($.type(alternateDuration) == 'number') ? alternateDuration : 
+    var duration = !Window.visible ? 0 :
+                   ($.type(alternateDuration) == 'number') ? alternateDuration :
                    this.view.options.effects.transition.min;
 
-    this.element.stop(true).show().fadeTo(duration || 0, 1, 'swing', callback);
+    this.element.stop(true).show().fadeTo(duration || 0, 1, callback);
   },
 
   hide: function(callback, alternateDuration) {
@@ -417,16 +413,16 @@ $.extend(Page.prototype, {
 
     var duration = this.view.options.effects.transition.min;
     if ($.type(alternateDuration) == 'number') duration = alternateDuration;
-    
+
     // hide video instantly
     var isVideo = this.view.type == 'youtube' || this.view.type == 'vimeo';
     if (isVideo) duration = 0;
-    
+
     // stop, delay & effect
     this.element.stop(true)
     // we use alternative easing to minize background color showing through a lowered opacity fade
     // while images are trading places
-    .fadeTo(duration, 0, 'easeInCubic', $.proxy(function() {
+    .fadeTo(duration, 0, 'stripEaseInCubic', $.proxy(function() {
       this.element.hide();
       this.visible = false;
       if (callback) callback();
@@ -448,24 +444,12 @@ $.extend(Page.prototype, {
 
   removeVideo: function() {
     if (this.playerIframe) {
-      // this fixes a bug where sound keep playing after 
+      // this fixes a bug where sound keep playing after
       // removing the iframe in IE10+
       this.playerIframe[0].src = '//about:blank';
 
       this.playerIframe.remove();
       this.player_frame = null;
-    }
-
-    if (this.player) {
-       try {
-         this.player.destroy();
-       } catch(e) {}
-       this.player = null;
-    }
-
-    if (this.playerDiv) {
-       this.playerDiv.remove();
-       this.playerDiv = null;
     }
   },
 
@@ -502,7 +486,7 @@ $.extend(Page.prototype, {
 
     dimensions = Fit.within(dimensions, bounds);
 
-    return dimensions; 
+    return dimensions;
   },
 
   getOrientation: function(side) {
@@ -575,15 +559,15 @@ $.extend(Page.prototype, {
             shrunkW;
 
         var attempts = 4;
-        
+
         while (attempts > 0 && (shrunkW = fitted.width - contentDimensions.width)) {
           page.css({ width: (fitted.width + paddingX - shrunkW) + 'px' });
-          
+
           previousCH = cH;
 
           content.hide();
           cH = info.outerHeight();
-          
+
           newCW = Math.max(this.caption  ? this.caption.outerWidth() + paddingX : 0,
                            this.position ? this.position.outerWidth() + paddingX : 0);
           content.show();
@@ -640,16 +624,14 @@ $.extend(Page.prototype, {
     }
 
     container.css({ bottom: cH + 'px' });
-    
+
     content.css(px($.extend({}, contentDimensions, {
       // floor because old IE doesn't render .5px properly
       'margin-left': Math.floor(-.5 * contentDimensions.width),
       'margin-top': Math.floor(-.5 * contentDimensions.height)
     })));
 
-    if (this.player) {
-      this.player.setSize(contentDimensions.width, contentDimensions.height);
-    } else if (this.playerIframe) {
+    if (this.playerIframe) {
       this.playerIframe.attr(contentDimensions);
     }
 

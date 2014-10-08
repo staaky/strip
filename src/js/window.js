@@ -12,7 +12,7 @@ var Window = {
     this.build();
     this.setSkin(this.defaultSkin);
   },
-  
+
   build: function() {
     // spinner
     if (Spinner.supported) {
@@ -182,7 +182,7 @@ var Window = {
           tdiff = max - min,
 
           viewport = Bounds.viewport(),
-      
+
           distance = Math.abs(fromZ - wh),
           percentage = Math.min(1, distance / viewport[z]);
 
@@ -209,15 +209,15 @@ var Window = {
 
     var fx = 1;
 
-    // _getEventSide checks this.element.outerWidth() on mousemove only when 
-    // this._outerWidth isn't set, we need that during animation, 
+    // _getEventSide checks this.element.outerWidth() on mousemove only when
+    // this._outerWidth isn't set, we need that during animation,
     // afterResize will set it back along with the cached offsetLeft
     this._outerWidth = null;
     this._offsetLeft = null;
 
     var onResize = this.view.options.onResize,
         hasOnResize = $.type(onResize) == 'function';
- 
+
     this.element.stop(true).animate(css, $.extend({
       duration: duration,
       complete: $.proxy(function() {
@@ -238,9 +238,9 @@ var Window = {
         if (--fx < 1) this._afterResize(callback);
       }, this));
     }
-    
+
     // return the duration for later use in synced animations
-    return duration; 
+    return duration;
   },
 
   _afterResize: function(callback) {
@@ -254,7 +254,7 @@ var Window = {
 
     if (callback) callback();
   },
-  
+
 
   adjustPrevNext: function(callback, alternateDuration) {
     if (!this.view || !Pages.page) return;
@@ -264,7 +264,7 @@ var Window = {
     var windowVisible = this.element.is(':visible');
     if (!windowVisible) this.element.show();
 
-    var pRestoreStyle = this._previous.attr('style'); 
+    var pRestoreStyle = this._previous.attr('style');
     //this._previous.attr({ style: '' });
     this._previous.removeAttr('style');
     var pnMarginTop = parseInt(this._previous.css('margin-top')); // the original margin top
@@ -282,7 +282,7 @@ var Window = {
 
     // adjust <> instantly when opening
     if (this.opening) duration = 0;
-    
+
     buttons.stop(true).animate(css, duration, callback);
 
     this._previous[this.mayPrevious() ? 'show' : 'hide']();
@@ -298,7 +298,7 @@ var Window = {
   // Load
   load: function(views, position) {
     var options = $.extend({
-    
+
     }, arguments[2] || {});
 
     this.views = views;
@@ -328,7 +328,7 @@ var Window = {
     if (this.visible) {
       // NOTE: side should be set here since the window was visible
       // so using resize should be safe
-      
+
       // avoid tracking mouse movement while the window is closing
       this.unbindUI();
 
@@ -345,7 +345,7 @@ var Window = {
       }, this));
     } else {
       this._setSide(side, callback);
-    }    
+    }
   },
 
   _setSide: function(side, callback) {
@@ -397,8 +397,8 @@ var Window = {
     // store the current view
     this.view = this.views[position - 1];
 
-    // we need to make sure that a possible hide effect doesn't 
-    // trigger its callbacks, as that would cancel the showing/loading 
+    // we need to make sure that a possible hide effect doesn't
+    // trigger its callbacks, as that would cancel the showing/loading
     // of the page started below
     this.stopHideCallbacks();
 
@@ -434,7 +434,7 @@ var Window = {
       Keyboard.disable();
 
       next_unbinds();
-    }, this));    
+    }, this));
 
     hideQueue.queue($.proxy(function(next_zero) {
       // active classes should removed right as the closing effect starts
@@ -479,7 +479,7 @@ var Window = {
   },
 
   // stop all callbacks possibly queued up into a hide animation
-  // this allows the hide animation to finish as we start showing/loading 
+  // this allows the hide animation to finish as we start showing/loading
   // a new page, a callback could otherwise interrupt this
   stopHideCallbacks: function() {
     this.queues.hide.queue([]);
@@ -502,14 +502,14 @@ var Window = {
     this._y = -1;
   },
 
-  // Previous / Next 
+  // Previous / Next
   mayPrevious: function() {
     return (this.view && this.view.options.loop && this.views && this.views.length > 1) || this._position != 1;
   },
 
   previous: function(force) {
     var mayPrevious = this.mayPrevious();
-    
+
     if (force || mayPrevious) {
       this.setPosition(this.getSurroundingIndexes().previous);
     }
@@ -517,13 +517,13 @@ var Window = {
 
   mayNext: function() {
     var hasViews = this.views && this.views.length > 1;
-    
+
     return (this.view && this.view.options.loop && hasViews) || (hasViews && this.getSurroundingIndexes().next != 1);
   },
-  
+
   next: function(force) {
     var mayNext = this.mayNext();
-    
+
     if (force || mayNext) {
       this.setPosition(this.getSurroundingIndexes().next);
     }
@@ -532,14 +532,14 @@ var Window = {
   // surrounding
   getSurroundingIndexes: function() {
     if (!this.views) return {};
-  
+
     var pos = this._position,
         length = this.views.length;
-    
+
     var previous = (pos <= 1) ? length : pos - 1,
         next = (pos >= length) ? 1 : pos + 1;
-    
-    return {     
+
+    return {
       previous: previous,
       next: next
     };
@@ -578,10 +578,10 @@ var Window = {
     if (!Support.mobileTouch) {
       this.element.on('mouseenter', this._showUIHandler = $.proxy(this.showUI, this))
                   .on('mouseleave', this._hideUIHandler = $.proxy(this.hideUI, this));
-    
+
       this.element.on('mousemove', this._mousemoveUIHandler = $.proxy(function(event) {
         // Chrome has a bug that triggers a mousemove events incorrectly
-        // we have to work around this by comparing cursor positions 
+        // we have to work around this by comparing cursor positions
         // so only true mousemove events pass through:
         // https://code.google.com/p/chromium/issues/detail?id=420032
         var x = event.pageX,
@@ -711,7 +711,7 @@ var Window = {
 
     var duration = this.view ? this.view.options.effects.ui.show : 0;
     if ($.type(alternateDuration) == 'number') duration = alternateDuration;
- 
+
     elements.stop(true).fadeTo(duration, 1, $.proxy(function() {
       this.startUITimer();
       if ($.type(callback) == 'function') callback();
@@ -723,18 +723,18 @@ var Window = {
 
     var duration = this.view ? this.view.options.effects.ui.hide : 0;
     if ($.type(alternateDuration) == 'number') duration = alternateDuration;
-    
+
     elements.stop(true).fadeOut(duration, function() {
       if ($.type(callback) == 'function') callback();
     });
   },
-  
+
   // UI Timer
   clearUITimer: function() { this.timers.clear('ui'); },
-  
+
   startUITimer: function() {
     this.clearUITimer();
-    this.timers.set('ui', $.proxy(function(){ 
+    this.timers.set('ui', $.proxy(function(){
       this.hideUI();
     }, this), this.view ? this.view.options.uiDelay : 0);
   }

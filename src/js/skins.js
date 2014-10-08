@@ -1,4 +1,4 @@
-/* unexposed _Skins, for internal use only */
+// unexposed _Skins, for internal use only
 var _Skins = {
   base: {
     effects: {
@@ -46,7 +46,7 @@ var _Skins = {
         width: 1280
       },
       // Youtube needs both dimensions, it doesn't support fetching video dimensions like Vimeo yet.
-      // Star this ticket if you'd like to get support for it at some point: 
+      // Star this ticket if you'd like to get support for it at some point:
       // https://code.google.com/p/gdata-issues/issues/detail?id=4329
       'youtube': {
         width: 1280,

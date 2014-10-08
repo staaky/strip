@@ -86,7 +86,7 @@ var Pages = {
     $.each(this.pages, function(id, pages) {
       if (id != this._id) {
         $.each(pages, function(j, page) {
-          page.remove(instantly);  
+          page.remove(instantly);
         });
       }
     });

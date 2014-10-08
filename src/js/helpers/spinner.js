@@ -11,7 +11,7 @@ $.extend(Spinner.prototype, {
     if (!this.element[0]) return;
 
     this.classPrefix = 'strp-';
-    
+
     this.setOptions(arguments[1] || {});
 
     this.element.addClass(this.classPrefix + 'spinner');
@@ -66,7 +66,7 @@ $.extend(Spinner.prototype, {
 
       color = color || line.css('color');
       line.css({ background: color });
-      
+
       frame.css({ opacity: ((1 / lines) * (i+1)).toFixed(2) });
 
       var transformCSS = {};

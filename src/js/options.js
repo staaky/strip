@@ -19,7 +19,7 @@ var Options = (function() {
     }
 
     var MERGED = deepExtendClone(MERGED_SELECTED, options);
-    
+
     // now we have a safe MERGED object to work with
 
     // set all effect duration to 0 for effects: false

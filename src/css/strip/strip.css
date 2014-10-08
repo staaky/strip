@@ -12,9 +12,8 @@
   width: 100%;
 }
 
-
 /* margin
-   margin is added around the window to keep a visual reference 
+   margin is added around the window to keep a visual reference
    to the underlying page at all times.
 */
 .strp-window { margin-left: 40px; }
@@ -92,7 +91,7 @@
   user-select: none;
 }
 
-/* youtube & vimeo use overlap:false, this adds padding 
+/* youtube & vimeo use overlap:false, this adds padding
    to make sure buttons don't overlap the content */
 .strp-no-overlap .strp-container { padding: 47px 72px; }
 .strp-no-overlap.strp-no-sides .strp-container { padding: 47px 0; }
@@ -306,7 +305,7 @@
 
 
 /*
- * ===== Skin: strip ===== 
+ * ===== Skin: strip =====
  */
  /* < > */
 .strp-window-skin-strip .strp-nav-button-background { background: none; }
@@ -337,14 +336,14 @@
     margin: 0 5px;
     margin-top: -25px;
   }
-  
+
   /* < > */
   .strp-window-skin-strip .strp-nav-previous .strp-nav-button-icon { background: url('skins/strip/previous-small.svg');  }
   .strp-window-skin-strip .strp-nav-next .strp-nav-button-icon { background: url('skins/strip/next-small.svg'); }
   /* IE7-8/no-svg */
   .strp-window-skin-strip.strp-no-svg .strp-nav-previous .strp-nav-button-icon { background: url('skins/strip/previous-small.png'); }
   .strp-window-skin-strip.strp-no-svg .strp-nav-next .strp-nav-button-icon { background: url('skins/strip/next-small.png'); }
-  
+
   /* IE7-8/no-svg */
   .strp-window-skin-strip.strp-no-svg .strp-nav.strp-nav-previous:hover .strp-nav-button-icon,
   .strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-previous .strp-nav-button-icon { background: url('skins/strip/previous-small-hover.png'); }

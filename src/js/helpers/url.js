@@ -9,7 +9,7 @@ function getURIData(url) {
       result.url = url;
     }
   });
-  
+
   return result;
 }
 
@@ -33,7 +33,7 @@ var Types = {
       };
     }
   },
-  
+
   'youtube': {
     detect: function(url) {
       var res = /(youtube\.com|youtu\.be)\/watch\?(?=.*vi?=([a-zA-Z0-9-_]+))(?:\S+)?$/.exec(url);
@@ -53,7 +53,7 @@ var Types = {
       };
     }
   },
-  
+
   'vimeo': {
     detect: function(url) {
       var res = /(vimeo\.com)\/([a-zA-Z0-9-_]+)(?:\S+)?$/i.exec(url);

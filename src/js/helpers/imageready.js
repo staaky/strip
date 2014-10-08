@@ -47,7 +47,7 @@ $.extend(ImageReady.prototype, {
       // update time spend
       this._time += this._delay;
 
-      // next i within the interval 
+      // next i within the interval
       if (this._time > this.intervals[this._ipos][0]) {
         // if there's no next interval, we asume
         // the image image errored out
@@ -99,7 +99,7 @@ $.extend(ImageReady.prototype, {
   error: function() {
     if (this.errored) return;
     this.errored = true;
-    
+
     this.abort();
     if (this.errorCallback) this.errorCallback();
   }

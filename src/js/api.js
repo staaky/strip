@@ -13,7 +13,7 @@ var _Strip = {
   // click delegation
   startDelegating: function() {
     this.stopDelegating();
-    $(document.documentElement).delegate('.strip[href]', 'click', this._delegateHandler = $.proxy(this.delegate, this));  
+    $(document.documentElement).delegate('.strip[href]', 'click', this._delegateHandler = $.proxy(this.delegate, this));
   },
 
   stopDelegating: function() {
@@ -30,7 +30,7 @@ var _Strip = {
     event.preventDefault();
 
     var element = event.currentTarget;
-    
+
     _Strip.show(element);
   },
 
@@ -99,14 +99,14 @@ var _Strip = {
     }
 
     // if we haven't found a position by now, load the first view
-    if (!position || position < 1) { 
+    if (!position || position < 1) {
       position = 1;
     }
     if (position > views.length) position = views.length;
 
     // Allow API events to pass through by disabling hideOnClickOutside.
     // It is re-enabled when bringing a page into view using a slight delay
-    // allowing a possible click event that triggers this show() function to 
+    // allowing a possible click event that triggers this show() function to
     // fully bubble up. This is needed when Strip is visible and Strip.show()
     // is called, the click would otherwise bubble down and instantly hide,
     // cancelling the show()
@@ -115,8 +115,8 @@ var _Strip = {
     // if we've clicked an element, search for it in the currently open pagegroup
     var positionInAPG;
     if (isElement && (positionInAPG = Pages.getPositionInActivePageGroup(object))) {
-      // if we've clicked the exact same element it'll never re-enable 
-      // hideOnClickOutside delegation because Pages.show() won't let it 
+      // if we've clicked the exact same element it'll never re-enable
+      // hideOnClickOutside delegation because Pages.show() won't let it
       // through, we re-enable it here in that case
       if (positionInAPG == Window._position) {
         Window.bindHideOnClickOutside();
@@ -133,7 +133,7 @@ var _Strip = {
   showFallback: (function() {
     function getUrl(object) {
       var url, type = $.type(object);
-      
+
       if (type == 'string') {
         url = object;
       } else if (type == 'array' && object[0]) {
@@ -141,7 +141,7 @@ var _Strip = {
       } else if (_.isElement(object) && $(object).attr('href')) {
         var url = $(object).attr('href');
       } else if (object.url) {
-        url = object.url; 
+        url = object.url;
       } else {
         url = false;
       }
@@ -162,7 +162,7 @@ $.extend(Strip, {
     _Strip.show.apply(_Strip, _slice.call(arguments));
     return this;
   },
-  
+
   hide: function() {
     Window.hide();
     return this;
@@ -184,7 +184,7 @@ $.extend(Strip, {
     _Strip._fallback = fallback;
     return this;
   },
-  
+
   setDefaultSkin: function(skin) {
     Window.setDefaultSkin(skin);
     return this;

@@ -19,17 +19,17 @@ $.extend(VimeoReady.prototype, {
 
     var protocol = 'http' + (window.location && window.location.protocol == 'https:' ? 's' : '') + ':',
         video_id = getURIData(this.url).id;
-    
+
     this._xhr = $.getJSON(protocol + '//vimeo.com/api/oembed.json?url=' + protocol + '//vimeo.com/' + video_id + '&callback=?', $.proxy(function(_data) {
-      var data = { 
+      var data = {
         dimensions: {
           width: _data.width,
           height: _data.height
         }
       };
-      
+
       Cache.set(this.url, data);
-      
+
       if (this.callback) this.callback(data);
     }, this));
   },
@@ -53,7 +53,7 @@ var Cache = {
    }
    return entry;
   },
-  
+
   set: function(url, data) {
     this.remove(url);
     this.cache.push({ url: url, data: data });

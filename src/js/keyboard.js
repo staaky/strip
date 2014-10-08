@@ -68,7 +68,7 @@ var Keyboard = {
 
   getKeyByKeyCode: function(keyCode) {
     for(var key in this.keyCode) {
-      if (this.keyCode[key] == keyCode) return key; 
+      if (this.keyCode[key] == keyCode) return key;
     }
     return null;
   }

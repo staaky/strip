@@ -40,12 +40,12 @@ module.exports = function(grunt) {
 
         'src/js/api.js',
 
-        'src/js/outro.js',
+        'src/js/outro.js'
         ],
         dest: '<%= dirs.dest %>/js/strip/strip.js'
       }
     },
-    
+
     copy: {
       production: {
         files: [
@@ -58,7 +58,7 @@ module.exports = function(grunt) {
         ],
       }
     },
-    
+
     uglify: {
       production: {
         options: {
@@ -72,7 +72,6 @@ module.exports = function(grunt) {
     clean: {
       dist: 'dist/'
     }
-
   });
 
   // Load plugins

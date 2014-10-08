@@ -4,5 +4,5 @@ var Bounds = {
       height: $(window).height(),
       width:  $(window).width()
     };
-  }  
+  }
 };
