@@ -248,7 +248,7 @@
   margin-left: -120px;
   margin-top: -120px;
 }
-.strp-no-svg .strp-error { background-image: url('skins/strip/error.svg'); }
+.strp-no-svg .strp-error { background-image: url('skins/strip/error.png'); }
 
 /* Spinner - loading icon, wrapped by a this div that moves it */
 .strp-spinner-move {

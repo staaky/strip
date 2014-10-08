@@ -3,7 +3,7 @@ var Window = {
 
   initialize: function() {
     this.queues = [];
-    this.queues.showhide = $({});
+    this.queues.hide = $({});
 
     this.pages = [];
 
@@ -145,9 +145,8 @@ var Window = {
   },
 
   resize: function(wh, callback, alternateDuration) {
-    var orientation = this.getOrientation();
-
-    var Z = orientation == 'vertical' ? 'Height' : 'Width',
+    var orientation = this.getOrientation(),
+        Z = orientation == 'vertical' ? 'Height' : 'Width',
         z = Z.toLowerCase();
 
     if (wh > 0) {
@@ -161,9 +160,9 @@ var Window = {
       }
     }
 
-    var fromZ = Window.element['outer' + Z]();
-    var duration;
-    
+    var fromZ = Window.element['outer' + Z](),
+        duration;
+
     // if we're opening use the show duration
     if (fromZ == 0) {
       duration = this.view.options.effects.window.show;
@@ -360,9 +359,6 @@ var Window = {
     elements.removeClass('strp-horizontal strp-vertical')
             .addClass('strp-' + orientation);
 
-    var elements = this.element;
-    if (this.spinnerMove) elements = elements.add(this.spinnerMove);
-    
     var ss = 'strp-side-';
     elements.removeClass(ss + 'top ' + ss + 'right ' + ss + 'bottom ' + ss + 'left')
             .addClass(ss + side);
@@ -377,7 +373,6 @@ var Window = {
   // loading indicator
   startLoading: function() {
     if (!this._spinner) return;
-
 
     this.spinnerMove.show();
     this._spinner.show();
@@ -402,6 +397,11 @@ var Window = {
     // store the current view
     this.view = this.views[position - 1];
 
+    // we need to make sure that a possible hide effect doesn't 
+    // trigger its callbacks, as that would cancel the showing/loading 
+    // of the page started below
+    this.stopHideCallbacks();
+
     // store the page and show it
     this.page = Pages.show(position, $.proxy(function() {
       var afterPosition = this.view.options.afterPosition;
@@ -413,15 +413,15 @@ var Window = {
   },
 
   hide: function(callback) {
-    var shq = this.queues.showhide;
-    shq.queue([]); // clear queue
+    var hideQueue = this.queues.hide;
+    hideQueue.queue([]); // clear queue
 
-    shq.queue($.proxy(function(next_stop) {
+    hideQueue.queue($.proxy(function(next_stop) {
       Pages.stop();
       next_stop();
     }, this));
 
-    shq.queue($.proxy(function(next_unbinds) {
+    hideQueue.queue($.proxy(function(next_unbinds) {
       // ui
       var duration = this.view ? this.view.options.effects.window.hide : 0;
       this.unbindUI();
@@ -436,39 +436,53 @@ var Window = {
       next_unbinds();
     }, this));    
 
-    shq.queue($.proxy(function(next_zero) {
-      this.resize(0, $.proxy(function() {
-        
-        this._safeResetsAfterSwitchSide();
+    hideQueue.queue($.proxy(function(next_zero) {
+      // active classes should removed right as the closing effect starts
+      // because clicking an element as it closes will re-open it,
+      // that needs to be reflected in the class
+      Pages.removeActiveClasses();
 
-        // all of the below we cannot safely call safely
-        this.stopObservingResize();
+      this.resize(0, next_zero, this.view.options.effects.window.hide);
+    }, this));
 
-        Pages.removeAll();
+    // callbacks after resize in a separate queue
+    // so we can stop the hideQueue without stopping the resize
+    hideQueue.queue($.proxy(function(next_after_resize) {
+      this._safeResetsAfterSwitchSide();
 
-        this.timers.clear();
+      // all of the below we cannot safely call safely
+      this.stopObservingResize();
 
-        this._position = -1;
+      Pages.removeAll();
 
-        // afterHide callback
-        var afterHide = this.view && this.view.options.afterHide;
-        if ($.type(afterHide) == 'function') {
-          afterHide.call(Strip);
-        }
+      this.timers.clear();
 
-        this.view = null;
+      this._position = -1;
 
-        next_zero();
-      }, this), this.view.options.effects.window.hide);
+      // afterHide callback
+      var afterHide = this.view && this.view.options.afterHide;
+      if ($.type(afterHide) == 'function') {
+        afterHide.call(Strip);
+      }
+
+      this.view = null;
+
+      next_after_resize();
     }, this));
 
     if ($.type(callback) == 'function') {
-      shq.queue($.proxy(function(next_callback) {
-
-        if (callback) callback();
+      hideQueue.queue($.proxy(function(next_callback) {
+        callback();
         next_callback();
       }, this));
-    }   
+    }
+  },
+
+  // stop all callbacks possibly queued up into a hide animation
+  // this allows the hide animation to finish as we start showing/loading 
+  // a new page, a callback could otherwise interrupt this
+  stopHideCallbacks: function() {
+    this.queues.hide.queue([]);
   },
 
   // these are things we can safely call when switching side as well
@@ -476,7 +490,6 @@ var Window = {
     // remove styling from window, so no width: 100%; height: 0 issues
     this.element.removeAttr('style');
     if (this.spinnerMove) this.spinnerMove.removeAttr('style');
-
 
     //Pages.removeExpired();
     this.visible = false;

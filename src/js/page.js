@@ -1,8 +1,7 @@
-
 var Page = (function() {
-  var uid = 0;
+var uid = 0;
 
-var Page = function() { return this.initialize.apply(this, _slice.call(arguments)); };
+function Page() { return this.initialize.apply(this, _slice.call(arguments)); };
 $.extend(Page.prototype, {
   initialize: function(view, position, total) {
     this.view = view;

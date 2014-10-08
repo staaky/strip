@@ -1,6 +1,6 @@
 var Options = (function() {
-  var BASE = Strip.Skins.base,
-      RESET = deepExtendClone(BASE, Strip.Skins['reset']);
+  var BASE = _Skins.base,
+      RESET = deepExtendClone(BASE, _Skins.reset);
 
   function create(options, type, data) {
     options = options || {};
@@ -17,7 +17,7 @@ var Options = (function() {
       MERGED_SELECTED = deepExtendClone(MERGED_SELECTED.initialTypeOptions[type], MERGED_SELECTED);
       delete MERGED_SELECTED.initialTypeOptions; // these aren't used further, so remove them
     }
-    
+
     var MERGED = deepExtendClone(MERGED_SELECTED, options);
     
     // now we have a safe MERGED object to work with
@@ -53,11 +53,11 @@ var Options = (function() {
     // vimeo & youtube always have no overlap
     if (type == 'vimeo' || type == 'youtube') {
       MERGED.overlap = false;
-    }    
+    }
 
     return MERGED;
   }
-  
+
   return {
     create: create
   };

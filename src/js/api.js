@@ -42,15 +42,15 @@ var _Strip = {
 
     var options = arguments[1] || {},
         position = arguments[2];
-    
+
     if (arguments[1] && $.type(arguments[1]) == 'number') {
       position = arguments[1];
       options = Options.create({});
     }
-  
+
     var views = [], object_type,
         isElement = _.isElement(object);
-    
+
     switch ((object_type = $.type(object))) {
       case 'string':
       case 'object':
@@ -58,19 +58,19 @@ var _Strip = {
             _dgo = "data-strip-group-options";
 
         if (view.group) {
-          // extend the entire set and pass it on as an array
+          // extend the entire group
 
           // if we have an element, look for other elements
-          if (_.isElement(object)) {
+          if (isElement) {
             var elements = $('.strip[data-strip-group="' + $(object).data('strip-group') + '"]');
-            
+
             // find possible group options
             var groupOptions = {};
-            
+
             elements.filter('[' + _dgo + ']').each(function(i, element) {
               $.extend(groupOptions, eval('({' + ($(element).attr(_dgo) || '') + '})'));
             });
-            
+
             elements.each(function(i, element) {
               // adjust the position if we find that the given object position
               if (!position && element == object) position = i + 1;
@@ -79,7 +79,7 @@ var _Strip = {
           }
         } else {
           var groupOptions = {};
-          if (_.isElement(object) && $(object).is('[' + _dgo + ']')) {
+          if (isElement && $(object).is('[' + _dgo + ']')) {
             $.extend(groupOptions, eval('({' + ($(object).attr(_dgo) || '') + '})'));
             // reset the view with group options applied
             view = new View(object, $.extend({}, groupOptions, options));
@@ -88,8 +88,8 @@ var _Strip = {
           views.push(view);
         }
         break;
-        
-        
+
+
       case 'array':
         $.each(object, function(i, item) {
           var view = new View(item, options);

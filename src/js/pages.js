@@ -39,7 +39,11 @@ var Pages = {
       return;
     }
 
-    this.page = page; // store
+    // set class names to indicate active state
+    Pages.setActiveClass(page);
+
+    // update the page
+    this.page = page;
 
     this.removeHiddenAndLoadingInactive();
     page.show($.proxy(function() {
@@ -161,5 +165,26 @@ var Pages = {
         page.stop();
       });
     });
+  },
+
+  setActiveClass: function(page) {
+    // switch the active element class
+    this.removeActiveClasses();
+
+    // add the active class if the new page is bound to an element
+    var element = page.view.element;
+    if (element) {
+      $(element).addClass('strip-active-element strip-active-group');
+
+      // also give other items in the group the active group class
+      var group = $(element).data('strip-group');
+      if (group) {
+        $('.strip[data-strip-group="' + group + '"]').addClass('strip-active-group');
+      }
+    }
+  },
+
+  removeActiveClasses: function() {
+    $('.strip-active-group').removeClass('strip-active-group strip-active-element');
   }
 };
