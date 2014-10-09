@@ -238,7 +238,7 @@ $.extend(Page.prototype, {
 
   insertVideo: function(callback) {
     // don't insert a video twice
-    if (this._videoInserted) {
+    if (this.playerIframe) {
       if (callback) callback();
       return;
     }
@@ -272,8 +272,6 @@ $.extend(Page.prototype, {
         if (callback) callback();
         break;
     }
-
-    this._videoInserted = true;
   },
 
 
@@ -439,7 +437,7 @@ $.extend(Page.prototype, {
     }, this));
   },
 
-    // stop everything
+  // stop everything
   stop: function() {
     var shq = this.queues.showhide;
     shq.queue([]); // clear queue
@@ -449,6 +447,16 @@ $.extend(Page.prototype, {
 
     // stop possible loading
     this.abort();
+
+    // WORKAROUND:
+    // Spam clicking an element that toggles a video could cause
+    // a visual glitch in Chrome. It doesn't seem to handle an iframe
+    // loading in content as it's being moved off screen before being
+    // removed. A visible element is kept on the screen that isn't
+    // accessible through the DOM.
+    // We use this workaround for all browsers just in case.
+    // TODO: investigate this further to file a bug report with Chrome.
+    this.removeVideo();
   },
 
 
@@ -459,7 +467,7 @@ $.extend(Page.prototype, {
       this.playerIframe[0].src = '//about:blank';
 
       this.playerIframe.remove();
-      this.player_frame = null;
+      this.playerIframe = null;
     }
   },
 
