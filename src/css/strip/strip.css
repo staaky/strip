@@ -41,6 +41,9 @@
   box-sizing: border-box;
 }
 
+/* Chrome hack, this fixes a visual glitch when quickly toggling a video */
+.strp-window { transform: translateZ(0px); }
+
 .strp-measured { margin: 0 !important; }
 
 .strp-pages {
