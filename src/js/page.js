@@ -367,11 +367,13 @@ $.extend(Page.prototype, {
         if (--fx < 1) next_shown_and_resized();
       }, duration);
 
-      // we don't sync this because hovering UI can stop it and cancel the callback
-      // if someone decides to hover the UI before it faded this'll instantly show it
-      // instead of waiting for a possibly longer window.transition
-      // NOTE: disabled to allow the UI to fade out at all times
-      // Window.showUI(null, duration);
+      if (Window._showUIOnResize) {
+        Window.showUI(null, duration);
+
+        // don't show the UI the next time, it'll show up
+        // when we set this flag again
+        Window._showUIOnResize = false;
+      }
 
       // we also don't track this
       Pages.hideVisibleInactive(duration);

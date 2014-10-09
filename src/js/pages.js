@@ -14,13 +14,13 @@ var Pages = {
 
     this.pages[this.uid] = []; // create room for these pages
 
+    // switched pages, so show the UI on the next resize
+    Window._showUIOnResize = true;
+
     // add pages for all these views
     $.each(views, $.proxy(function(i, view) {
       this.pages[this.uid].push(new Page(view, i + 1, this.views.length));
     }, this));
-
-    // we've switched to a new set of pages
-    this._switched = true;
   },
 
   show: function(position, callback) {

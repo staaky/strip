@@ -189,12 +189,6 @@ var Window = {
       duration = Math.round(min + (percentage * tdiff));
     }
 
-    // only show the UI when opening, when we've switched page groups
-    // or wjem a .hide() animation was just stopped
-    // mouse movement will toggle it when open
-    if (fromZ == 0 || Pages._switched || this._stoppedHideQueue) {
-      this.showUI(null, duration);
-    }
 
     if (wh == 0) {
       this.closing = true;
@@ -330,10 +324,14 @@ var Window = {
       // NOTE: side should be set here since the window was visible
       // so using resize should be safe
 
+      // hide the UI
+      var duration = this.view ? this.view.options.effects.window.hide : 0;
+      this.hideUI(null, duration);
+
       // avoid tracking mouse movement while the window is closing
       this.unbindUI();
 
-      // resize instantly
+      // hide
       this.resize(0, $.proxy(function() {
 
         // some of the things we'd normally do in hide
@@ -344,6 +342,9 @@ var Window = {
 
         this._setSide(side, callback);
       }, this));
+
+      // show the UI on the next resize
+      this._showUIOnResize = true;
     } else {
       this._setSide(side, callback);
     }
@@ -405,11 +406,6 @@ var Window = {
 
     // store the page and show it
     this.page = Pages.show(position, $.proxy(function() {
-      // we reset _stoppedHideQueue after a page was fully shown
-      // so that re-opening while closing shows the UI again
-      // only once
-      this._stoppedHideQueue = false;
-
       var afterPosition = this.view.options.afterPosition;
       if ($.type(afterPosition) == 'function') {
         afterPosition.call(Strip, position);
@@ -421,8 +417,6 @@ var Window = {
   hide: function(callback) {
     var hideQueue = this.queues.hide;
     hideQueue.queue([]); // clear queue
-
-    this._hiding = true;
 
     hideQueue.queue($.proxy(function(next_stop) {
       Pages.stop();
@@ -451,6 +445,9 @@ var Window = {
       Pages.removeActiveClasses();
 
       this.resize(0, next_zero, this.view.options.effects.window.hide);
+
+      // after we initiate the hide resize, the next resize should bring up the UI again
+      this._showUIOnResize = true;
     }, this));
 
     // callbacks after resize in a separate queue
@@ -475,8 +472,6 @@ var Window = {
 
       this.view = null;
 
-      this._hiding = false;
-
       next_after_resize();
     }, this));
 
@@ -493,10 +488,6 @@ var Window = {
   // a new page, a callback could otherwise interrupt this
   stopHideQueue: function() {
     this.queues.hide.queue([]);
-    if (this._hiding) {
-      this._stoppedHideQueue = true;
-      this._hiding = false;
-    }
   },
 
   // these are things we can safely call when switching side as well
@@ -726,7 +717,7 @@ var Window = {
     var duration = this.view ? this.view.options.effects.ui.show : 0;
     if ($.type(alternateDuration) == 'number') duration = alternateDuration;
 
-    elements.stop(true).fadeTo(duration, 1, $.proxy(function() {
+    elements.stop(true).fadeTo(duration, 1, 'stripEaseInSine', $.proxy(function() {
       this.startUITimer();
       if ($.type(callback) == 'function') callback();
     }, this));
@@ -738,7 +729,7 @@ var Window = {
     var duration = this.view ? this.view.options.effects.ui.hide : 0;
     if ($.type(alternateDuration) == 'number') duration = alternateDuration;
 
-    elements.stop(true).fadeOut(duration, 'stripEaseOutCubic', function() {
+    elements.stop(true).fadeOut(duration, 'stripEaseOutSine', function() {
       if ($.type(callback) == 'function') callback();
     });
   },

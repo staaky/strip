@@ -115,8 +115,12 @@ $.extend($.easing, {
     return c*(t/=d)*t*t + b;
   },
 
-  stripEaseOutCubic: function (x, t, b, c, d) {
-    return c*((t=t/d-1)*t*t + 1) + b;
+  stripEaseInSine: function (x, t, b, c, d) {
+    return -c * Math.cos(t/d * (Math.PI/2)) + c + b;
+  },
+
+  stripEaseOutSine: function (x, t, b, c, d) {
+    return c * Math.sin(t/d * (Math.PI/2)) + b;
   }
 });
 
