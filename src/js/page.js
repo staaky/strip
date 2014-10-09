@@ -451,18 +451,73 @@ $.extend(Page.prototype, {
 
 
   removeVideo: function() {
-    // NOTE: Chrome has a bug when removing
-    // the iframe from the page as it is initializing content
-    // this happens when you open a video and instantly close it,
-    // but giving the iframe some time to initialize. An visible element
-    // is kept on the page not accessible by the DOM.
-
     if (this.playerIframe) {
       // this fixes a bug where sound keep playing after
       // removing the iframe in IE10+
       this.playerIframe[0].src = '//about:blank';
+
+      this.playerIframe.css({
+        transform: 'translateZ(0px)'
+      });
+
       this.playerIframe.remove();
       this.playerIframe = null;
+
+      // WORKAROUND:
+      // Chrome has a visual glitch when removing the iframe with video
+      // from the page as it is initializing, this happens when you open a video
+      // and instantly close it, but giving the iframe some time to initialize.
+      // It keeps a visible element on the page not accessible by the DOM.
+      //
+      // a workaround is needed that forces a layout update, we do this on all
+      // WebKit based browsers just in case
+      //
+      // further investigation is needed to file a proper bug report
+      //
+      if (Browser.WebKit && Support.css.transform) {
+        // set translateZ on the html tag for a short duration.
+        // best workaround we have right now
+
+        // first look for a possible restore value we've stored on the html tag
+        var $html = $('html'),
+            restoreStyle = $html.data('strip-restore-style'),
+            cssProp = Support.css.prefixed('transform');
+
+        // if none was set find it
+        if (!restoreStyle) {
+          var style = $html.attr('style') || ' ';
+          $html.data('strip-restore-style', style);
+          restoreStyle = style;
+        }
+
+        // this is the hack causing the layout update
+        var css = {};
+        css[cssProp] = 'translateZ(0px)';
+        $html.css(css);
+
+        // restore the original style
+        setTimeout(function() {
+          if (restoreStyle === ' ') $html.removeAttr('style');
+          else $html.attr('style', restoreStyle);
+          $html.data('strip-restore-style', false);
+        });
+
+        // alternative workaround, not liking the full page overlap
+        /*var div;
+        $(document.body).append(div = $('<div>').css({
+          position: 'fixed',
+          width: '100%',
+          height: '100%',
+          top: 0,
+          left: 0,
+          background: 'transparent'
+        }));
+
+        setTimeout(function() {
+          div.remove();
+        });*/
+      }
+
     }
   },
 
