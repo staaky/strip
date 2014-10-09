@@ -14,7 +14,7 @@ Strip may be used in commercial projects and applications with the one-time purc
 
 http://www.stripjs.com/license
 
-For non-commercial, personal, or open source projects and applications, you may use Strip under the terms of the [Creative Commons BY-NC-ND 3.0 License](http://creativecommons.org/licenses/by-nc-nd/3.0/). You may use Strip for free.
+For non-commercial, personal, or open source projects and applications, you may use Strip under the terms of the [Creative Commons BY-NC-ND 3.0 License](http://creativecommons.org/licenses/by-nc-nd/3.0/) for free.
 
 ## Build
 

@@ -189,9 +189,10 @@ var Window = {
       duration = Math.round(min + (percentage * tdiff));
     }
 
-    // only show the UI when opening, or when we've switched page groups
+    // only show the UI when opening, when we've switched page groups
+    // or wjem a .hide() animation was just stopped
     // mouse movement will toggle it when open
-    if (fromZ == 0 || Pages._switched) {
+    if (fromZ == 0 || Pages._switched || this._stoppedHideQueue) {
       this.showUI(null, duration);
     }
 
@@ -400,10 +401,15 @@ var Window = {
     // we need to make sure that a possible hide effect doesn't
     // trigger its callbacks, as that would cancel the showing/loading
     // of the page started below
-    this.stopHideCallbacks();
+    this.stopHideQueue();
 
     // store the page and show it
     this.page = Pages.show(position, $.proxy(function() {
+      // we reset _stoppedHideQueue after a page was fully shown
+      // so that re-opening while closing shows the UI again
+      // only once
+      this._stoppedHideQueue = false;
+
       var afterPosition = this.view.options.afterPosition;
       if ($.type(afterPosition) == 'function') {
         afterPosition.call(Strip, position);
@@ -415,6 +421,8 @@ var Window = {
   hide: function(callback) {
     var hideQueue = this.queues.hide;
     hideQueue.queue([]); // clear queue
+
+    this._hiding = true;
 
     hideQueue.queue($.proxy(function(next_stop) {
       Pages.stop();
@@ -467,6 +475,8 @@ var Window = {
 
       this.view = null;
 
+      this._hiding = false;
+
       next_after_resize();
     }, this));
 
@@ -481,8 +491,12 @@ var Window = {
   // stop all callbacks possibly queued up into a hide animation
   // this allows the hide animation to finish as we start showing/loading
   // a new page, a callback could otherwise interrupt this
-  stopHideCallbacks: function() {
+  stopHideQueue: function() {
     this.queues.hide.queue([]);
+    if (this._hiding) {
+      this._stoppedHideQueue = true;
+      this._hiding = false;
+    }
   },
 
   // these are things we can safely call when switching side as well
