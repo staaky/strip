@@ -108,10 +108,15 @@ var Fit = {
   }
 };
 
-// missing easing functions, we only uses easeInCubic
-// adding it with our own prefix to prevent conflicts
-(function() {
-  $.easing['stripEaseInCubic'] = function (x, t, b, c, d) {
+// we only uses some of the jQueryUI easing functions
+// add those with a prefix to prevent conflicts
+$.extend($.easing, {
+  stripEaseInCubic: function (x, t, b, c, d) {
     return c*(t/=d)*t*t + b;
-  };
-})();
+  },
+
+  stripEaseOutCubic: function (x, t, b, c, d) {
+    return c*((t=t/d-1)*t*t + 1) + b;
+  }
+});
+

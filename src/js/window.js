@@ -738,7 +738,7 @@ var Window = {
     var duration = this.view ? this.view.options.effects.ui.hide : 0;
     if ($.type(alternateDuration) == 'number') duration = alternateDuration;
 
-    elements.stop(true).fadeOut(duration, function() {
+    elements.stop(true).fadeOut(duration, 'stripEaseOutCubic', function() {
       if ($.type(callback) == 'function') callback();
     });
   },
