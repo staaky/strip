@@ -237,6 +237,12 @@ $.extend(Page.prototype, {
 
 
   insertVideo: function(callback) {
+    // don't insert a video twice
+    if (this._videoInserted) {
+      if (callback) callback();
+      return;
+    }
+
     switch (this.view.type) {
       case 'vimeo':
         var playerVars = $.extend({}, this.view.options.vimeo || {}),
@@ -266,6 +272,8 @@ $.extend(Page.prototype, {
         if (callback) callback();
         break;
     }
+
+    this._videoInserted = true;
   },
 
 
