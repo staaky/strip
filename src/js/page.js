@@ -447,25 +447,20 @@ $.extend(Page.prototype, {
 
     // stop possible loading
     this.abort();
-
-    // WORKAROUND:
-    // Spam clicking an element that toggles a video could cause
-    // a visual glitch in Chrome. It doesn't seem to handle an iframe
-    // loading in content as it's being moved off screen before being
-    // removed. A visible element is kept on the screen that isn't
-    // accessible through the DOM.
-    // We use this workaround for all browsers just in case.
-    // TODO: investigate this further to file a bug report with Chrome.
-    this.removeVideo();
   },
 
 
   removeVideo: function() {
+    // NOTE: Chrome has a bug when removing
+    // the iframe from the page as it is initializing content
+    // this happens when you open a video and instantly close it,
+    // but giving the iframe some time to initialize. An visible element
+    // is kept on the page not accessible by the DOM.
+
     if (this.playerIframe) {
       // this fixes a bug where sound keep playing after
       // removing the iframe in IE10+
       this.playerIframe[0].src = '//about:blank';
-
       this.playerIframe.remove();
       this.playerIframe = null;
     }
