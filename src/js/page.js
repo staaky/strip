@@ -235,11 +235,14 @@ $.extend(Page.prototype, {
     Window.stopLoading();
   },
 
+  isVideo: function() {
+    return /^(youtube|vimeo)$/.test(this.view.type);
+  },
 
   insertVideo: function(callback) {
     // don't insert a video twice
     // and stop if not a video
-    if (this.playerIframe || if (!/^(youtube|vimeo)$/.test(this.view.type))) {
+    if (this.playerIframe || !this.isVideo()) {
       if (callback) callback();
       return;
     }
@@ -335,13 +338,11 @@ $.extend(Page.prototype, {
     }, this));
 
     // vimeo and youtube use this for insertion
-
-      shq.queue($.proxy(function(next_video_inserted) {
-        this.insertVideo($.proxy(function() {
-          next_video_inserted();
-        }));
-      }, this));
-    //}
+    shq.queue($.proxy(function(next_video_inserted) {
+      this.insertVideo($.proxy(function() {
+        next_video_inserted();
+      }));
+    }, this));
 
 
     shq.queue($.proxy(function(next_shown_and_resized) {
@@ -414,7 +415,7 @@ $.extend(Page.prototype, {
     if ($.type(alternateDuration) == 'number') duration = alternateDuration;
 
     // hide video instantly
-    var isVideo = /^(youtube|vimeo)$/.test(this.view.type);
+    var isVideo = this.isVideo();
     if (isVideo) duration = 0;
 
     // stop, delay & effect
