@@ -26,19 +26,19 @@ To build Strip yourself start by cloning a copy of the main Strip git repo by ru
 git clone git://github.com/staaky/strip.git
 ```
 
-Install dependencies by running `npm install` in the strip directory:
+Go inside the strip folder that was just fetched and install dependencies:
 
 ```
-npm install
+cd strip && npm install
 ```
 
-Install the [grunt command line interface](https://github.com/gruntjs/grunt-cli) as a global package:
+Make sure the [grunt command line interface](https://github.com/gruntjs/grunt-cli) is installed as a global package:
 
 ```
 npm install -g grunt-cli
 ```
 
-Now run the `grunt` command in the strip directory, this updates `js/strip.js` and `js/strip.min.js` to include the latest changes:
+Now run the `grunt` command, this updates `js/strip.js` and `js/strip.min.js` to include the latest changes made in the `src` folder:
 
 ```
 grunt

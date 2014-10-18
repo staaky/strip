@@ -76,18 +76,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-clean');
 
   // Tasks
   grunt.registerTask('default', [
     'clean:js',
     'concat:production', 'uglify:production'
-  ]);
-
-  grunt.registerTask('zip', [
-    'clean:js',
-    'concat:production', 'uglify:production',
-    'compress:production'
   ]);
 };
