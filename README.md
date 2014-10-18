@@ -18,7 +18,7 @@ For non-commercial projects and applications, you may use Strip under the terms 
 
 ## Build
 
-The latest stable build can be found on [stripjs.com/download](http://www.stripjs.com/download).
+The latest release can be found on [stripjs.com/download](http://www.stripjs.com/download).
 
 To build Strip yourself start by cloning a copy of the main Strip git repo by running:
 
@@ -43,6 +43,15 @@ Now run the `grunt` command in the strip directory, this updates `js/strip.js` a
 ```
 grunt
 ```
+
+## Bower
+
+Strip can also be installed using [Bower](http://bower.io):
+
+```
+bower install strip
+```
+
 
 * * *
 
