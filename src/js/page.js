@@ -338,11 +338,13 @@ $.extend(Page.prototype, {
     }, this));
 
     // vimeo and youtube use this for insertion
-    shq.queue($.proxy(function(next_video_inserted) {
-      this.insertVideo($.proxy(function() {
-        next_video_inserted();
-      }));
-    }, this));
+    if (this.isVideo()) {
+      shq.queue($.proxy(function(next_video_inserted) {
+        this.insertVideo($.proxy(function() {
+          next_video_inserted();
+        }));
+      }, this));
+    }
 
 
     shq.queue($.proxy(function(next_shown_and_resized) {

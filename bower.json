@@ -1,0 +1,50 @@
+{
+  "name": "strip",
+  "description": "A Less Intrusive Responsive Lightbox",
+  "version": "1.2.0",
+  "homepage": "http://stripjs.com",
+
+  "license": [
+    "CC-BY-NC-ND-3.0",
+    "http://stripjs.com/license"
+  ],
+
+  "authors": [
+    {
+      "name": "Nick Stakenburg",
+      "homepage": "http://nickstakenburg.com"
+    }
+  ],
+
+  "keywords": [
+    "lightbox",
+    "modal",
+    "window",
+    "responsive",
+    "jquery"
+  ],
+
+  "main": [
+    "dist/js/strip.js",
+    "dist/css/strip.css",
+    // Directories and wildcards are not in the bower.json spec (yet) :(
+    // We use a wildcard anyway because including individual files
+    // would be unmaintainable.
+    "dist/css/strip-skins/*"
+  ],
+
+  "ignore": [
+    "node_modules",
+    "bower_components",
+    "src",
+    "/.*",
+    "bower.json",
+    "Gruntfile.js",
+    "package.json",
+    "README.md"
+  ],
+
+  "dependencies": {
+    "jquery": ">= 1.11.1"
+  }
+}

@@ -242,7 +242,7 @@
 
 .strp-has-error .strp-container { background: #d22c2c; }
 .strp-error {
-  background: url('skins/strip/error.svg') 50% 50% no-repeat;
+  background: url('strip-skins/strip/error.svg') 50% 50% no-repeat;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -251,7 +251,7 @@
   margin-left: -120px;
   margin-top: -120px;
 }
-.strp-no-svg .strp-error { background-image: url('skins/strip/error.png'); }
+.strp-no-svg .strp-error { background-image: url('strip-skins/strip/error.png'); }
 
 /* Spinner - loading icon, wrapped by a this div that moves it */
 .strp-spinner-move {
@@ -312,11 +312,11 @@
  */
  /* < > */
 .strp-window-skin-strip .strp-nav-button-background { background: none; }
-.strp-window-skin-strip .strp-nav-previous .strp-nav-button-icon { background: url('skins/strip/previous.svg');  }
-.strp-window-skin-strip .strp-nav-next .strp-nav-button-icon { background: url('skins/strip/next.svg'); }
+.strp-window-skin-strip .strp-nav-previous .strp-nav-button-icon { background: url('strip-skins/strip/previous.svg');  }
+.strp-window-skin-strip .strp-nav-next .strp-nav-button-icon { background: url('strip-skins/strip/next.svg'); }
 /* IE7-8/no-svg */
-.strp-window-skin-strip.strp-no-svg .strp-nav-previous .strp-nav-button-icon { background: url('skins/strip/previous.png'); opacity: 1; }
-.strp-window-skin-strip.strp-no-svg .strp-nav-next .strp-nav-button-icon { background: url('skins/strip/next.png'); opacity: 1; }
+.strp-window-skin-strip.strp-no-svg .strp-nav-previous .strp-nav-button-icon { background: url('strip-skins/strip/previous.png'); opacity: 1; }
+.strp-window-skin-strip.strp-no-svg .strp-nav-next .strp-nav-button-icon { background: url('strip-skins/strip/next.png'); opacity: 1; }
 
 .strp-window-skin-strip .strp-nav .strp-nav-button-icon { opacity: .6; } /* normal state */
 .strp-window-skin-strip.strp-mobile-touch .strp-nav .strp-nav-button-icon { opacity: 1; } /* mobile-touch always has normal states at full opacity */
@@ -326,9 +326,9 @@
 .strp-window-skin-strip .strp-nav-hover .strp-nav-button-icon { opacity: 1; }
 /* IE7-8/no-svg */
 .strp-window-skin-strip.strp-no-svg .strp-nav.strp-nav-previous:hover .strp-nav-button-icon,
-.strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-previous .strp-nav-button-icon { background: url('skins/strip/previous-hover.png'); }
+.strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-previous .strp-nav-button-icon { background: url('strip-skins/strip/previous-hover.png'); }
 .strp-window-skin-strip.strp-no-svg .strp-nav.strp-nav-next:hover .strp-nav-button-icon,
-.strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-next .strp-nav-button-icon { background: url('skins/strip/next-hover.png'); }
+.strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-next .strp-nav-button-icon { background: url('strip-skins/strip/next-hover.png'); }
 
 /* Smaller screens */
 @media all and (max-width: 400px),
@@ -341,17 +341,17 @@
   }
 
   /* < > */
-  .strp-window-skin-strip .strp-nav-previous .strp-nav-button-icon { background: url('skins/strip/previous-small.svg');  }
-  .strp-window-skin-strip .strp-nav-next .strp-nav-button-icon { background: url('skins/strip/next-small.svg'); }
+  .strp-window-skin-strip .strp-nav-previous .strp-nav-button-icon { background: url('strip-skins/strip/previous-small.svg');  }
+  .strp-window-skin-strip .strp-nav-next .strp-nav-button-icon { background: url('strip-skins/strip/next-small.svg'); }
   /* IE7-8/no-svg */
-  .strp-window-skin-strip.strp-no-svg .strp-nav-previous .strp-nav-button-icon { background: url('skins/strip/previous-small.png'); }
-  .strp-window-skin-strip.strp-no-svg .strp-nav-next .strp-nav-button-icon { background: url('skins/strip/next-small.png'); }
+  .strp-window-skin-strip.strp-no-svg .strp-nav-previous .strp-nav-button-icon { background: url('strip-skins/strip/previous-small.png'); }
+  .strp-window-skin-strip.strp-no-svg .strp-nav-next .strp-nav-button-icon { background: url('strip-skins/strip/next-small.png'); }
 
   /* IE7-8/no-svg */
   .strp-window-skin-strip.strp-no-svg .strp-nav.strp-nav-previous:hover .strp-nav-button-icon,
-  .strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-previous .strp-nav-button-icon { background: url('skins/strip/previous-small-hover.png'); }
+  .strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-previous .strp-nav-button-icon { background: url('strip-skins/strip/previous-small-hover.png'); }
   .strp-window-skin-strip.strp-no-svg .strp-nav.strp-nav-next:hover .strp-nav-button-icon,
-  .strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-next .strp-nav-button-icon { background: url('skins/strip/next-small-hover.png'); }
+  .strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-next .strp-nav-button-icon { background: url('strip-skins/strip/next-small-hover.png'); }
 
   /* reduce padding */
   .strp-no-overlap .strp-container { padding: 47px 60px; }
@@ -362,10 +362,10 @@
 }
 
 /* X */
-.strp-window-skin-strip .strp-close .strp-close-icon { background: url('skins/strip/close.svg'); opacity: .8; }
+.strp-window-skin-strip .strp-close .strp-close-icon { background: url('strip-skins/strip/close.svg'); opacity: .8; }
 .strp-window-skin-strip .strp-close:hover .strp-close-icon { opacity: 1; }
 /* IE7-8/no-svg */
-.strp-window-skin-strip.strp-no-svg .strp-close .strp-close-icon { background: url('skins/strip/close.png'); opacity: 1; }
+.strp-window-skin-strip.strp-no-svg .strp-close .strp-close-icon { background: url('strip-skins/strip/close.png'); opacity: 1; }
 
 
 /* here's how to have content slide in with the window when opening and closing  */

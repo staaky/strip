@@ -18,7 +18,7 @@ For non-commercial projects and applications, you may use Strip under the terms 
 
 ## Build
 
-The latest build can be found on [stripjs.com/download](http://www.stripjs.com/download).
+The latest stable build can be found on [stripjs.com/download](http://www.stripjs.com/download).
 
 To build Strip yourself start by cloning a copy of the main Strip git repo by running:
 
@@ -38,7 +38,7 @@ Install the [grunt command line interface](https://github.com/gruntjs/grunt-cli)
 npm install -g grunt-cli
 ```
 
-Now run the `grunt` command in the strip directory to output the latest build in the `/dist` directory:
+Now run the `grunt` command in the strip directory, this updates `js/strip.js` and `js/strip.min.js` to include the latest changes:
 
 ```
 grunt

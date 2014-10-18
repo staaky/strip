@@ -4,7 +4,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     dirs: {
-      dest: 'dist/<%= pkg.name %>-<%= pkg.version %>'
+      dest: ''
     },
 
     vars: { },
@@ -42,20 +42,7 @@ module.exports = function(grunt) {
 
         'src/js/outro.js'
         ],
-        dest: '<%= dirs.dest %>/js/strip/strip.js'
-      }
-    },
-
-    copy: {
-      production: {
-        files: [
-          {
-            expand: true,
-            cwd: 'src/css/',
-            src: ['**'],
-            dest: '<%= dirs.dest %>/css/'
-          }
-        ],
+        dest: 'js/strip.js'
       }
     },
 
@@ -64,13 +51,24 @@ module.exports = function(grunt) {
         options: {
           preserveComments: 'some'
         },
-        'src': ['<%= dirs.dest %>/js/strip/strip.js'],
-        'dest': '<%= dirs.dest %>/js/strip/strip.min.js'
+        'src': ['js/strip.js'],
+        'dest': 'js/strip.min.js'
+      }
+    },
+
+    compress: {
+      production: {
+        options: {
+          archive: '<%= pkg.name %>-<%= pkg.version %>.zip'
+        },
+        files: [
+          { expand: true, cwd: '', src: ['css/*', 'js/*'], dest: '<%= pkg.name %>'}
+        ]
       }
     },
 
     clean: {
-      dist: 'dist/'
+      js: 'js/*'
     }
   });
 
@@ -78,12 +76,18 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-clean');
 
   // Tasks
   grunt.registerTask('default', [
-    'clean:dist',
-    'concat:production', 'copy:production', 'uglify:production'
+    'clean:js',
+    'concat:production', 'uglify:production'
   ]);
 
+  grunt.registerTask('zip', [
+    'clean:js',
+    'concat:production', 'uglify:production',
+    'compress:production'
+  ]);
 };
