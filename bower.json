@@ -30,7 +30,7 @@
     // Directories and wildcards are not in the bower.json spec (yet) :(
     // We use a wildcard anyway because including individual files
     // would be unmaintainable.
-    "dist/css/strip-skins/*"
+    "dist/css/strip-skins/**"
   ],
 
   "ignore": [

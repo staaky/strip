@@ -62,7 +62,7 @@ module.exports = function(grunt) {
           archive: '<%= pkg.name %>-<%= pkg.version %>.zip'
         },
         files: [
-          { expand: true, cwd: '', src: ['css/*', 'js/*'], dest: '<%= pkg.name %>'}
+          { expand: true, cwd: '', src: ['css/**', 'js/**'], dest: '<%= pkg.name %>'}
         ]
       }
     },
