@@ -42,7 +42,7 @@ module.exports = function(grunt) {
 
         'src/js/outro.js'
         ],
-        dest: 'js/strip.js'
+        dest: 'js/strip.pkgd.js'
       }
     },
 
@@ -51,8 +51,8 @@ module.exports = function(grunt) {
         options: {
           preserveComments: 'some'
         },
-        'src': ['js/strip.js'],
-        'dest': 'js/strip.min.js'
+        'src': ['js/strip.pkgd.js'],
+        'dest': 'js/strip.pkgd.min.js'
       }
     },
 

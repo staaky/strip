@@ -38,7 +38,7 @@ Make sure the [grunt command line interface](https://github.com/gruntjs/grunt-cl
 npm install -g grunt-cli
 ```
 
-Now run the `grunt` command, this updates `js/strip.js` and `js/strip.min.js` to include the latest changes made in the `src` folder:
+Now run the `grunt` command, this updates `js/strip.pkgd.js` and `js/strip.pkgd.min.js` to include the latest changes made in the `src` folder:
 
 ```
 grunt
