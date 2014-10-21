@@ -57,11 +57,12 @@
 .strp-side-right { top: 0; right: 0; }
 .strp-side-right .strp-pages { top: 0; right: 0; }
 .strp-side-right .strp-page { top: 0; right: 0; }
+.strp-side-right .strp-close { top: 0; right: 0; }
 
 .strp-side-left { top: 0; left: 0; }
 .strp-side-left .strp-pages { top: 0; left: 0; }
 .strp-side-left .strp-page { top: 0; left: 0; }
-.strp-side-left .strp-close { left: auto; right: 0; }
+.strp-side-left .strp-close { top: 0; right: 0; }
 
 .strp-side-top { top: 0; left: 0; }
 .strp-side-top .strp-pages { top: 0; left: 0; }
