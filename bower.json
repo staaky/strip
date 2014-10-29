@@ -1,7 +1,7 @@
 {
   "name": "strip",
   "description": "A Less Intrusive Responsive Lightbox",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "homepage": "http://stripjs.com",
   "keywords": [
     "lightbox",

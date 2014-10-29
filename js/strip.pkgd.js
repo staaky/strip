@@ -1,5 +1,5 @@
 /*!
- * Strip - A Less Intrusive Responsive Lightbox - v1.2.4
+ * Strip - A Less Intrusive Responsive Lightbox - v1.2.5
  * (c) 2014 Nick Stakenburg
  *
  * http://www.stripjs.com
@@ -23,7 +23,7 @@
 var Strip = {};
 
 $.extend(Strip, {
-  version: '1.2.4'
+  version: '1.2.5'
 });
 
 // unexposed _Skins, for internal use only
@@ -2552,7 +2552,7 @@ var _Strip = {
 
     if (arguments[1] && $.type(arguments[1]) == 'number') {
       position = arguments[1];
-      options = Options.create({});
+      options = {};
     }
 
     var views = [], object_type,

@@ -45,7 +45,7 @@ var _Strip = {
 
     if (arguments[1] && $.type(arguments[1]) == 'number') {
       position = arguments[1];
-      options = Options.create({});
+      options = {};
     }
 
     var views = [], object_type,
