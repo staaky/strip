@@ -11,8 +11,8 @@
     "jquery"
   ],
   "main": [
-    "dist/js/strip.js",
-    "dist/css/strip.css"
+    "js/strip.pkgd.js",
+    "css/strip.css"
   ],
   "ignore": [
     "node_modules",
