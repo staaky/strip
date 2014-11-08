@@ -127,14 +127,14 @@ $.extend(Page.prototype, {
 
     this.preloading = true;
 
-    new ImageReady(this.content[0], $.proxy(function(image) {
+    new ImageReady(this.content[0], $.proxy(function(imageReady) {
       this.loaded = true;
       this.preloading = false;
       this.preloaded = true;
 
       this.dimensions = {
-        width: image.naturalWidth,
-        height: image.naturalHeight
+        width: imageReady.naturalWidth,
+        height: imageReady.naturalHeight
       };
     }, this));
   },
@@ -172,13 +172,13 @@ $.extend(Page.prototype, {
           return;
         }
 
-        this.imageReady = new ImageReady(this.content[0], $.proxy(function(image) {
+        this.imageReady = new ImageReady(this.content[0], $.proxy(function(imageReady) {
           // mark as loaded
           this._markAsLoaded();
 
           this.dimensions = {
-            width: image.naturalWidth,
-            height: image.naturalHeight
+            width: imageReady.naturalWidth,
+            height: imageReady.naturalHeight
           };
 
           if (callback) callback();
@@ -634,11 +634,22 @@ $.extend(Page.prototype, {
 
     container.css({ bottom: cH + 'px' });
 
+
+    // margins
+    var mLeft = -.5 * contentDimensions.width,
+        mTop  = -.5 * contentDimensions.height;
+
+    // floor margins on IE6-7 because it doesn't render .5px properly
+    if (Browser.IE && Browser.IE < 8) {
+      mLeft = Math.floor(mLeft);
+      mTop = Math.floor(mTop);
+    }
+
     content.css(px($.extend({}, contentDimensions, {
-      // floor because old IE doesn't render .5px properly
-      'margin-left': Math.floor(-.5 * contentDimensions.width),
-      'margin-top': Math.floor(-.5 * contentDimensions.height)
+      'margin-left': mLeft,
+      'margin-top': mTop
     })));
+
 
     if (this.playerIframe) {
       this.playerIframe.attr(contentDimensions);
