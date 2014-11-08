@@ -56,17 +56,6 @@ module.exports = function(grunt) {
       }
     },
 
-    compress: {
-      production: {
-        options: {
-          archive: '<%= pkg.name %>-<%= pkg.version %>.zip'
-        },
-        files: [
-          { expand: true, cwd: '', src: ['css/**', 'js/**'], dest: '<%= pkg.name %>'}
-        ]
-      }
-    },
-
     clean: {
       js: 'js/*'
     }

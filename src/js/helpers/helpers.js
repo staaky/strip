@@ -2,23 +2,6 @@ var _slice = Array.prototype.slice;
 var _ = {
   isElement: function(object) {
     return object && object.nodeType == 1;
-  },
-
-  element: {
-    isAttached: (function() {
-      function findTopAncestor(element) {
-        var ancestor = element;
-        while(ancestor && ancestor.parentNode) {
-          ancestor = ancestor.parentNode;
-        }
-        return ancestor;
-      }
-
-      return function(element) {
-        var topAncestor = findTopAncestor(element);
-        return !!(topAncestor && topAncestor.body);
-      };
-    })()
   }
 };
 
@@ -30,29 +13,10 @@ function px(source) {
   return destination;
 }
 
-// deep extend
-function deepExtend(destination, source) {
-  for (var property in source) {
-    if (source[property] && source[property].constructor &&
-      source[property].constructor === Object) {
-      destination[property] = $.extend({}, destination[property]) || {};
-      deepExtend(destination[property], source[property]);
-    } else {
-      destination[property] = source[property];
-    }
-  }
-  return destination;
-}
-
-// deep clone copy
-function deepExtendClone(destination, source) {
-  return deepExtend($.extend({}, destination), source);
-}
-
 
 // Fit
 var Fit = {
-  within: function(dimensions, bounds) {
+  within: function(bounds, dimensions) {
     var options = $.extend({
       height: true,
       width: true
@@ -61,12 +25,6 @@ var Fit = {
     var size  = $.extend({}, dimensions),
         scale = 1,
         attempts = 5;
-
-    // border
-    if (options.border) {
-      bounds.width -= 2 * options.border;
-      bounds.height -= 2 * options.border;
-    }
 
     var fit = { width: options.width, height: options.height };
 

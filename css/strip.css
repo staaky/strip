@@ -241,7 +241,7 @@
 .strp-close:hover .strp-close-background { background-color: #161616; }
 
 
-.strp-has-error .strp-container { background: #d22c2c; }
+.strp-has-error .strp-container { background: #ca3434; }
 .strp-error {
   background: url('strip-skins/strip/error.svg') 50% 50% no-repeat;
   position: absolute;
@@ -254,13 +254,15 @@
 }
 .strp-no-svg .strp-error { background-image: url('strip-skins/strip/error.png'); }
 
-/* Spinner - loading icon, wrapped by a this div that moves it */
+/* Spinner - loading icon, wrapped by a div that moves it */
 .strp-spinner-move {
   position: fixed;
   top: 0px;
   right: 0px;
   height: 47px;
   width: 0;
+  /* ensure overflow during a jQuery animation */
+  overflow: visible !important;
 }
 .strp-spinner-move.strp-vertical { width: 47px; height: 0; }
 

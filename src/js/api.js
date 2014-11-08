@@ -186,7 +186,7 @@ $.extend(Strip, {
   },
 
   setDefaultSkin: function(skin) {
-    Window.setDefaultSkin(skin);
+    Options.defaults.skin = skin;
     return this;
   }
 });

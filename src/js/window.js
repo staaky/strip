@@ -1,6 +1,4 @@
 var Window = {
-  defaultSkin: 'strip',
-
   initialize: function() {
     this.queues = [];
     this.queues.hide = $({});
@@ -10,7 +8,7 @@ var Window = {
     this.timers = new Timers();
 
     this.build();
-    this.setSkin(this.defaultSkin);
+    this.setSkin(Options.defaults.skin);
   },
 
   build: function() {
@@ -100,10 +98,6 @@ var Window = {
     this._spinner.refresh();
 
     this._spinnerSkin = skin;
-  },
-
-  setDefaultSkin: function(skin) {
-    this.defaultSkin = skin;
   },
 
 

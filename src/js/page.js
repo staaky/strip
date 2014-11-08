@@ -1,5 +1,6 @@
 var Page = (function() {
-var uid = 0;
+var uid = 0,
+    loadedUrlCache = {};
 
 function Page() { return this.initialize.apply(this, _slice.call(arguments)); };
 $.extend(Page.prototype, {
@@ -126,7 +127,6 @@ $.extend(Page.prototype, {
 
     this.preloading = true;
 
-
     new ImageReady(this.content[0], $.proxy(function(image) {
       this.loaded = true;
       this.preloading = false;
@@ -145,7 +145,6 @@ $.extend(Page.prototype, {
     // make sure the page is created
     this.create();
 
-
     // exit early if already loaded
     if (this.loaded) {
       if (callback) callback();
@@ -159,7 +158,10 @@ $.extend(Page.prototype, {
     this.loading = true;
 
     // start spinner
-    Window.startLoading();
+    // only when this url hasn't been loaded before
+    if (this.view.options.spinner && !loadedUrlCache[this.view.url]) {
+      Window.startLoading();
+    }
 
     switch(this.view.type) {
       case 'image':
@@ -232,6 +234,11 @@ $.extend(Page.prototype, {
   _markAsLoaded: function() {
     this.loading = false;
     this.loaded = true;
+
+    // mark url as loaded so we can avoid
+    // showing the spinner again
+    loadedUrlCache[this.view.url] = true;
+
     Window.stopLoading();
   },
 
@@ -301,7 +308,7 @@ $.extend(Page.prototype, {
     shq.queue($.proxy(function(next_loaded) {
 
       // give the spinner the options of this page
-      if (Window._spinner) {
+      if (this.view.options.spinner && Window._spinner) {
         Window.setSpinnerSkin(this.view.options.skin);
         Window._spinner.setOptions(this.view.options.effects.spinner);
         Window._spinner.refresh();
@@ -486,7 +493,7 @@ $.extend(Page.prototype, {
     if (options.maxWidth) bounds.width = options.maxWidth;
     if (options.maxHeight) bounds.heigth = options.maxHeight;
 
-    dimensions = Fit.within(dimensions, bounds);
+    dimensions = Fit.within(bounds, dimensions);
 
     return dimensions;
   },
@@ -518,7 +525,7 @@ $.extend(Page.prototype, {
     bounds.width -= paddingX;
     bounds.height -= paddingY;
 
-    var fitted = Fit.within(dimensions, bounds),
+    var fitted = Fit.within(bounds, dimensions),
         contentDimensions = $.extend({}, fitted),
         content = this.content;
 
@@ -551,7 +558,7 @@ $.extend(Page.prototype, {
 
         bounds.height = initialBoundsHeight - cH;
 
-        contentDimensions = Fit.within(dimensions, bounds);
+        contentDimensions = Fit.within(bounds, dimensions);
 
         // left/right requires further adjustment of the caption
         var initialImageSize = $.extend({}, contentDimensions),
@@ -581,7 +588,7 @@ $.extend(Page.prototype, {
             // we try again with the increased caption
             bounds.height = initialBoundsHeight - cH;
 
-            contentDimensions = Fit.within(dimensions, bounds);
+            contentDimensions = Fit.within(bounds, dimensions);
 
             // restore if the last attempt failed
             if (attempts - 1 <= 0) {
@@ -608,7 +615,7 @@ $.extend(Page.prototype, {
         content.show();
 
         bounds.height -= cH;
-        contentDimensions = Fit.within(dimensions, bounds);
+        contentDimensions = Fit.within(bounds, dimensions);
         fitted.height = contentDimensions.height;
       }
 
