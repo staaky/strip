@@ -10,7 +10,7 @@ module.exports = function(grunt) {
     vars: { },
 
     concat: {
-      production: {
+      js: {
         options: {
           process: true
         },
@@ -43,11 +43,34 @@ module.exports = function(grunt) {
         'src/js/outro.js'
         ],
         dest: 'js/strip.pkgd.js'
+      },
+      css: {
+        options: {
+          process: true
+        },
+        src: ['src/css/strip.css'],
+        dest: 'css/strip.css'
+      }
+    },
+
+    sync: {
+      'css-skins': {
+        files: [
+          {
+            expand: true,
+            cwd: 'src/css/strip-skins/',
+            src: ['**'],
+            dest: 'css/strip-skins/'
+          }
+        ],
+        pretend: false, // disables IO
+        updateAndDelete: true,
+        verbose: true
       }
     },
 
     uglify: {
-      production: {
+      js: {
         options: {
           preserveComments: 'some'
         },
@@ -57,19 +80,41 @@ module.exports = function(grunt) {
     },
 
     clean: {
-      js: 'js/*'
+      js: 'js/*',
+      css: 'css/strip.css'
+    },
+
+    svgmin: {
+        options: {
+          plugins: [
+            { removeViewBox: false },
+            { removeUselessStrokeAndFill: false },
+            { removeEmptyAttrs: false }
+          ]
+        },
+        dist: {
+          files: [{
+              expand: true,        // Enable dynamic expansion.
+              cwd: 'src/css/',  // Src matches are relative to this path.
+              src: ['**/*.svg'],     // Actual pattern(s) to match.
+              dest: 'src/css/',  // Destination path prefix.
+          }]
+        }
     }
   });
 
   // Load plugins
   grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-svgmin');
+  grunt.loadNpmTasks('grunt-sync');
 
   // Tasks
   grunt.registerTask('default', [
-    'clean:js',
-    'concat:production', 'uglify:production'
+    'clean:js', 'concat:js', 'uglify:js',
+    'clean:css', 'concat:css', 'sync:css-skins'
   ]);
+
+  grunt.registerTask('svg', ['svgmin']);
 };

@@ -1,5 +1,3 @@
-var Strip = {};
-
-$.extend(Strip, {
+var Strip = {
   version: '<%= pkg.version %>'
-});
+};
