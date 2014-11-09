@@ -1,5 +1,5 @@
 /*!
- * Strip - A Less Intrusive Responsive Lightbox - v1.2.7
+ * Strip - A Less Intrusive Responsive Lightbox - v1.3.0
  * (c) 2014 Nick Stakenburg
  *
  * http://www.stripjs.com
@@ -23,7 +23,7 @@
 var Strip = {};
 
 $.extend(Strip, {
-  version: '1.2.7'
+  version: '1.3.0'
 });
 
 Strip.Skins = {
@@ -191,10 +191,18 @@ Support.mobileTouch = Support.touch &&
 
 var Bounds = {
   viewport: function() {
-    return {
+    var dimensions = {
       height: $(window).height(),
       width:  $(window).width()
     };
+
+    // Mobile Safari has a bugged viewport height after scrolling
+    if (Browser.MobileSafari) {
+      var zoom = document.documentElement.clientWidth / window.innerWidth;
+      dimensions.height = window.innerHeight * zoom;
+    }
+
+    return dimensions;
   }
 };
 
@@ -1483,8 +1491,12 @@ $.extend(Page.prototype, {
 
     // add the safety
     Window.element.removeClass('strp-measured');
-    var safety = parseInt(Window.element.css('margin-' + (z == 'width' ? 'left' : 'bottom')));
+    var win = Window.element,
+        isFullscreen = (z == 'width') ? parseInt(win.css('min-width')) > 0 :
+                       parseInt(win.css('min-height')) > 0;
+        safety = isFullscreen ? 0 : parseInt(win.css('margin-' + (z == 'width' ? 'left' : 'bottom')));
     Window.element.addClass('strp-measured');
+
     bounds[z] -= safety;
 
     var paddingX = parseInt(container.css('padding-left')) + parseInt(container.css('padding-right')),
@@ -1517,7 +1529,9 @@ $.extend(Page.prototype, {
 
       // width
       if (z == 'width') {
-        page.css({ width: fitted.width + paddingX + 'px' });
+        page.css({
+          width: (isFullscreen ? viewport.width : fitted.width + paddingX) + 'px'
+        });
 
         var initialBoundsHeight = bounds.height;
 
@@ -1536,7 +1550,7 @@ $.extend(Page.prototype, {
             previousCH,
             shrunkW;
 
-        var attempts = 4;
+        var attempts = isFullscreen ? 0 : 4; // fullscreen doesn't need extra resizing
 
         while (attempts > 0 && (shrunkW = fitted.width - contentDimensions.width)) {
           page.css({ width: (fitted.width + paddingX - shrunkW) + 'px' });
@@ -1575,7 +1589,7 @@ $.extend(Page.prototype, {
         // fix IE7 not respecting width:100% in the CSS
         // so info height is measured correctly
         if (Browser.IE && Browser.IE < 8) {
-          page.css({ width: Bounds.viewport().width });
+          page.css({ width: viewport.width });
         }
 
         // height
@@ -1595,10 +1609,17 @@ $.extend(Page.prototype, {
 
 
     // page needs a fixed width to remain properly static during animation
+    var pageDimensions = {
+      width: fitted.width + paddingX,
+      height: fitted.height + paddingY + cH
+    };
+    // fullscreen mode uses viewport dimensions for the page
+    if (isFullscreen) pageDimensions = viewport;
+
     if (z == 'width') {
-      page.css({ width: fitted.width + paddingX + 'px' });
+      page.css({ width: pageDimensions.width + 'px' });
     } else {
-      page.css({ height: fitted.height + paddingY + cH + 'px' });
+      page.css({ height: pageDimensions.height + 'px' });
     }
 
     container.css({ bottom: cH + 'px' });
@@ -1627,8 +1648,8 @@ $.extend(Page.prototype, {
     this.contentDimensions = contentDimensions;
 
     // store for later use within animation
-    this.width = fitted.width + paddingX;
-    this.height = fitted.height + paddingY + cH;
+    this.width = pageDimensions.width;
+    this.height = pageDimensions.height;
 
     this.z = this[z];
   }
@@ -2368,22 +2389,22 @@ var Window = {
   },
 
   // UI Timer
-  clearUITimer: function() { this.timers.clear('ui'); },
+  // not used on mobile-touch based devices
+  clearUITimer: function() {
+    if (Support.mobileTouch) return;
+
+    this.timers.clear('ui');
+  },
 
   startUITimer: function() {
+    if (Support.mobileTouch) return;
+
     this.clearUITimer();
     this.timers.set('ui', $.proxy(function(){
       this.hideUI();
     }, this), this.view ? this.view.options.uiDelay : 0);
   }
 };
-
-// don't hide the UI on mobile
-if (Support.mobileTouch) {
-  $.each('showUI hideUI clearUITimer startUITimer'.split(' '), function(i, fn) {
-    Window[fn] = function() { };
-  });
-}
 
 //  Keyboard
 //  keeps track of keyboard events when enabled

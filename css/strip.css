@@ -12,18 +12,23 @@
   width: 100%;
 }
 
-/* margin
-   margin is added around the window to keep a visual reference
-   to the underlying page at all times.
-*/
+/* margin is added around the window to keep a visual reference
+ * to the underlying page at all times.
+ */
 .strp-window { margin-left: 40px; }
 .strp-window.strp-vertical { margin-left: 0; margin-bottom: 40px; }
 
-/* reduce margin on smaller screens */
-@media all and (max-width: 400px),
-       all and (max-height: 400px) {
-  .strp-window { margin-left: 20px; }
-  .strp-window.strp-vertical { margin-bottom: 20px; }
+/* fullscreen on smaller screens (iPhone 6+ and smaller)
+ * since min-width is used to make this work it won't show on IE8, but
+ * we're not expecting that browser to have a mobile sized screen anyway
+ */
+@media all and (max-width: 414px) and (orientation: portrait),
+       all and (max-width: 736px) and (max-height: 414px) {
+  .strp-window.strp-horizontal { min-width: 100%; }
+}
+@media all and (max-height: 414px) and (orientation: landscape),
+       all and (max-height: 736px) and (max-width: 414px){
+  .strp-window.strp-vertical { min-height: 100%; }
 }
 
 
@@ -44,7 +49,15 @@
 /* Chrome hack, this fixes a visual glitch when quickly toggling a video */
 .strp-window { transform: translateZ(0px); }
 
-.strp-measured { margin: 0 !important; }
+/* some properties on the window are used to toggle things
+ * like margin and the fullscreen mode,
+ * we reset those properties after measuring them
+ */
+.strp-measured {
+  margin: 0 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+}
 
 .strp-pages {
   position: absolute;
@@ -132,6 +145,8 @@
   font-size: 13px;
   line-height: 20px;
   background: #000;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
 }
 
 .strp-info-padder {
@@ -333,9 +348,9 @@
 .strp-window-skin-strip.strp-no-svg .strp-nav.strp-nav-next:hover .strp-nav-button-icon,
 .strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-next .strp-nav-button-icon { background: url('strip-skins/strip/next-hover.png'); }
 
-/* Smaller screens */
-@media all and (max-width: 400px),
-       all and (max-height: 400px) {
+/* Reduce < > button size on narrow screens (iPhone 6 and smaller) */
+@media all and (max-width: 375px) and (orientation: portrait),
+       all and (max-height: 375px) and (max-width: 667px) {
   .strp-window-skin-strip .strp-nav {
     width: 40px;
     height: 50px;

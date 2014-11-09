@@ -729,19 +729,19 @@ var Window = {
   },
 
   // UI Timer
-  clearUITimer: function() { this.timers.clear('ui'); },
+  // not used on mobile-touch based devices
+  clearUITimer: function() {
+    if (Support.mobileTouch) return;
+
+    this.timers.clear('ui');
+  },
 
   startUITimer: function() {
+    if (Support.mobileTouch) return;
+
     this.clearUITimer();
     this.timers.set('ui', $.proxy(function(){
       this.hideUI();
     }, this), this.view ? this.view.options.uiDelay : 0);
   }
 };
-
-// don't hide the UI on mobile
-if (Support.mobileTouch) {
-  $.each('showUI hideUI clearUITimer startUITimer'.split(' '), function(i, fn) {
-    Window[fn] = function() { };
-  });
-}
