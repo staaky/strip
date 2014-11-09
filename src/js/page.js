@@ -133,8 +133,8 @@ $.extend(Page.prototype, {
       this.preloaded = true;
 
       this.dimensions = {
-        width: imageReady.naturalWidth,
-        height: imageReady.naturalHeight
+        width: imageReady.img.naturalWidth,
+        height: imageReady.img.naturalHeight
       };
     }, this));
   },
@@ -177,8 +177,8 @@ $.extend(Page.prototype, {
           this._markAsLoaded();
 
           this.dimensions = {
-            width: imageReady.naturalWidth,
-            height: imageReady.naturalHeight
+            width: imageReady.img.naturalWidth,
+            height: imageReady.img.naturalHeight
           };
 
           if (callback) callback();

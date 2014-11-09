@@ -1,24 +1,55 @@
-var ImageReady = function() { return this.initialize.apply(this, _slice.call(arguments)); };
+/* ImageReady (standalone) - part of Voilà
+ * http://github.com/staaky/voila
+ * MIT License
+ */
+var ImageReady = function() {
+  return this.initialize.apply(this, Array.prototype.slice.call(arguments));
+};
+
 $.extend(ImageReady.prototype, {
-  _supports: {
+  supports: {
     naturalWidth: (function() {
-      return ('naturalWidth' in new Image())
+      return ('naturalWidth' in new Image());
     })()
   },
 
-  initialize: function(img, callback, errorCallback) {
-    this.img = $(img);
-    this.callback = callback;
+  // NOTE: setTimeouts allow callbacks to be attached
+  initialize: function(img, successCallback, errorCallback) {
+    this.img = $(img)[0];
+    this.successCallback = successCallback;
     this.errorCallback = errorCallback;
+    this.isLoaded = false;
 
-    // fallback for browsers without support for naturalWidth/Height
-    // IE7-8
-    if (!this._supports.naturalWidth) {
-      this.fallback();
+    this.options = $.extend({
+      natural: true,
+      pollFallbackAfter: 1000
+    }, arguments[3] || {});
+
+    // a fallback is used when we're not polling for naturalWidth/Height
+    // IE6-7 also use this to add support for naturalWidth/Height
+    if (!this.supports.naturalWidth || !this.options.natural) {
+      setTimeout($.proxy(this.fallback, this));
       return;
     }
 
-    this.img.bind('error', $.proxy(this.error, this));
+    // can exit out right away if we have a naturalWidth
+    if (this.img.complete && $.type(this.img.naturalWidth) != 'undefined') {
+      setTimeout($.proxy(function() {
+        if (this.img.naturalWidth > 0) {
+          this.success();
+        } else {
+          this.error();
+        }
+      }, this));
+      return;
+    }
+
+    // we instantly bind to onerror so we catch right away
+    $(this.img).bind('error', $.proxy(function() {
+      setTimeout($.proxy(function() {
+        this.error();
+      }, this));
+    }, this));
 
     this.intervals = [
       [1 * 1000, 10],
@@ -34,18 +65,27 @@ $.extend(ImageReady.prototype, {
     this._time = 0;
     this._delay = this.intervals[this._ipos][1];
 
-    this.tick();
+    // start polling
+    this.poll();
   },
 
-  tick: function() {
-    this._ticking = setTimeout($.proxy(function() {
-      if (this.img[0].naturalWidth > 0) {
-        this.callback(this.img[0]);
+  poll: function() {
+    this._polling = setTimeout($.proxy(function() {
+      if (this.img.naturalWidth > 0) {
+        this.success();
         return;
       }
 
       // update time spend
       this._time += this._delay;
+
+      // use a fallback after waiting
+      if (this.options.pollFallbackAfter &&
+          this._time >= this.options.pollFallbackAfter &&
+          !this._usedPollFallback) {
+        this._usedPollFallback = true;
+        this.fallback();
+      }
 
       // next i within the interval
       if (this._time > this.intervals[this._ipos][0]) {
@@ -62,7 +102,7 @@ $.extend(ImageReady.prototype, {
         this._delay = this.intervals[this._ipos][1];
       }
 
-      this.tick();
+      this.poll();
     }, this), this._delay);
   },
 
@@ -73,34 +113,43 @@ $.extend(ImageReady.prototype, {
     img.onload = $.proxy(function() {
       img.onload = function() {};
 
-      this.img[0].naturalWidth = img.width;
-      this.img[0].naturalHeight = img.height;
+      if (!this.supports.naturalWidth) {
+        this.img.naturalWidth = img.width;
+        this.img.naturalHeight = img.height;
+      }
 
-      this.callback(this.img[0]);
+      this.success();
     }, this);
 
     img.onerror = $.proxy(this.error, this);
 
-    img.src = this.img.attr('src');
+    img.src = this.img.src;
   },
 
   abort: function() {
-    // IE < 9
     if (this._fallbackImg) {
       this._fallbackImg.onload = function() { };
     }
 
-    if (this._ticking) {
-      clearTimeout(this._ticking);
-      this._ticking = 0;
+    if (this._polling) {
+      clearTimeout(this._polling);
+      this._polling = null;
     }
   },
 
+  success: function() {
+    if (this._calledSuccess) return;
+    this._calledSuccess = true;
+
+    this.isLoaded = true;
+    this.successCallback(this);
+  },
+
   error: function() {
-    if (this.errored) return;
-    this.errored = true;
+    if (this._calledError) return;
+    this._calledError = true;
 
     this.abort();
-    if (this.errorCallback) this.errorCallback();
+    if (this.errorCallback) this.errorCallback(this);
   }
 });
