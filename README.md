@@ -6,7 +6,7 @@ Strip is a Lightbox that only partially covers the page. This is less intrusive 
 
 See [stripjs.com](http://www.stripjs.com) for demos and docs.
 
-[![screenshot](https://cloud.githubusercontent.com/assets/5575/4735576/cc85f3b6-59e1-11e4-8584-e803b12c0a6c.jpg)](http://www.stripjs.com)
+[![screenshot](https://cloud.githubusercontent.com/assets/5575/4969788/ec4fc80e-686c-11e4-8406-614db6980325.jpg)](http://www.stripjs.com)
 
 ## License
 
