@@ -21,7 +21,7 @@ function detectExtension(url) {
 
 var Types = {
   'image': {
-    extensions: 'bmp gif jpeg jpg png',
+    extensions: 'bmp gif jpeg jpg png webp',
     detect: function(url) {
       return $.inArray(detectExtension(url), this.extensions.split(' ')) > -1;
     },
