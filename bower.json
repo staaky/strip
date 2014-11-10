@@ -1,7 +1,7 @@
 {
   "name": "strip",
   "description": "A Less Intrusive Responsive Lightbox",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "homepage": "http://stripjs.com",
   "keywords": [
     "lightbox",
@@ -11,8 +11,8 @@
     "jquery"
   ],
   "main": [
-    "js/strip.pkgd.js",
-    "css/strip.css"
+    "dist/js/strip.pkgd.js",
+    "dist/css/strip.css"
   ],
   "ignore": [
     "node_modules",

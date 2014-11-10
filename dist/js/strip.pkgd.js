@@ -1,5 +1,5 @@
 /*!
- * Strip - A Less Intrusive Responsive Lightbox - v1.4.0
+ * Strip - A Less Intrusive Responsive Lightbox - v1.5.0
  * (c) 2014 Nick Stakenburg
  *
  * http://www.stripjs.com
@@ -21,7 +21,7 @@
 
 
 var Strip = {
-  version: '1.4.0'
+  version: '1.5.0'
 };
 
 Strip.Skins = {
@@ -527,7 +527,7 @@ function detectExtension(url) {
 
 var Types = {
   'image': {
-    extensions: 'bmp gif jpeg jpg png',
+    extensions: 'bmp gif jpeg jpg png webp',
     detect: function(url) {
       return $.inArray(detectExtension(url), this.extensions.split(' ')) > -1;
     },

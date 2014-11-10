@@ -4,7 +4,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     dirs: {
-      dest: ''
+      dest: 'dist'
     },
 
     vars: { },
@@ -42,30 +42,27 @@ module.exports = function(grunt) {
 
         'src/js/outro.js'
         ],
-        dest: 'js/strip.pkgd.js'
+        dest: '<%= dirs.dest %>/js/strip.pkgd.js'
       },
       css: {
         options: {
           process: true
         },
         src: ['src/css/strip.css'],
-        dest: 'css/strip.css'
+        dest: '<%= dirs.dest %>/css/strip.css'
       }
     },
 
-    sync: {
-      'css-skins': {
+    copy: {
+      'css': {
         files: [
           {
             expand: true,
             cwd: 'src/css/strip-skins/',
             src: ['**'],
-            dest: 'css/strip-skins/'
+            dest: '<%= dirs.dest %>/css/strip-skins/'
           }
-        ],
-        pretend: false, // disables IO
-        updateAndDelete: true,
-        verbose: true
+        ]
       }
     },
 
@@ -74,37 +71,37 @@ module.exports = function(grunt) {
         options: {
           preserveComments: 'some'
         },
-        'src': ['js/strip.pkgd.js'],
-        'dest': 'js/strip.pkgd.min.js'
+        'src': ['<%= dirs.dest %>/js/strip.pkgd.js'],
+        'dest': '<%= dirs.dest %>/js/strip.pkgd.min.js'
+      }
+    },
+
+    svgmin: {
+      options: {
+        plugins: [
+          { removeViewBox: false },
+          { removeUselessStrokeAndFill: false },
+          { removeEmptyAttrs: false }
+        ]
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: 'src/css/',
+          src: ['**/*.svg'],
+          dest: 'src/css/'
+        }]
       }
     },
 
     clean: {
-      js: 'js/*',
-      css: 'css/strip.css'
-    },
-
-    svgmin: {
-        options: {
-          plugins: [
-            { removeViewBox: false },
-            { removeUselessStrokeAndFill: false },
-            { removeEmptyAttrs: false }
-          ]
-        },
-        dist: {
-          files: [{
-              expand: true,        // Enable dynamic expansion.
-              cwd: 'src/css/',  // Src matches are relative to this path.
-              src: ['**/*.svg'],     // Actual pattern(s) to match.
-              dest: 'src/css/',  // Destination path prefix.
-          }]
-        }
+      dest: '<%= dirs.dest %>/*'
     }
   });
 
   // Load plugins
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-svgmin');
@@ -112,8 +109,9 @@ module.exports = function(grunt) {
 
   // Tasks
   grunt.registerTask('default', [
-    'clean:js', 'concat:js', 'uglify:js',
-    'clean:css', 'concat:css', 'sync:css-skins'
+    'clean:dest',
+    'concat:js', 'uglify:js',
+    'concat:css', 'copy:css'
   ]);
 
   grunt.registerTask('svg', ['svgmin']);

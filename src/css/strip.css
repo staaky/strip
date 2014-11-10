@@ -8,6 +8,7 @@
  * - Commercial: http://www.stripjs.com/license
  * - Non-commercial: http://creativecommons.org/licenses/by-nc-nd/3.0
  */
+
 .strp-window {
 	position: fixed;
 	width: 0;
@@ -121,13 +122,13 @@
 /* youtube & vimeo use overlap:false, this adds padding
    to make sure buttons don't overlap the content.
    navbutton = 72 = 54 + (2 * 9 margin)
-   closebutton = 50
+   closebutton = 48
 */
-.strp-no-overlap .strp-container { padding: 50px 72px; }
-.strp-no-overlap.strp-no-sides .strp-container { padding: 50px 0; }
+.strp-no-overlap .strp-container { padding: 48px 72px; }
+.strp-no-overlap.strp-no-sides .strp-container { padding: 48px 0; }
 
 .strp-vertical .strp-no-overlap .strp-container { padding: 0 72px; }
-.strp-vertical .strp-no-overlap.strp-no-sides .strp-container { padding: 0 50px; }
+.strp-vertical .strp-no-overlap.strp-no-sides .strp-container { padding: 0 48px; }
 
 .strp-hovering-clickable .strp-container { cursor: pointer; }
 
@@ -238,14 +239,16 @@
   height: 100%;
   width: 100%;
   zoom: 1;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
 }
 
 
 /* X */
 .strp-close {
   position: absolute;
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -259,6 +262,8 @@
   left: 12px;
   height: 26px;
   width: 26px;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
 }
 
 .strp-close-background {
@@ -269,9 +274,8 @@
 .strp-close:hover .strp-close-background { background-color: #161616; }
 
 
-.strp-has-error .strp-container { background: #ca3434; }
+.strp-has-error .strp-container { background-color: #ca3434; }
 .strp-error {
-  background: url('strip-skins/strip/error.svg?rev=2') 50% 50% no-repeat;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -279,24 +283,27 @@
   height: 240px;
   margin-left: -120px;
   margin-top: -120px;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-image: url('strip-skins/strip/error.svg?rev=3');
 }
-.strp-no-svg .strp-error { background-image: url('strip-skins/strip/error.png?rev=2'); }
+.strp-no-svg .strp-error { background-image: url('strip-skins/strip/error.png?rev=3'); }
 
 /* Spinner - loading icon, wrapped by a div that moves it */
 .strp-spinner-move {
   position: fixed;
   top: 0px;
   right: 0px;
-  height: 50px;
+  height: 48px;
   width: 0;
   /* ensure overflow during a jQuery animation */
   overflow: visible !important;
 }
-.strp-spinner-move.strp-vertical { width: 50px; height: 0; }
+.strp-spinner-move.strp-vertical { width: 48px; height: 0; }
 
 .strp-spinner {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   float: left;
   position: relative;
 }
@@ -305,10 +312,10 @@
 .strp-spinner-move.strp-side-top { top: 0; right: 0; bottom: auto; left: auto; }
 .strp-spinner-move.strp-side-bottom { top: auto; right: 0; bottom: 0; left: auto; }
 
-.strp-spinner-move.strp-side-right .strp-spinner { margin-left: -50px; }
-.strp-spinner-move.strp-side-left .strp-spinner { margin-right: -50px; float: right; }
-.strp-spinner-move.strp-side-bottom .strp-spinner { margin-top: -50px; }
-.strp-spinner-move.strp-side-top .strp-spinner { position: absolute; bottom: 0; right: 0; margin-bottom: -50px; }
+.strp-spinner-move.strp-side-right .strp-spinner { margin-left: -48px; }
+.strp-spinner-move.strp-side-left .strp-spinner { margin-right: -48px; float: right; }
+.strp-spinner-move.strp-side-bottom .strp-spinner { margin-top: -48px; }
+.strp-spinner-move.strp-side-top .strp-spinner { position: absolute; bottom: 0; right: 0; margin-bottom: -48px; }
 
 
 @-moz-keyframes strp-spinner-spin { 100% { -moz-transform: rotate(360deg); } }
@@ -342,12 +349,12 @@
  * ===== Skin: strip =====
  */
  /* < > */
-.strp-window-skin-strip .strp-nav-button-background { background: none; }
-.strp-window-skin-strip .strp-nav-previous .strp-nav-button-icon { background: url('strip-skins/strip/previous.svg?rev=2');  }
-.strp-window-skin-strip .strp-nav-next .strp-nav-button-icon { background: url('strip-skins/strip/next.svg?rev=2'); }
-/* IE7-8/no-svg */
-.strp-window-skin-strip.strp-no-svg .strp-nav-previous .strp-nav-button-icon { background: url('strip-skins/strip/previous.png?rev=2'); opacity: 1; }
-.strp-window-skin-strip.strp-no-svg .strp-nav-next .strp-nav-button-icon { background: url('strip-skins/strip/next.png?rev=2'); opacity: 1; }
+.strp-window-skin-strip .strp-nav-button-background { background-color: transparent; }
+.strp-window-skin-strip .strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous.svg?rev=3');  }
+.strp-window-skin-strip .strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next.svg?rev=3'); }
+/* IE7-8/no-svg (using a faded png) */
+.strp-window-skin-strip.strp-no-svg .strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous-faded.png?rev=3'); opacity: 1; }
+.strp-window-skin-strip.strp-no-svg .strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next-faded.png?rev=3'); opacity: 1; }
 
 .strp-window-skin-strip .strp-nav .strp-nav-button-icon { opacity: .6; } /* normal state */
 .strp-window-skin-strip.strp-mobile-touch .strp-nav .strp-nav-button-icon { opacity: 1; } /* mobile-touch always has normal states at full opacity */
@@ -355,11 +362,11 @@
 /* < > : hover */
 .strp-window-skin-strip .strp-nav:hover .strp-nav-button-icon,
 .strp-window-skin-strip .strp-nav-hover .strp-nav-button-icon { opacity: 1; }
-/* IE7-8/no-svg */
+/* IE7-8/no-svg (unfaded png) */
 .strp-window-skin-strip.strp-no-svg .strp-nav.strp-nav-previous:hover .strp-nav-button-icon,
-.strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-previous .strp-nav-button-icon { background: url('strip-skins/strip/previous-hover.png?rev=2'); }
+.strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous.png?rev=3'); }
 .strp-window-skin-strip.strp-no-svg .strp-nav.strp-nav-next:hover .strp-nav-button-icon,
-.strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-next .strp-nav-button-icon { background: url('strip-skins/strip/next-hover.png?rev=2'); }
+.strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next.png?rev=3'); }
 
 /* Reduce < > button size on narrow screens (iPhone 6 and smaller) */
 @media all and (max-width: 375px) and (orientation: portrait),
@@ -372,34 +379,34 @@
   }
 
   /* < > */
-  .strp-window-skin-strip .strp-nav-previous .strp-nav-button-icon { background: url('strip-skins/strip/previous-small.svg?rev=2');  }
-  .strp-window-skin-strip .strp-nav-next .strp-nav-button-icon { background: url('strip-skins/strip/next-small.svg?rev=2'); }
-  /* IE7-8/no-svg */
-  .strp-window-skin-strip.strp-no-svg .strp-nav-previous .strp-nav-button-icon { background: url('strip-skins/strip/previous-small.png?rev=2'); }
-  .strp-window-skin-strip.strp-no-svg .strp-nav-next .strp-nav-button-icon { background: url('strip-skins/strip/next-small.png?rev=2'); }
+  .strp-window-skin-strip .strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous-small.svg?rev=3');  }
+  .strp-window-skin-strip .strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next-small.svg?rev=3'); }
+  /* IE7-8/no-svg (using a faded png) */
+  .strp-window-skin-strip.strp-no-svg .strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous-small-faded.png?rev=3'); }
+  .strp-window-skin-strip.strp-no-svg .strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next-small-faded.png?rev=3'); }
 
-  /* IE7-8/no-svg */
+  /* IE7-8/no-svg (unfaded png) */
   .strp-window-skin-strip.strp-no-svg .strp-nav.strp-nav-previous:hover .strp-nav-button-icon,
-  .strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-previous .strp-nav-button-icon { background: url('strip-skins/strip/previous-small-hover.png?rev=2'); }
+  .strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous-small.png?rev=3'); }
   .strp-window-skin-strip.strp-no-svg .strp-nav.strp-nav-next:hover .strp-nav-button-icon,
-  .strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-next .strp-nav-button-icon { background: url('strip-skins/strip/next-small-hover.png?rev=2'); }
+  .strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next-small.png?rev=3'); }
 
   /* also reduce padding
      navbutton = 58 = 48 + (2 * 5 margin)
-     closebutton = 50
+     closebutton = 48
    */
-  .strp-no-overlap .strp-container { padding: 50px 58px; }
-  .strp-no-overlap.strp-no-sides .strp-container { padding: 50px 0; }
+  .strp-no-overlap .strp-container { padding: 48px 58px; }
+  .strp-no-overlap.strp-no-sides .strp-container { padding: 48px 0; }
 
   .strp-vertical .strp-no-overlap .strp-container { padding: 0 58px; }
-  .strp-vertical .strp-no-overlap.strp-no-sides .strp-container { padding: 0 50px; }
+  .strp-vertical .strp-no-overlap.strp-no-sides .strp-container { padding: 0 48px; }
 }
 
 /* X */
-.strp-window-skin-strip .strp-close .strp-close-icon { background: url('strip-skins/strip/close.svg?rev=2'); opacity: .8; }
+.strp-window-skin-strip .strp-close .strp-close-icon { background-image: url('strip-skins/strip/close.svg?rev=3'); opacity: .8; }
 .strp-window-skin-strip .strp-close:hover .strp-close-icon { opacity: 1; }
 /* IE7-8/no-svg */
-.strp-window-skin-strip.strp-no-svg .strp-close .strp-close-icon { background: url('strip-skins/strip/close.png?rev=2'); opacity: 1; }
+.strp-window-skin-strip.strp-no-svg .strp-close .strp-close-icon { background-image: url('strip-skins/strip/close.png?rev=3'); opacity: 1; }
 
 
 /* here's how to have content slide in with the window when opening and closing  */
