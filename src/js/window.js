@@ -286,22 +286,12 @@ var Window = {
 
   // Load
   load: function(views, position) {
-    var options = $.extend({
-
-    }, arguments[2] || {});
-
     this.views = views;
 
     Pages.add(views);
 
     if (position) {
-      this.setPosition(position, $.proxy(function() {
-        // if we're not loading anymore, the window has been closed, don't use the callback
-        if (!this._loading) return;
-        //this._loading = false;
-
-        if (options.callback) options.callback();
-      }, this));
+      this.setPosition(position);
     }
   },
 

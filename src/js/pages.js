@@ -3,8 +3,6 @@ var Pages = {
     this.element = element;
     this.pages = {};
     this.uid = 1;
-
-    this._loading = {};
   },
 
   add: function(views) {
