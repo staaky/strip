@@ -285,9 +285,9 @@
   margin-top: -120px;
   background-position: 50% 50%;
   background-repeat: no-repeat;
-  background-image: url('strip-skins/strip/error.svg?rev=3');
+  background-image: url('strip-skins/strip/error.svg?rev=4');
 }
-.strp-no-svg .strp-error { background-image: url('strip-skins/strip/error.png?rev=3'); }
+.strp-no-svg .strp-error { background-image: url('strip-skins/strip/error.png?rev=4'); }
 
 /* Spinner - loading icon, wrapped by a div that moves it */
 .strp-spinner-move {
@@ -350,11 +350,11 @@
  */
  /* < > */
 .strp-window-skin-strip .strp-nav-button-background { background-color: transparent; }
-.strp-window-skin-strip .strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous.svg?rev=3');  }
-.strp-window-skin-strip .strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next.svg?rev=3'); }
+.strp-window-skin-strip .strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous.svg?rev=4');  }
+.strp-window-skin-strip .strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next.svg?rev=4'); }
 /* IE7-8/no-svg (using a faded png) */
-.strp-window-skin-strip.strp-no-svg .strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous-faded.png?rev=3'); opacity: 1; }
-.strp-window-skin-strip.strp-no-svg .strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next-faded.png?rev=3'); opacity: 1; }
+.strp-window-skin-strip.strp-no-svg .strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous-faded.png?rev=4'); opacity: 1; }
+.strp-window-skin-strip.strp-no-svg .strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next-faded.png?rev=4'); opacity: 1; }
 
 .strp-window-skin-strip .strp-nav .strp-nav-button-icon { opacity: .6; } /* normal state */
 .strp-window-skin-strip.strp-mobile-touch .strp-nav .strp-nav-button-icon { opacity: 1; } /* mobile-touch always has normal states at full opacity */
@@ -364,9 +364,9 @@
 .strp-window-skin-strip .strp-nav-hover .strp-nav-button-icon { opacity: 1; }
 /* IE7-8/no-svg (unfaded png) */
 .strp-window-skin-strip.strp-no-svg .strp-nav.strp-nav-previous:hover .strp-nav-button-icon,
-.strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous.png?rev=3'); }
+.strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous.png?rev=4'); }
 .strp-window-skin-strip.strp-no-svg .strp-nav.strp-nav-next:hover .strp-nav-button-icon,
-.strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next.png?rev=3'); }
+.strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next.png?rev=4'); }
 
 /* Reduce < > button size on narrow screens (iPhone 6 and smaller) */
 @media all and (max-width: 375px) and (orientation: portrait),
@@ -379,17 +379,17 @@
   }
 
   /* < > */
-  .strp-window-skin-strip .strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous-small.svg?rev=3');  }
-  .strp-window-skin-strip .strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next-small.svg?rev=3'); }
+  .strp-window-skin-strip .strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous-small.svg?rev=4');  }
+  .strp-window-skin-strip .strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next-small.svg?rev=4'); }
   /* IE7-8/no-svg (using a faded png) */
-  .strp-window-skin-strip.strp-no-svg .strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous-small-faded.png?rev=3'); }
-  .strp-window-skin-strip.strp-no-svg .strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next-small-faded.png?rev=3'); }
+  .strp-window-skin-strip.strp-no-svg .strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous-small-faded.png?rev=4'); }
+  .strp-window-skin-strip.strp-no-svg .strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next-small-faded.png?rev=4'); }
 
   /* IE7-8/no-svg (unfaded png) */
   .strp-window-skin-strip.strp-no-svg .strp-nav.strp-nav-previous:hover .strp-nav-button-icon,
-  .strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous-small.png?rev=3'); }
+  .strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous-small.png?rev=4'); }
   .strp-window-skin-strip.strp-no-svg .strp-nav.strp-nav-next:hover .strp-nav-button-icon,
-  .strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next-small.png?rev=3'); }
+  .strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next-small.png?rev=4'); }
 
   /* also reduce padding
      navbutton = 58 = 48 + (2 * 5 margin)
@@ -403,10 +403,10 @@
 }
 
 /* X */
-.strp-window-skin-strip .strp-close .strp-close-icon { background-image: url('strip-skins/strip/close.svg?rev=3'); opacity: .8; }
+.strp-window-skin-strip .strp-close .strp-close-icon { background-image: url('strip-skins/strip/close.svg?rev=4'); opacity: .8; }
 .strp-window-skin-strip .strp-close:hover .strp-close-icon { opacity: 1; }
 /* IE7-8/no-svg */
-.strp-window-skin-strip.strp-no-svg .strp-close .strp-close-icon { background-image: url('strip-skins/strip/close.png?rev=3'); opacity: 1; }
+.strp-window-skin-strip.strp-no-svg .strp-close .strp-close-icon { background-image: url('strip-skins/strip/close.png?rev=4'); opacity: 1; }
 
 
 /* here's how to have content slide in with the window when opening and closing  */
