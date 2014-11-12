@@ -1,5 +1,5 @@
 /*!
- * Strip - A Less Intrusive Responsive Lightbox - v1.5.0
+ * Strip - A Less Intrusive Responsive Lightbox - v1.5.1
  * (c) 2014 Nick Stakenburg
  *
  * http://www.stripjs.com
@@ -21,7 +21,7 @@
 
 
 var Strip = {
-  version: '1.5.0'
+  version: '1.5.1'
 };
 
 Strip.Skins = {
@@ -836,8 +836,6 @@ var Pages = {
     this.element = element;
     this.pages = {};
     this.uid = 1;
-
-    this._loading = {};
   },
 
   add: function(views) {
@@ -974,7 +972,7 @@ var Pages = {
               page.remove();
             }
 
-            if (page.removed) removed++; // count all not those we remove now
+            if (page.removed) removed++; // count all, not those we remove now
         }, this));
 
         // if we've removed all pages from this group it's safe to remove it
@@ -985,7 +983,7 @@ var Pages = {
       }
     }, this));
 
-    // now removed all the emptied out page groups
+    // now remove all empty page groups
     $.each(empty, $.proxy(function(i, uid) {
       delete this.pages[uid];
     }, this));
@@ -1993,22 +1991,12 @@ var Window = {
 
   // Load
   load: function(views, position) {
-    var options = $.extend({
-
-    }, arguments[2] || {});
-
     this.views = views;
 
     Pages.add(views);
 
     if (position) {
-      this.setPosition(position, $.proxy(function() {
-        // if we're not loading anymore, the window has been closed, don't use the callback
-        if (!this._loading) return;
-        //this._loading = false;
-
-        if (options.callback) options.callback();
-      }, this));
+      this.setPosition(position);
     }
   },
 

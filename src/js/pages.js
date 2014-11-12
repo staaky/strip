@@ -139,7 +139,7 @@ var Pages = {
               page.remove();
             }
 
-            if (page.removed) removed++; // count all not those we remove now
+            if (page.removed) removed++; // count all, not those we remove now
         }, this));
 
         // if we've removed all pages from this group it's safe to remove it
@@ -150,7 +150,7 @@ var Pages = {
       }
     }, this));
 
-    // now removed all the emptied out page groups
+    // now remove all empty page groups
     $.each(empty, $.proxy(function(i, uid) {
       delete this.pages[uid];
     }, this));
