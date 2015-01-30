@@ -1,6 +1,6 @@
 /*!
  * Strip - A Less Intrusive Responsive Lightbox - v<%= pkg.version %>
- * (c) <%= grunt.template.today("yyyy") %> Nick Stakenburg
+ * (c) 2014-<%= grunt.template.today("yyyy") %> Nick Stakenburg
  *
  * http://www.stripjs.com
  *

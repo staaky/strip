@@ -336,7 +336,7 @@ $.extend(Page.prototype, {
     }, this));
 
     // we bind hide on click outside with a delay so API calls can pass through.
-    // more in this in api.js
+    // more on this in api.js
     shq.queue($.proxy(function(next_bind_hide_on_click_outside) {
       Window.timers.set('bind-hide-on-click-outside', $.proxy(function() {
         Window.bindHideOnClickOutside();
@@ -516,7 +516,7 @@ $.extend(Page.prototype, {
     Window.element.removeClass('strp-measured');
     var win = Window.element,
         isFullscreen = (z == 'width') ? parseInt(win.css('min-width')) > 0 :
-                       parseInt(win.css('min-height')) > 0;
+                       parseInt(win.css('min-height')) > 0,
         safety = isFullscreen ? 0 : parseInt(win.css('margin-' + (z == 'width' ? 'left' : 'bottom')));
     Window.element.addClass('strp-measured');
 
