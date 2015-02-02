@@ -1,5 +1,5 @@
 /*!
- * Strip - A Less Intrusive Responsive Lightbox - v1.5.2
+ * Strip - A Less Intrusive Responsive Lightbox - v1.5.3
  * (c) 2014-2015 Nick Stakenburg
  *
  * http://www.stripjs.com
@@ -21,7 +21,7 @@
 
 
 var Strip = {
-  version: '1.5.2'
+  version: '1.5.3'
 };
 
 Strip.Skins = {
@@ -2669,7 +2669,7 @@ var _Strip = {
     }
 
     return function(object) {
-      if (!this._fallback) return;
+      if (!_Strip._fallback) return;
       var url = getUrl(object);
       if (url) window.location.href = url;
     };
@@ -2715,17 +2715,22 @@ $.extend(Strip, {
 if (
     // IE6
     (Browser.IE && Browser.IE < 7)
-
     // old Android
     // added a version check because Firefox on Android doesn't have a
     // version number above 4.2 anymore
     || ($.type(Browser.Android) == 'number' && Browser.Android < 3)
-
     // old WebKit
     || (Browser.MobileSafari && ($.type(Browser.WebKit) == 'number' && Browser.WebKit < 533.18))
   ) {
   // we'll reset the show function
   _Strip.show = _Strip.showFallback;
+
+  // disable some function we don't want to run
+  $.each('startDelegating stopDelegating initialize'.split(' '), function(i, fn) {
+    _Strip[fn] = function() { };
+  });
+
+  Strip.hide = function() { return this; };
 }
 
 // start
