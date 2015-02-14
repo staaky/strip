@@ -1,5 +1,5 @@
 /*!
- * Strip - A Less Intrusive Responsive Lightbox - v1.5.3
+ * Strip - A Less Intrusive Responsive Lightbox - v1.5.4
  * (c) 2014-2015 Nick Stakenburg
  *
  * http://www.stripjs.com
@@ -21,7 +21,7 @@
 
 
 var Strip = {
-  version: '1.5.3'
+  version: '1.5.4'
 };
 
 Strip.Skins = {
@@ -2274,7 +2274,7 @@ var Window = {
                   .on('mouseleave', this._hideUIHandler = $.proxy(this.hideUI, this));
 
       this.element.on('mousemove', this._mousemoveUIHandler = $.proxy(function(event) {
-        // Chrome has a bug that triggers a mousemove events incorrectly
+        // Chrome has a bug that triggers mousemove events incorrectly
         // we have to work around this by comparing cursor positions
         // so only true mousemove events pass through:
         // https://code.google.com/p/chromium/issues/detail?id=420032
@@ -2320,8 +2320,8 @@ var Window = {
                  .off('mouseleave', '.strp-container', this._onMouseLeaveHandler)
                  .off('mouseenter', '.strp-container', this._onMouseEnterHandler);
 
-      this.element.off('mouseenter', '.strp-nav', this._onNavMouseEnter)
-                  .off('mouseleave', '.strp-nav', this._onNavMouseLeave);
+      this.element.off('mouseenter', '.strp-nav', this._onNavMouseEnterHandler)
+                  .off('mouseleave', '.strp-nav', this._onNavMouseLeaveHandler);
 
       $(window).off('scroll', this._onScrollHandler);
 
