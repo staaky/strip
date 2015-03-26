@@ -791,6 +791,7 @@ $.extend(View.prototype, {
      object = {
        element:   element[0],
        url:       element.attr('href'),
+       link:      element.data('strip-link'),
        caption:   element.data('strip-caption'),
        group:     element.data('strip-group'),
        extension: element.data('strip-extension'),
@@ -1077,9 +1078,12 @@ $.extend(Page.prototype, {
 
     switch (this.view.type) {
       case 'image':
-        this.container.append(this.content = $('<img>')
-          .attr({ src: this.view.url })
-        );
+        this.content = $('<img>').attr({ src: this.view.url });
+        if(this.view.link) {
+          this.content = $('<a>').attr({ href: this.view.link}).append(this.content);
+        }
+
+        this.container.append(this.content);
         break;
 
       case 'vimeo':
@@ -1149,7 +1153,14 @@ $.extend(Page.prototype, {
 
     this.preloading = true;
 
-    new ImageReady(this.content[0], $.proxy(function(imageReady) {
+    var _image = null;
+    if(this.content.is('img')) {
+      _image = this.content[0];
+    } else {
+      _image = this.content.find('img')[0];
+    }
+
+    new ImageReady(_image, $.proxy(function(imageReady) {
       this.loaded = true;
       this.preloading = false;
       this.preloaded = true;
@@ -1194,7 +1205,14 @@ $.extend(Page.prototype, {
           return;
         }
 
-        this.imageReady = new ImageReady(this.content[0], $.proxy(function(imageReady) {
+        var _image = null;
+        if(this.content.is('img')) {
+          _image = this.content[0];
+        } else {
+          _image = this.content.find('img')[0];
+        }
+
+        this.imageReady = new ImageReady(_image, $.proxy(function(imageReady) {
           // mark as loaded
           this._markAsLoaded();
 
@@ -1680,7 +1698,14 @@ $.extend(Page.prototype, {
       mTop = Math.floor(mTop);
     }
 
-    content.css(px($.extend({}, contentDimensions, {
+    var _image = null;
+    if(content.is('img')) {
+      _image = content;
+    } else {
+      _image = content.find('img');
+    }
+
+    _image.css(px($.extend({}, contentDimensions, {
       'margin-left': mLeft,
       'margin-top': mTop
     })));

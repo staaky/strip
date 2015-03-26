@@ -17,6 +17,7 @@ $.extend(View.prototype, {
      object = {
        element:   element[0],
        url:       element.attr('href'),
+       link:      element.data('strip-link'),
        caption:   element.data('strip-caption'),
        group:     element.data('strip-group'),
        extension: element.data('strip-extension'),
