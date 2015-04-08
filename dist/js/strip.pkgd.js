@@ -50,20 +50,6 @@ var Browser = (function(uA) {
 
 
 var _slice = Array.prototype.slice;
-var _ = {
-  isElement: function(object) {
-    return object && object.nodeType == 1;
-  }
-};
-
-
-function px(source) {
-  var destination = {};
-  for (var property in source)
-    destination[property] = source[property] + 'px';
-  return destination;
-}
-
 
 // Fit
 var Fit = {
@@ -924,7 +910,7 @@ var Pages = {
   },
 
 
-  // Window.hide will call thise when fully closed
+  // Window.hide will call this when fully closed
   removeAll: function() {
     $.each(this.pages, function(id, pages) {
       $.each(pages, function(j, page) {
@@ -1101,7 +1087,7 @@ $.extend(Page.prototype, {
     this._created = true;
   },
 
-  //surrounding
+  // surrounding
   _getSurroundingPages: function() {
     var preload;
     if (!(preload = this.view.options.preload)) return [];
@@ -1575,7 +1561,7 @@ $.extend(Page.prototype, {
       // width
       if (z == 'width') {
         page.css({
-          width: (isFullscreen ? viewport.width : fitted.width + paddingX) + 'px'
+          width: (isFullscreen ? viewport.width : fitted.width + paddingX)
         });
 
         var initialBoundsHeight = bounds.height;
@@ -1598,7 +1584,7 @@ $.extend(Page.prototype, {
         var attempts = isFullscreen ? 0 : 4; // fullscreen doesn't need extra resizing
 
         while (attempts > 0 && (shrunkW = fitted.width - contentDimensions.width)) {
-          page.css({ width: (fitted.width + paddingX - shrunkW) + 'px' });
+          page.css({ width: (fitted.width + paddingX - shrunkW) });
 
           previousCH = cH;
 
@@ -1621,7 +1607,7 @@ $.extend(Page.prototype, {
             // restore if the last attempt failed
             if (attempts - 1 <= 0) {
               // otherwise the caption increased in height, go back
-              page.css({ width: fitted.width + paddingX  + 'px' });
+              page.css({ width: fitted.width + paddingX });
               contentDimensions = initialImageSize;
               cH = initialCH;
             }
@@ -1662,12 +1648,12 @@ $.extend(Page.prototype, {
     if (isFullscreen) pageDimensions = viewport;
 
     if (z == 'width') {
-      page.css({ width: pageDimensions.width + 'px' });
+      page.css({ width: pageDimensions.width });
     } else {
-      page.css({ height: pageDimensions.height + 'px' });
+      page.css({ height: pageDimensions.height });
     }
 
-    container.css({ bottom: cH + 'px' });
+    container.css({ bottom: cH });
 
 
     // margins
@@ -1680,10 +1666,10 @@ $.extend(Page.prototype, {
       mTop = Math.floor(mTop);
     }
 
-    content.css(px($.extend({}, contentDimensions, {
+    content.css($.extend({}, contentDimensions, {
       'margin-left': mLeft,
       'margin-top': mTop
-    })));
+    }));
 
 
     if (this.playerIframe) {
@@ -1807,7 +1793,6 @@ var Window = {
 
 
   // Resize
-  // window resize (TODO:orientationchange?)
   startObservingResize: function() {
     if (this._isObservingResize) return;
 
@@ -1899,7 +1884,7 @@ var Window = {
 
     // the animations
     var css = { overflow: 'visible' };
-    css[z] = wh + 'px';
+    css[z] = wh;
 
     var fx = 1;
 
@@ -2144,7 +2129,6 @@ var Window = {
     hideQueue.queue($.proxy(function(next_after_resize) {
       this._safeResetsAfterSwitchSide();
 
-      // all of the below we cannot safely call safely
       this.stopObservingResize();
 
       Pages.removeAll();
@@ -2532,12 +2516,12 @@ var _Strip = {
   // click delegation
   startDelegating: function() {
     this.stopDelegating();
-    $(document.documentElement).delegate('.strip[href]', 'click', this._delegateHandler = $.proxy(this.delegate, this));
+    $(document.documentElement).on('click', '.strip[href]', this._delegateHandler = $.proxy(this.delegate, this));
   },
 
   stopDelegating: function() {
     if (this._delegateHandler) {
-      $(document.documentElement).undelegate('.strip[href]', 'click', this._delegateHandler);
+      $(document.documentElement).off('click', '.strip[href]', this._delegateHandler);
       this._delegateHandler = null;
     }
   },
@@ -2568,7 +2552,7 @@ var _Strip = {
     }
 
     var views = [], object_type,
-        isElement = _.isElement(object);
+        isElement = object && object.nodeType == 1;
 
     switch ((object_type = $.type(object))) {
       case 'string':
@@ -2591,7 +2575,7 @@ var _Strip = {
             });
 
             elements.each(function(i, element) {
-              // adjust the position if we find that the given object position
+              // adjust the position if we find the given object position
               if (!position && element == object) position = i + 1;
               views.push(new View(element, $.extend({}, groupOptions, options)));
             });
@@ -2725,7 +2709,7 @@ if (
   // we'll reset the show function
   _Strip.show = _Strip.showFallback;
 
-  // disable some function we don't want to run
+  // disable some functions we don't want to run
   $.each('startDelegating stopDelegating initialize'.split(' '), function(i, fn) {
     _Strip[fn] = function() { };
   });

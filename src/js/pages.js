@@ -91,7 +91,7 @@ var Pages = {
   },
 
 
-  // Window.hide will call thise when fully closed
+  // Window.hide will call this when fully closed
   removeAll: function() {
     $.each(this.pages, function(id, pages) {
       $.each(pages, function(j, page) {

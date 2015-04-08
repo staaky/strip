@@ -1,18 +1,4 @@
 var _slice = Array.prototype.slice;
-var _ = {
-  isElement: function(object) {
-    return object && object.nodeType == 1;
-  }
-};
-
-
-function px(source) {
-  var destination = {};
-  for (var property in source)
-    destination[property] = source[property] + 'px';
-  return destination;
-}
-
 
 // Fit
 var Fit = {

@@ -102,7 +102,6 @@ var Window = {
 
 
   // Resize
-  // window resize (TODO:orientationchange?)
   startObservingResize: function() {
     if (this._isObservingResize) return;
 
@@ -194,7 +193,7 @@ var Window = {
 
     // the animations
     var css = { overflow: 'visible' };
-    css[z] = wh + 'px';
+    css[z] = wh;
 
     var fx = 1;
 
@@ -439,7 +438,6 @@ var Window = {
     hideQueue.queue($.proxy(function(next_after_resize) {
       this._safeResetsAfterSwitchSide();
 
-      // all of the below we cannot safely call safely
       this.stopObservingResize();
 
       Pages.removeAll();

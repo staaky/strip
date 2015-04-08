@@ -13,12 +13,12 @@ var _Strip = {
   // click delegation
   startDelegating: function() {
     this.stopDelegating();
-    $(document.documentElement).delegate('.strip[href]', 'click', this._delegateHandler = $.proxy(this.delegate, this));
+    $(document.documentElement).on('click', '.strip[href]', this._delegateHandler = $.proxy(this.delegate, this));
   },
 
   stopDelegating: function() {
     if (this._delegateHandler) {
-      $(document.documentElement).undelegate('.strip[href]', 'click', this._delegateHandler);
+      $(document.documentElement).off('click', '.strip[href]', this._delegateHandler);
       this._delegateHandler = null;
     }
   },
@@ -49,7 +49,7 @@ var _Strip = {
     }
 
     var views = [], object_type,
-        isElement = _.isElement(object);
+        isElement = object && object.nodeType == 1;
 
     switch ((object_type = $.type(object))) {
       case 'string':
@@ -72,7 +72,7 @@ var _Strip = {
             });
 
             elements.each(function(i, element) {
-              // adjust the position if we find that the given object position
+              // adjust the position if we find the given object position
               if (!position && element == object) position = i + 1;
               views.push(new View(element, $.extend({}, groupOptions, options)));
             });
@@ -206,7 +206,7 @@ if (
   // we'll reset the show function
   _Strip.show = _Strip.showFallback;
 
-  // disable some function we don't want to run
+  // disable some functions we don't want to run
   $.each('startDelegating stopDelegating initialize'.split(' '), function(i, fn) {
     _Strip[fn] = function() { };
   });

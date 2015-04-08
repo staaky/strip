@@ -79,7 +79,7 @@ $.extend(Page.prototype, {
     this._created = true;
   },
 
-  //surrounding
+  // surrounding
   _getSurroundingPages: function() {
     var preload;
     if (!(preload = this.view.options.preload)) return [];
@@ -553,7 +553,7 @@ $.extend(Page.prototype, {
       // width
       if (z == 'width') {
         page.css({
-          width: (isFullscreen ? viewport.width : fitted.width + paddingX) + 'px'
+          width: (isFullscreen ? viewport.width : fitted.width + paddingX)
         });
 
         var initialBoundsHeight = bounds.height;
@@ -576,7 +576,7 @@ $.extend(Page.prototype, {
         var attempts = isFullscreen ? 0 : 4; // fullscreen doesn't need extra resizing
 
         while (attempts > 0 && (shrunkW = fitted.width - contentDimensions.width)) {
-          page.css({ width: (fitted.width + paddingX - shrunkW) + 'px' });
+          page.css({ width: (fitted.width + paddingX - shrunkW) });
 
           previousCH = cH;
 
@@ -599,7 +599,7 @@ $.extend(Page.prototype, {
             // restore if the last attempt failed
             if (attempts - 1 <= 0) {
               // otherwise the caption increased in height, go back
-              page.css({ width: fitted.width + paddingX  + 'px' });
+              page.css({ width: fitted.width + paddingX });
               contentDimensions = initialImageSize;
               cH = initialCH;
             }
@@ -640,12 +640,12 @@ $.extend(Page.prototype, {
     if (isFullscreen) pageDimensions = viewport;
 
     if (z == 'width') {
-      page.css({ width: pageDimensions.width + 'px' });
+      page.css({ width: pageDimensions.width });
     } else {
-      page.css({ height: pageDimensions.height + 'px' });
+      page.css({ height: pageDimensions.height });
     }
 
-    container.css({ bottom: cH + 'px' });
+    container.css({ bottom: cH });
 
 
     // margins
@@ -658,10 +658,10 @@ $.extend(Page.prototype, {
       mTop = Math.floor(mTop);
     }
 
-    content.css(px($.extend({}, contentDimensions, {
+    content.css($.extend({}, contentDimensions, {
       'margin-left': mLeft,
       'margin-top': mTop
-    })));
+    }));
 
 
     if (this.playerIframe) {
