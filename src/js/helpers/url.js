@@ -69,6 +69,24 @@ var Types = {
         id: id
       };
     }
+  },
+
+  'wistia': {
+    detect: function(url) {
+      // We are looking for Public media URLs like:  http://home.wistia.com/medias/e4a27b971d
+      var res = /(wistia.com|wi.st)\/([a-zA-Z0-9-_]+)\/([a-zA-Z0-9-_]+)(?:\S+)?$/i.exec(url);
+      if (res && res[3]) return res[3];
+
+      return false;
+    },
+    data: function(url) {
+      var id = this.detect(url);
+      if (!id) return false;
+      
+      return {
+        id: id
+      };
+    }
   }
 };
 

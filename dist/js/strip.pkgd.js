@@ -564,6 +564,24 @@ var Types = {
         id: id
       };
     }
+  },
+
+  'wistia': {
+    detect: function(url) {
+      // We are looking for Public media URLs like:  http://home.wistia.com/medias/e4a27b971d
+      var res = /(wistia.com|wi.st)\/([a-zA-Z0-9-_]+)\/([a-zA-Z0-9-_]+)(?:\S+)?$/i.exec(url);
+      if (res && res[3]) return res[3];
+
+      return false;
+    },
+    data: function(url) {
+      var id = this.detect(url);
+      if (!id) return false;
+      // console.log(id);
+      return {
+        id: id
+      };
+    }
   }
 };
 
@@ -642,6 +660,84 @@ return VimeoReady;
 
 })();
 
+
+var WistiaReady = (function() {
+
+var WistiaReady = function() { return this.initialize.apply(this, _slice.call(arguments)); };
+$.extend(WistiaReady.prototype, {
+  initialize: function(url, callback) {
+    this.url = url;
+    this.callback = callback;
+
+    this.load();
+  },
+
+  load: function() {
+    // first try the cache
+    var cache = Cache.get(this.url);
+
+    if (cache) {
+      return this.callback(cache.data);
+    }
+
+    var protocol = 'http' + (window.location && window.location.protocol == 'https:' ? 's' : '') + ':',
+        // video_id = getURIData(this.url).id;
+        video_url = getURIData(this.url).url;
+
+    video_url = video_url.replace(/.*?:\/\//g, "//");
+
+    this._xhr = $.getJSON(protocol + '//fast.wistia.com/oembed?url=' + protocol + video_url + '&callback=?', $.proxy(function(_data) {
+      var data = {
+        dimensions: {
+          width: _data.width,
+          height: _data.height
+        }
+      };
+
+      Cache.set(this.url, data);
+
+      if (this.callback) this.callback(data);
+    }, this));
+  },
+
+  abort: function() {
+    if (this._xhr) {
+      this._xhr.abort();
+      this._xhr = null;
+    }
+  }
+});
+
+
+var Cache = {
+  cache:  [],
+
+  get: function(url) {
+   var entry = null;
+   for(var i=0;i<this.cache.length;i++) {
+     if (this.cache[i] && this.cache[i].url == url) entry = this.cache[i];
+   }
+   return entry;
+  },
+
+  set: function(url, data) {
+    this.remove(url);
+    this.cache.push({ url: url, data: data });
+  },
+
+  remove: function(url) {
+   for(var i=0;i<this.cache.length;i++) {
+     if (this.cache[i] && this.cache[i].url == url) {
+       delete this.cache[i];
+     }
+   }
+  }
+};
+
+return WistiaReady;
+
+})();
+
 var Options = {
   defaults: {
     effects: {
@@ -673,6 +769,22 @@ var Options = {
       portrait: 0,
       loop: 0
     },
+    wistia: {
+      autoPlay: true,         // flash/html5 only. Doesn't work on mobile. When true, the video plays as soon as it's ready.
+      controlsVisibleOnLoad: false,   // When true, controls are visible before you click play.
+      endVideoBehavior: 'reset',    // flash only. Behavior when the video ends: default/reset/loop
+      fullscreenButton: true,     // Show fullscreen button
+      playerPreference: 'auto',     // 'flash', 'html5', or 'auto'
+      playButton: true,         // flash/external only. When true, display play button over video poster.
+      playbar: true,          // Show playbar
+      playerColor:  '000000',     // Set custom color on play button/controls
+      smallPlayButton: true,      // Show small playbutton in the bottom left
+      videoFoam: true,        // The embed will conform to the width of the parent element, resizing to maintain the correct aspect ratio. For iframes, requires the iframe API scripts. API/SEO embeds don't need any modifications. See the video-foam docs for more options.
+      videoQuality: 'hd-only',    // Specify the starting video quality. options: sd-only, md, hd-only, auto
+      videoWidth: 1280,         // The original width of the video.
+      videoHeight: 720,         // The original height of the video.
+      volumeControl: true       // Show volume control
+    },
     youtube: {
       autoplay: 1,
       controls: 1,
@@ -689,6 +801,10 @@ var Options = {
       'image': { },
       'vimeo': {
         width: 1280
+      },
+      'wistia': {
+        videoWidth: 1280,
+        videoHeight: 720
       },
       // Youtube needs both dimensions, it doesn't support fetching video dimensions like Vimeo yet.
       // Star this ticket if you'd like to get support for it at some point:
@@ -747,13 +863,13 @@ var Options = {
 
       // disable left and right keys for video, because players like
       // youtube use these keys
-      if (type == 'vimeo' || type == 'youtube') {
+      if (type == 'vimeo' || type == 'youtube' || type == 'wistia') {
         $.extend(options.keyboard, { left: false, right: false });
       }
     }
 
     // vimeo & youtube always have no overlap
-    if (type == 'vimeo' || type == 'youtube') {
+    if (type == 'vimeo' || type == 'youtube' || type == 'wistia') {
       options.overlap = false;
     }
 
@@ -1073,6 +1189,7 @@ $.extend(Page.prototype, {
 
       case 'vimeo':
       case 'youtube':
+      case 'wistia':
         this.container.append(this.content = $('<div>'));
         break;
     }
@@ -1227,6 +1344,22 @@ $.extend(Page.prototype, {
 
         break;
 
+      case 'wistia':
+
+        this.wistiaReady = new WistiaReady(this.view.url, $.proxy(function(data) {
+          // mark as loaded
+          this._markAsLoaded();
+
+          this.dimensions = {
+            width: this.view.options.videoWidth,
+            height: this.view.options.videoHeight
+          };
+
+          if (callback) callback();
+        }, this));
+
+        break;
+
       case 'youtube':
         // mark as loaded
         this._markAsLoaded();
@@ -1254,7 +1387,7 @@ $.extend(Page.prototype, {
   },
 
   isVideo: function() {
-    return /^(youtube|vimeo)$/.test(this.view.type);
+    return /^(youtube|vimeo|wistia)$/.test(this.view.type);
   },
 
   insertVideo: function(callback) {
@@ -1269,7 +1402,8 @@ $.extend(Page.prototype, {
         queryString = $.param(playerVars),
         src = {
           vimeo: '//player.vimeo.com/video/{id}?{queryString}',
-          youtube: '//www.youtube.com/embed/{id}?{queryString}'
+          youtube: '//www.youtube.com/embed/{id}?{queryString}',
+          wistia: '//fast.wistia.com/embed/iframe/{id}?{queryString}'
         };
 
     this.content.append(this.playerIframe = $('<iframe webkitAllowFullScreen mozallowfullscreen allowFullScreen>')
@@ -1355,7 +1489,7 @@ $.extend(Page.prototype, {
       }, this), 1);
     }, this));
 
-    // vimeo and youtube use this for insertion
+    // vimeo, youtube and wistia use this for insertion
     if (this.isVideo()) {
       shq.queue($.proxy(function(next_video_inserted) {
         this.insertVideo($.proxy(function() {
@@ -1490,6 +1624,11 @@ $.extend(Page.prototype, {
     if (this.vimeoReady) {
       this.vimeoReady.abort();
       this.vimeoReady = null;
+    }
+
+    if (this.wistiaReady) {
+      this.wistiaReady.abort();
+      this.wistiaReady = null;
     }
 
     this.loading = false;
