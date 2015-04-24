@@ -62,6 +62,7 @@ $.extend(Page.prototype, {
 
       case 'vimeo':
       case 'youtube':
+      case 'wistia':
         this.container.append(this.content = $('<div>'));
         break;
     }
@@ -216,6 +217,23 @@ $.extend(Page.prototype, {
 
         break;
 
+      case 'wistia':
+
+        this.wistiaReady = new WistiaReady(this.view.url, $.proxy(function(data) {
+          // mark as loaded
+          this._markAsLoaded();
+
+          this.dimensions = {
+            width: this.view.options.videoWidth,
+            height: this.view.options.videoHeight
+          };
+
+          if (callback) callback();
+        }, this));
+
+        break;
+
+
       case 'youtube':
         // mark as loaded
         this._markAsLoaded();
@@ -243,7 +261,7 @@ $.extend(Page.prototype, {
   },
 
   isVideo: function() {
-    return /^(youtube|vimeo)$/.test(this.view.type);
+    return /^(youtube|vimeo|wistia)$/.test(this.view.type);
   },
 
   insertVideo: function(callback) {
@@ -258,7 +276,8 @@ $.extend(Page.prototype, {
         queryString = $.param(playerVars),
         src = {
           vimeo: '//player.vimeo.com/video/{id}?{queryString}',
-          youtube: '//www.youtube.com/embed/{id}?{queryString}'
+          youtube: '//www.youtube.com/embed/{id}?{queryString}',
+          wistia: '//fast.wistia.com/embed/iframe/{id}?{queryString}'
         };
 
     this.content.append(this.playerIframe = $('<iframe webkitAllowFullScreen mozallowfullscreen allowFullScreen>')
@@ -344,7 +363,7 @@ $.extend(Page.prototype, {
       }, this), 1);
     }, this));
 
-    // vimeo and youtube use this for insertion
+    // vimeo, youtube and wistia use this for insertion
     if (this.isVideo()) {
       shq.queue($.proxy(function(next_video_inserted) {
         this.insertVideo($.proxy(function() {
@@ -479,6 +498,11 @@ $.extend(Page.prototype, {
     if (this.vimeoReady) {
       this.vimeoReady.abort();
       this.vimeoReady = null;
+    }
+
+    if (this.wistiaReady) {
+      this.wistiaReady.abort();
+      this.wistiaReady = null;
     }
 
     this.loading = false;
