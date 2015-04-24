@@ -18,7 +18,7 @@ Install with [Bower](http://bower.io): `bower install strip`
 
 Strip may be used in commercial projects and applications with the one-time purchase of a commercial license. If you are paid to do your job, and part of your job is implementing Strip, a commercial license is required.
 
-http://www.stripjs.com/license
+[http://www.stripjs.com/license](http://www.stripjs.com/license)
 
 For non-commercial projects and applications, you may use Strip under the terms of the [Creative Commons BY-NC-ND 3.0 License](http://creativecommons.org/licenses/by-nc-nd/3.0/) for free.
 
