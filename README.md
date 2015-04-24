@@ -8,6 +8,12 @@ See [stripjs.com](http://www.stripjs.com) for demos and docs.
 
 [![screenshot](https://cloud.githubusercontent.com/assets/5575/4969788/ec4fc80e-686c-11e4-8406-614db6980325.jpg)](http://www.stripjs.com)
 
+## Install
+
+Install with [Bower](http://bower.io): `bower install strip`
+
+[Install with npm](http://npmjs.com/package/@staaky/strip): `npm install @staaky/strip`
+
 ## License
 
 Strip may be used in commercial projects and applications with the one-time purchase of a commercial license. If you are paid to do your job, and part of your job is implementing Strip, a commercial license is required.
@@ -43,15 +49,6 @@ Now run the `grunt` command, this updates files in `dist` to include the latest 
 ```
 grunt
 ```
-
-## Bower
-
-Strip can also be installed using [Bower](http://bower.io):
-
-```
-bower install strip
-```
-
 
 * * *
 
