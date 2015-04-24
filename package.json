@@ -1,13 +1,21 @@
 {
   "name": "@staaky/strip",
   "title": "Strip",
-  "version": "1.5.7",
+  "version": "1.5.8",
   "description": "A Less Intrusive Responsive Lightbox",
   "homepage": "http://stripjs.com",
   "author": {
     "name": "Nick Stakenburg",
     "url": "http://nickstakenburg.com"
   },
+  "keywords": [
+    "lightbox",
+    "modal",
+    "window",
+    "responsive",
+    "jquery",
+    "jquery-plugin"
+  ],
   "licenses": [
     {
       "type": "CC-BY-NC-ND-3.0",

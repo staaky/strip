@@ -1,14 +1,15 @@
 {
   "name": "strip",
   "description": "A Less Intrusive Responsive Lightbox",
-  "version": "1.5.7",
+  "version": "1.5.8",
   "homepage": "http://stripjs.com",
   "keywords": [
     "lightbox",
     "modal",
     "window",
     "responsive",
-    "jquery"
+    "jquery",
+    "jquery-plugin"
   ],
   "main": [
     "dist/js/strip.pkgd.js",
