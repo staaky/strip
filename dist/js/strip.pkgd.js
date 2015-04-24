@@ -1,5 +1,5 @@
 /*!
- * Strip - A Less Intrusive Responsive Lightbox - v1.5.4
+ * Strip - A Less Intrusive Responsive Lightbox - v1.5.8
  * (c) 2014-2015 Nick Stakenburg
  *
  * http://www.stripjs.com
@@ -21,7 +21,7 @@
 
 
 var Strip = {
-  version: '1.5.4'
+  version: '1.5.8'
 };
 
 Strip.Skins = {
