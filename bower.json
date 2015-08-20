@@ -1,7 +1,7 @@
 {
   "name": "strip",
   "description": "A Less Intrusive Responsive Lightbox",
-  "version": "1.5.9",
+  "version": "1.6.0",
   "homepage": "http://stripjs.com",
   "keywords": [
     "lightbox",
@@ -26,6 +26,6 @@
     "README.md"
   ],
   "dependencies": {
-    "jquery": "^1.11.1"
+    "jquery": "^1.11.3"
   }
 }

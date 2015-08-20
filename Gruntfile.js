@@ -15,7 +15,7 @@ module.exports = function(grunt) {
           process: true
         },
         src: [
-        'src/js/intro.js',
+        'src/js/umd-head.js',
         'src/js/setup.js',
         'src/js/skins.js',
 
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
 
         'src/js/api.js',
 
-        'src/js/outro.js'
+        'src/js/umd-tail.js'
         ],
         dest: '<%= dirs.dest %>/js/strip.pkgd.js'
       },

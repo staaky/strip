@@ -136,7 +136,7 @@ $.extend(Page.prototype, {
         width: imageReady.img.naturalWidth,
         height: imageReady.img.naturalHeight
       };
-    }, this));
+    }, this), null, { method: 'naturalWidth' });
   },
 
   // the purpose of load is to set dimensions
@@ -196,7 +196,7 @@ $.extend(Page.prototype, {
           };
 
           if (callback) callback();
-        }, this));
+        }, this), { method: 'naturalWidth' });
 
         break;
 
@@ -254,18 +254,20 @@ $.extend(Page.prototype, {
       return;
     }
 
-    var playerVars = $.extend({}, this.view.options[this.view.type] || {}),
+    var protocol = 'http' + (window.location && window.location.protocol == 'https:' ? 's' : '') + ':',
+        playerVars = $.extend({}, this.view.options[this.view.type] || {}),
         queryString = $.param(playerVars),
-        src = {
-          vimeo: '//player.vimeo.com/video/{id}?{queryString}',
-          youtube: '//www.youtube.com/embed/{id}?{queryString}'
-        };
+        urls = {
+          vimeo: protocol + '//player.vimeo.com/video/{id}?{queryString}',
+          youtube: protocol + '//www.youtube.com/embed/{id}?{queryString}'
+        },
+        src = urls[this.view.type]
+          .replace('{id}', this.view._data.id)
+          .replace('{queryString}', queryString);
 
     this.content.append(this.playerIframe = $('<iframe webkitAllowFullScreen mozallowfullscreen allowFullScreen>')
       .attr({
-        src: src[this.view.type]
-             .replace('{id}', this.view._data.id)
-             .replace('{queryString}', queryString),
+        src: src,
         height: this.contentDimensions.height,
         width: this.contentDimensions.width,
         frameborder: 0
