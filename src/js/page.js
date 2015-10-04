@@ -55,7 +55,7 @@ $.extend(Page.prototype, {
 
     switch (this.view.type) {
       case 'image':
-        this.container.append(this.content = $('<img>')
+        this.container.append(this.content = $('<img' + (this.view.options.crossOrigin ? ' crossorigin="anonymous"' : '') + '>')
           .attr({ src: this.view.url })
         );
         break;
