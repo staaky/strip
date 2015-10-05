@@ -1,5 +1,5 @@
 /*!
- * Strip - A Less Intrusive Responsive Lightbox - v1.6.1
+ * Strip - A Less Intrusive Responsive Lightbox - v1.6.2
  * (c) 2014-2015 Nick Stakenburg
  *
  * http://www.stripjs.com
@@ -25,7 +25,7 @@
 }(this, function($) {
 
 var Strip = {
-  version: '1.6.1'
+  version: '1.6.2'
 };
 
 Strip.Skins = {
@@ -1489,6 +1489,12 @@ $.extend(Page.prototype, {
       // store duration on resize and use it for the other animations
       var z = this.getOrientation() == 'horizontal' ? 'width' : 'height';
 
+      // onShow callback
+      var onShow = this.view && this.view.options.onShow;
+      if ($.type(onShow) == 'function') {
+        onShow.call(Strip);
+      }
+
       var duration = Window.resize(this[z], function() {
         if (--fx < 1) next_shown_and_resized();
       }, duration);
@@ -1955,12 +1961,6 @@ var Window = {
     if (wh > 0) {
       this.visible = true;
       this.startObservingResize();
-
-      // onShow callback
-      var onShow = this.view && this.view.options.onShow;
-      if ($.type(onShow) == 'function') {
-        onShow.call(Strip);
-      }
     }
 
     var fromZ = Window.element['outer' + Z](),
@@ -2208,6 +2208,8 @@ var Window = {
   },
 
   hide: function(callback) {
+    if (!this.view) return;
+
     var hideQueue = this.queues.hide;
     hideQueue.queue([]); // clear queue
 
