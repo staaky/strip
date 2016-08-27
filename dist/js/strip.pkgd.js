@@ -1,6 +1,6 @@
 /*!
- * Strip - A Less Intrusive Responsive Lightbox - v1.6.2
- * (c) 2014-2015 Nick Stakenburg
+ * Strip - A Less Intrusive Responsive Lightbox - v1.6.3
+ * (c) 2014-2016 Nick Stakenburg
  *
  * http://www.stripjs.com
  *
@@ -25,7 +25,7 @@
 }(this, function($) {
 
 var Strip = {
-  version: '1.6.2'
+  version: '1.6.3'
 };
 
 Strip.Skins = {
@@ -704,7 +704,7 @@ $.extend(VimeoReady.prototype, {
     var protocol = 'http' + (window.location && window.location.protocol == 'https:' ? 's' : '') + ':',
         video_id = getURIData(this.url).id;
 
-    this._xhr = $.getJSON(protocol + '//vimeo.com/api/oembed.json?url=' + protocol + '//vimeo.com/' + video_id + '&callback=?', $.proxy(function(_data) {
+    this._xhr = $.getJSON(protocol + '//vimeo.com/api/oembed.json?url=' + protocol + '//vimeo.com/' + video_id + '&maxwidth=9999999&maxheight=9999999&callback=?', $.proxy(function(_data) {
       var data = {
         dimensions: {
           width: _data.width,

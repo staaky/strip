@@ -20,7 +20,7 @@ $.extend(VimeoReady.prototype, {
     var protocol = 'http' + (window.location && window.location.protocol == 'https:' ? 's' : '') + ':',
         video_id = getURIData(this.url).id;
 
-    this._xhr = $.getJSON(protocol + '//vimeo.com/api/oembed.json?url=' + protocol + '//vimeo.com/' + video_id + '&callback=?', $.proxy(function(_data) {
+    this._xhr = $.getJSON(protocol + '//vimeo.com/api/oembed.json?url=' + protocol + '//vimeo.com/' + video_id + '&maxwidth=9999999&maxheight=9999999&callback=?', $.proxy(function(_data) {
       var data = {
         dimensions: {
           width: _data.width,
