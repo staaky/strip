@@ -1,6 +1,6 @@
 # Strip
 
-_A Less Intrusive Responsive Lightbox_
+_An Unobtrusive Responsive Lightbox_
 
 Strip is a Lightbox that only partially covers the page. This is less intrusive and leaves room to interact with the page on larger screens while giving smaller mobile devices the classic Lightbox experience.
 
