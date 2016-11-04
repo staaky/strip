@@ -1,8 +1,8 @@
 {
   "name": "@staaky/strip",
   "title": "Strip",
-  "version": "1.6.3",
-  "description": "A Less Intrusive Responsive Lightbox",
+  "version": "1.6.4",
+  "description": "An Unobtrusive Responsive Lightbox",
   "homepage": "http://stripjs.com",
   "author": {
     "name": "Nick Stakenburg",
