@@ -167,6 +167,7 @@ $.extend(ImageReady.prototype, {
   load: function() {
     this._loading = setTimeout($.proxy(function() {
       var image = new Image();
+      image.crossOrigin = this.img.crossOrigin;
       this._onloadImage = image;
 
       image.onload = $.proxy(function() {

@@ -1,6 +1,6 @@
 /*!
  * Strip - An Unobtrusive Responsive Lightbox - v1.6.4
- * (c) 2014-2016 Nick Stakenburg
+ * (c) 2014-2017 Nick Stakenburg
  *
  * http://www.stripjs.com
  *
@@ -366,6 +366,7 @@ $.extend(ImageReady.prototype, {
   load: function() {
     this._loading = setTimeout($.proxy(function() {
       var image = new Image();
+      image.crossOrigin = this.img.crossOrigin;
       this._onloadImage = image;
 
       image.onload = $.proxy(function() {
@@ -1180,7 +1181,7 @@ $.extend(Page.prototype, {
 
     switch (this.view.type) {
       case 'image':
-        this.container.append(this.content = $('<img>')
+        this.container.append(this.content = $('<img' + (this.view.options.crossOrigin ? ' crossorigin="anonymous"' : '') + '>')
           .attr({ src: this.view.url })
         );
         break;
