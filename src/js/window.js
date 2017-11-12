@@ -145,12 +145,6 @@ var Window = {
     if (wh > 0) {
       this.visible = true;
       this.startObservingResize();
-
-      // onShow callback
-      var onShow = this.view && this.view.options.onShow;
-      if ($.type(onShow) == 'function') {
-        onShow.call(Strip);
-      }
     }
 
     var fromZ = Window.element['outer' + Z](),
@@ -398,6 +392,8 @@ var Window = {
   },
 
   hide: function(callback) {
+    if (!this.view) return;
+
     var hideQueue = this.queues.hide;
     hideQueue.queue([]); // clear queue
 

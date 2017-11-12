@@ -364,6 +364,12 @@ $.extend(Page.prototype, {
       // store duration on resize and use it for the other animations
       var z = this.getOrientation() == 'horizontal' ? 'width' : 'height';
 
+      // onShow callback
+      var onShow = this.view && this.view.options.onShow;
+      if ($.type(onShow) == 'function') {
+        onShow.call(Strip);
+      }
+
       var duration = Window.resize(this[z], function() {
         if (--fx < 1) next_shown_and_resized();
       }, duration);
