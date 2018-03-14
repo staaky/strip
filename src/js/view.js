@@ -17,11 +17,11 @@ $.extend(View.prototype, {
      object = {
        element:   element[0],
        url:       element.attr('href'),
-       caption:   element.data('strip-caption'),
-       group:     element.data('strip-group'),
-       extension: element.data('strip-extension'),
-       type:      element.data('strip-type'),
-       options:   (element.data('strip-options') && eval('({' + element.data('strip-options') + '})')) || {}
+       caption:   element.attr('data-strip-caption'),
+       group:     element.attr('data-strip-group'),
+       extension: element.attr('data-strip-extension'),
+       type:      element.attr('data-strip-type'),
+       options:   (element.attr('data-strip-options') && eval('({' + element.attr('data-strip-options') + '})')) || {}
      };
    }
 

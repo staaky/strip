@@ -62,7 +62,7 @@ var _Strip = {
 
           // if we have an element, look for other elements
           if (isElement) {
-            var elements = $('.strip[data-strip-group="' + $(object).data('strip-group') + '"]');
+            var elements = $('.strip[data-strip-group="' + $(object).attr('data-strip-group') + '"]');
 
             // find possible group options
             var groupOptions = {};

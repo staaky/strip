@@ -175,7 +175,7 @@ var Pages = {
       $(element).addClass('strip-active-element strip-active-group');
 
       // also give other items in the group the active group class
-      var group = $(element).data('strip-group');
+      var group = $(element).attr('data-strip-group');
       if (group) {
         $('.strip[data-strip-group="' + group + '"]').addClass('strip-active-group');
       }
