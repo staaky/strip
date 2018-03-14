@@ -5,13 +5,13 @@ $.extend(View.prototype, {
        data = {};
 
    // string -> element
-   if ($.type(object) == 'string') {
+   if ($.type(object) === 'string') {
      // turn the string into an element
      object = { url: object };
    }
 
    // element -> object
-   else if (object && object.nodeType == 1) {
+   else if (object && object.nodeType === 1) {
      var element = $(object);
 
      object = {

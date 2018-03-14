@@ -139,7 +139,7 @@ var Window = {
 
   resize: function(wh, callback, alternateDuration) {
     var orientation = this.getOrientation(),
-        Z = orientation == 'vertical' ? 'Height' : 'Width',
+        Z = orientation === 'vertical' ? 'Height' : 'Width',
         z = Z.toLowerCase();
 
     if (wh > 0) {
@@ -151,13 +151,13 @@ var Window = {
         duration;
 
     // if we're opening use the show duration
-    if (fromZ == 0) {
+    if (fromZ === 0) {
       duration = this.view.options.effects.window.show;
 
       // add opening class
       this.element.addClass('strp-opening');
       this.opening = true;
-    } else if ($.type(alternateDuration) == 'number') {
+    } else if ($.type(alternateDuration) === 'number') {
       // alternate when set
       duration =  alternateDuration;
     } else {
@@ -177,7 +177,7 @@ var Window = {
     }
 
 
-    if (wh == 0) {
+    if (wh === 0) {
       this.closing = true;
       // we only add the closing class if we're not currently animating the window
       if (!this.element.is(':animated')) {
@@ -198,7 +198,7 @@ var Window = {
     this._offsetLeft = null;
 
     var onResize = this.view.options.onResize,
-        hasOnResize = $.type(onResize) == 'function';
+        hasOnResize = $.type(onResize) === 'function';
 
     this.element.stop(true).animate(css, $.extend({
       duration: duration,
@@ -208,7 +208,7 @@ var Window = {
     }, !hasOnResize ? {} : {
       // we only add step if there's an onResize callback
       step: $.proxy(function(now, fx) {
-        if (fx.prop == z) {
+        if (fx.prop === z) {
           onResize.call(Strip, fx.prop, now, this.side);
         }
       }, this)
@@ -260,7 +260,7 @@ var Window = {
         css = { 'margin-top': pnMarginTop - iH * .5 };
 
     var duration = this.view.options.effects.transition.min;
-    if ($.type(alternateDuration) == 'number') duration = alternateDuration;
+    if ($.type(alternateDuration) === 'number') duration = alternateDuration;
 
     // adjust <> instantly when opening
     if (this.opening) duration = 0;
@@ -291,7 +291,7 @@ var Window = {
   // adjust the size based on the current view
   // this might require closing the window first
   setSide: function(side, callback) {
-    if (this.side == side) {
+    if (this.side === side) {
       if (callback) callback();
       return;
     }
@@ -346,7 +346,7 @@ var Window = {
   },
 
   getOrientation: function(side) {
-    return (this.side == 'left' || this.side == 'right') ? 'horizontal' : 'vertical';
+    return (this.side === 'left' || this.side === 'right') ? 'horizontal' : 'vertical';
   },
 
   // loading indicator
@@ -384,7 +384,7 @@ var Window = {
     // store the page and show it
     this.page = Pages.show(position, $.proxy(function() {
       var afterPosition = this.view.options.afterPosition;
-      if ($.type(afterPosition) == 'function') {
+      if ($.type(afterPosition) === 'function') {
         afterPosition.call(Strip, position);
       }
       if (callback) callback();
@@ -444,7 +444,7 @@ var Window = {
 
       // afterHide callback
       var afterHide = this.view && this.view.options.afterHide;
-      if ($.type(afterHide) == 'function') {
+      if ($.type(afterHide) === 'function') {
         afterHide.call(Strip);
       }
 
@@ -453,7 +453,7 @@ var Window = {
       next_after_resize();
     }, this));
 
-    if ($.type(callback) == 'function') {
+    if ($.type(callback) === 'function') {
       hideQueue.queue($.proxy(function(next_callback) {
         callback();
         next_callback();
@@ -487,7 +487,7 @@ var Window = {
 
   // Previous / Next
   mayPrevious: function() {
-    return (this.view && this.view.options.loop && this.views && this.views.length > 1) || this._position != 1;
+    return (this.view && this.view.options.loop && this.views && this.views.length > 1) || this._position !== 1;
   },
 
   previous: function(force) {
@@ -501,7 +501,7 @@ var Window = {
   mayNext: function() {
     var hasViews = this.views && this.views.length > 1;
 
-    return (this.view && this.view.options.loop && hasViews) || (hasViews && this.getSurroundingIndexes().next != 1);
+    return (this.view && this.view.options.loop && hasViews) || (hasViews && this.getSurroundingIndexes().next !== 1);
   },
 
   next: function(force) {
@@ -570,7 +570,7 @@ var Window = {
         var x = event.pageX,
             y = event.pageY;
 
-        if (this._hoveringNav || (y == this._y && x == this._x)) {
+        if (this._hoveringNav || (y === this._y && x === this._x)) {
           return;
         }
 
@@ -635,8 +635,8 @@ var Window = {
         side = Side.toLowerCase();
 
     this.element[(this['may' + Side]() ? 'add' : 'remove') + 'Class']('strp-hovering-clickable');
-    this._previous[(side != 'next' ? 'add' : 'remove') + 'Class']('strp-nav-previous-hover strp-nav-hover');
-    this._next[(side == 'next' ? 'add' : 'remove') + 'Class']('strp-nav-next-hover strp-nav-hover');
+    this._previous[(side !== 'next' ? 'add' : 'remove') + 'Class']('strp-nav-previous-hover strp-nav-hover');
+    this._next[(side === 'next' ? 'add' : 'remove') + 'Class']('strp-nav-next-hover strp-nav-hover');
   },
 
   _onMouseLeave: function(event) {
@@ -693,11 +693,11 @@ var Window = {
     var elements = this.element.find('.strp-nav-button');
 
     var duration = this.view ? this.view.options.effects.ui.show : 0;
-    if ($.type(alternateDuration) == 'number') duration = alternateDuration;
+    if ($.type(alternateDuration) === 'number') duration = alternateDuration;
 
     elements.stop(true).fadeTo(duration, 1, 'stripEaseInSine', $.proxy(function() {
       this.startUITimer();
-      if ($.type(callback) == 'function') callback();
+      if ($.type(callback) === 'function') callback();
     }, this));
   },
 
@@ -705,10 +705,10 @@ var Window = {
     var elements = this.element.find('.strp-nav-button');
 
     var duration = this.view ? this.view.options.effects.ui.hide : 0;
-    if ($.type(alternateDuration) == 'number') duration = alternateDuration;
+    if ($.type(alternateDuration) === 'number') duration = alternateDuration;
 
     elements.stop(true).fadeOut(duration, 'stripEaseOutSine', function() {
-      if ($.type(callback) == 'function') callback();
+      if ($.type(callback) === 'function') callback();
     });
   },
 

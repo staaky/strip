@@ -1,6 +1,6 @@
 /*!
- * Strip - An Unobtrusive Responsive Lightbox - v1.6.4
- * (c) 2014-2016 Nick Stakenburg
+ * Strip - An Unobtrusive Responsive Lightbox - v1.6.5
+ * (c) 2014-2018 Nick Stakenburg
  *
  * http://www.stripjs.com
  *
@@ -25,7 +25,7 @@
 }(this, function($) {
 
 var Strip = {
-  version: '1.6.4'
+  version: '1.6.5'
 };
 
 Strip.Skins = {
@@ -852,7 +852,7 @@ var Options = {
     // keyboard
     if (options.keyboard) {
       // when keyboard is true, enable all keys
-      if ($.type(options.keyboard) == 'boolean') {
+      if ($.type(options.keyboard) === 'boolean') {
         options.keyboard = {};
         $.each(this.defaults.keyboard, function(key, bool) {
           options.keyboard[key] = true;
@@ -861,13 +861,13 @@ var Options = {
 
       // disable left and right keys for video, because players like
       // youtube use these keys
-      if (type == 'vimeo' || type == 'youtube') {
+      if (type === 'vimeo' || type === 'youtube') {
         $.extend(options.keyboard, { left: false, right: false });
       }
     }
 
     // vimeo & youtube always have no overlap
-    if (type == 'vimeo' || type == 'youtube') {
+    if (type === 'vimeo' || type === 'youtube') {
       options.overlap = false;
     }
 
@@ -882,23 +882,23 @@ $.extend(View.prototype, {
        data = {};
 
    // string -> element
-   if ($.type(object) == 'string') {
+   if ($.type(object) === 'string') {
      // turn the string into an element
      object = { url: object };
    }
 
    // element -> object
-   else if (object && object.nodeType == 1) {
+   else if (object && object.nodeType === 1) {
      var element = $(object);
 
      object = {
        element:   element[0],
        url:       element.attr('href'),
-       caption:   element.data('strip-caption'),
-       group:     element.data('strip-group'),
-       extension: element.data('strip-extension'),
-       type:      element.data('strip-type'),
-       options:   (element.data('strip-options') && eval('({' + element.data('strip-options') + '})')) || {}
+       caption:   element.attr('data-strip-caption'),
+       group:     element.attr('data-strip-group'),
+       extension: element.attr('data-strip-extension'),
+       type:      element.attr('data-strip-type'),
+       options:   (element.attr('data-strip-options') && eval('({' + element.attr('data-strip-options') + '})')) || {}
      };
    }
 
@@ -1111,7 +1111,7 @@ var Pages = {
       $(element).addClass('strip-active-element strip-active-group');
 
       // also give other items in the group the active group class
-      var group = $(element).data('strip-group');
+      var group = $(element).attr('data-strip-group');
       if (group) {
         $('.strip[data-strip-group="' + group + '"]').addClass('strip-active-group');
       }
@@ -1240,7 +1240,7 @@ $.extend(Page.prototype, {
   // so that it doesn't interfere with our regular load
   preload: function() {
     if (this.preloading || this.preloaded
-      || this.view.type != 'image'
+      || this.view.type !== 'image'
       || !this.view.options.preload
       || this.loaded // page might be loaded before it's preloaded so also stop there
       ) {
@@ -1379,7 +1379,7 @@ $.extend(Page.prototype, {
       return;
     }
 
-    var protocol = 'http' + (window.location && window.location.protocol == 'https:' ? 's' : '') + ':',
+    var protocol = 'http' + (window.location && window.location.protocol === 'https:' ? 's' : '') + ':',
         playerVars = $.extend({}, this.view.options[this.view.type] || {}),
         queryString = $.param(playerVars),
         urls = {
@@ -1407,7 +1407,7 @@ $.extend(Page.prototype, {
     // no need to raise if we're already the topmost element
     // this helps avoid unnecessary detaching of the element
     var lastChild = Pages.element[0].lastChild;
-    if (lastChild && lastChild == this.element[0]) {
+    if (lastChild && lastChild === this.element[0]) {
       return;
     }
 
@@ -1487,11 +1487,11 @@ $.extend(Page.prototype, {
       var fx = 3;
 
       // store duration on resize and use it for the other animations
-      var z = this.getOrientation() == 'horizontal' ? 'width' : 'height';
+      var z = this.getOrientation() === 'horizontal' ? 'width' : 'height';
 
       // onShow callback
       var onShow = this.view && this.view.options.onShow;
-      if ($.type(onShow) == 'function') {
+      if ($.type(onShow) === 'function') {
         onShow.call(Strip);
       }
 
@@ -1539,7 +1539,7 @@ $.extend(Page.prototype, {
 
   _show: function(callback, alternateDuration) {
     var duration = !Window.visible ? 0 :
-                   ($.type(alternateDuration) == 'number') ? alternateDuration :
+                   ($.type(alternateDuration) === 'number') ? alternateDuration :
                    this.view.options.effects.transition.min;
 
     this.element.stop(true).show().fadeTo(duration || 0, 1, callback);
@@ -1554,7 +1554,7 @@ $.extend(Page.prototype, {
     this.abort();
 
     var duration = this.view.options.effects.transition.min;
-    if ($.type(alternateDuration) == 'number') duration = alternateDuration;
+    if ($.type(alternateDuration) === 'number') duration = alternateDuration;
 
     // hide video instantly
     var isVideo = this.isVideo();
@@ -1632,7 +1632,7 @@ $.extend(Page.prototype, {
   },
 
   getOrientation: function(side) {
-    return (this.view.options.side == 'left' || this.view.options.side == 'right') ? 'horizontal' : 'vertical';
+    return (this.view.options.side === 'left' || this.view.options.side === 'right') ? 'horizontal' : 'vertical';
   },
 
   fitToWindow: function() {
@@ -1641,16 +1641,16 @@ $.extend(Page.prototype, {
         viewport = Bounds.viewport(),
         bounds = $.extend({}, viewport),
         orientation = this.getOrientation(),
-        z = orientation == 'horizontal' ? 'width' : 'height';
+        z = orientation === 'horizontal' ? 'width' : 'height';
 
     var container = page.find('.strp-container');
 
     // add the safety
     Window.element.removeClass('strp-measured');
     var win = Window.element,
-        isFullscreen = (z == 'width') ? parseInt(win.css('min-width')) > 0 :
+        isFullscreen = (z === 'width') ? parseInt(win.css('min-width')) > 0 :
                        parseInt(win.css('min-height')) > 0,
-        safety = isFullscreen ? 0 : parseInt(win.css('margin-' + (z == 'width' ? 'left' : 'bottom')));
+        safety = isFullscreen ? 0 : parseInt(win.css('margin-' + (z === 'width' ? 'left' : 'bottom')));
     Window.element.addClass('strp-measured');
 
     bounds[z] -= safety;
@@ -1684,7 +1684,7 @@ $.extend(Page.prototype, {
       if (!pageVisible) page.show();
 
       // width
-      if (z == 'width') {
+      if (z === 'width') {
         page.css({
           width: (isFullscreen ? viewport.width : fitted.width + paddingX)
         });
@@ -1720,7 +1720,7 @@ $.extend(Page.prototype, {
                            this.position ? this.position.outerWidth() + paddingX : 0);
           content.show();
 
-          if (cH == previousCH && (newCW <= (fitted.width + paddingX - shrunkW))) {
+          if (cH === previousCH && (newCW <= (fitted.width + paddingX - shrunkW))) {
             // safe to keep this width, so store it
             fitted.width -= shrunkW;
           } else {
@@ -1772,7 +1772,7 @@ $.extend(Page.prototype, {
     // fullscreen mode uses viewport dimensions for the page
     if (isFullscreen) pageDimensions = viewport;
 
-    if (z == 'width') {
+    if (z === 'width') {
       page.css({ width: pageDimensions.width });
     } else {
       page.css({ height: pageDimensions.height });
@@ -1955,7 +1955,7 @@ var Window = {
 
   resize: function(wh, callback, alternateDuration) {
     var orientation = this.getOrientation(),
-        Z = orientation == 'vertical' ? 'Height' : 'Width',
+        Z = orientation === 'vertical' ? 'Height' : 'Width',
         z = Z.toLowerCase();
 
     if (wh > 0) {
@@ -1967,13 +1967,13 @@ var Window = {
         duration;
 
     // if we're opening use the show duration
-    if (fromZ == 0) {
+    if (fromZ === 0) {
       duration = this.view.options.effects.window.show;
 
       // add opening class
       this.element.addClass('strp-opening');
       this.opening = true;
-    } else if ($.type(alternateDuration) == 'number') {
+    } else if ($.type(alternateDuration) === 'number') {
       // alternate when set
       duration =  alternateDuration;
     } else {
@@ -1993,7 +1993,7 @@ var Window = {
     }
 
 
-    if (wh == 0) {
+    if (wh === 0) {
       this.closing = true;
       // we only add the closing class if we're not currently animating the window
       if (!this.element.is(':animated')) {
@@ -2014,7 +2014,7 @@ var Window = {
     this._offsetLeft = null;
 
     var onResize = this.view.options.onResize,
-        hasOnResize = $.type(onResize) == 'function';
+        hasOnResize = $.type(onResize) === 'function';
 
     this.element.stop(true).animate(css, $.extend({
       duration: duration,
@@ -2024,7 +2024,7 @@ var Window = {
     }, !hasOnResize ? {} : {
       // we only add step if there's an onResize callback
       step: $.proxy(function(now, fx) {
-        if (fx.prop == z) {
+        if (fx.prop === z) {
           onResize.call(Strip, fx.prop, now, this.side);
         }
       }, this)
@@ -2076,7 +2076,7 @@ var Window = {
         css = { 'margin-top': pnMarginTop - iH * .5 };
 
     var duration = this.view.options.effects.transition.min;
-    if ($.type(alternateDuration) == 'number') duration = alternateDuration;
+    if ($.type(alternateDuration) === 'number') duration = alternateDuration;
 
     // adjust <> instantly when opening
     if (this.opening) duration = 0;
@@ -2107,7 +2107,7 @@ var Window = {
   // adjust the size based on the current view
   // this might require closing the window first
   setSide: function(side, callback) {
-    if (this.side == side) {
+    if (this.side === side) {
       if (callback) callback();
       return;
     }
@@ -2162,7 +2162,7 @@ var Window = {
   },
 
   getOrientation: function(side) {
-    return (this.side == 'left' || this.side == 'right') ? 'horizontal' : 'vertical';
+    return (this.side === 'left' || this.side === 'right') ? 'horizontal' : 'vertical';
   },
 
   // loading indicator
@@ -2200,7 +2200,7 @@ var Window = {
     // store the page and show it
     this.page = Pages.show(position, $.proxy(function() {
       var afterPosition = this.view.options.afterPosition;
-      if ($.type(afterPosition) == 'function') {
+      if ($.type(afterPosition) === 'function') {
         afterPosition.call(Strip, position);
       }
       if (callback) callback();
@@ -2260,7 +2260,7 @@ var Window = {
 
       // afterHide callback
       var afterHide = this.view && this.view.options.afterHide;
-      if ($.type(afterHide) == 'function') {
+      if ($.type(afterHide) === 'function') {
         afterHide.call(Strip);
       }
 
@@ -2269,7 +2269,7 @@ var Window = {
       next_after_resize();
     }, this));
 
-    if ($.type(callback) == 'function') {
+    if ($.type(callback) === 'function') {
       hideQueue.queue($.proxy(function(next_callback) {
         callback();
         next_callback();
@@ -2303,7 +2303,7 @@ var Window = {
 
   // Previous / Next
   mayPrevious: function() {
-    return (this.view && this.view.options.loop && this.views && this.views.length > 1) || this._position != 1;
+    return (this.view && this.view.options.loop && this.views && this.views.length > 1) || this._position !== 1;
   },
 
   previous: function(force) {
@@ -2317,7 +2317,7 @@ var Window = {
   mayNext: function() {
     var hasViews = this.views && this.views.length > 1;
 
-    return (this.view && this.view.options.loop && hasViews) || (hasViews && this.getSurroundingIndexes().next != 1);
+    return (this.view && this.view.options.loop && hasViews) || (hasViews && this.getSurroundingIndexes().next !== 1);
   },
 
   next: function(force) {
@@ -2386,7 +2386,7 @@ var Window = {
         var x = event.pageX,
             y = event.pageY;
 
-        if (this._hoveringNav || (y == this._y && x == this._x)) {
+        if (this._hoveringNav || (y === this._y && x === this._x)) {
           return;
         }
 
@@ -2451,8 +2451,8 @@ var Window = {
         side = Side.toLowerCase();
 
     this.element[(this['may' + Side]() ? 'add' : 'remove') + 'Class']('strp-hovering-clickable');
-    this._previous[(side != 'next' ? 'add' : 'remove') + 'Class']('strp-nav-previous-hover strp-nav-hover');
-    this._next[(side == 'next' ? 'add' : 'remove') + 'Class']('strp-nav-next-hover strp-nav-hover');
+    this._previous[(side !== 'next' ? 'add' : 'remove') + 'Class']('strp-nav-previous-hover strp-nav-hover');
+    this._next[(side === 'next' ? 'add' : 'remove') + 'Class']('strp-nav-next-hover strp-nav-hover');
   },
 
   _onMouseLeave: function(event) {
@@ -2509,11 +2509,11 @@ var Window = {
     var elements = this.element.find('.strp-nav-button');
 
     var duration = this.view ? this.view.options.effects.ui.show : 0;
-    if ($.type(alternateDuration) == 'number') duration = alternateDuration;
+    if ($.type(alternateDuration) === 'number') duration = alternateDuration;
 
     elements.stop(true).fadeTo(duration, 1, 'stripEaseInSine', $.proxy(function() {
       this.startUITimer();
-      if ($.type(callback) == 'function') callback();
+      if ($.type(callback) === 'function') callback();
     }, this));
   },
 
@@ -2521,10 +2521,10 @@ var Window = {
     var elements = this.element.find('.strp-nav-button');
 
     var duration = this.view ? this.view.options.effects.ui.hide : 0;
-    if ($.type(alternateDuration) == 'number') duration = alternateDuration;
+    if ($.type(alternateDuration) === 'number') duration = alternateDuration;
 
     elements.stop(true).fadeOut(duration, 'stripEaseOutSine', function() {
-      if ($.type(callback) == 'function') callback();
+      if ($.type(callback) === 'function') callback();
     });
   },
 
@@ -2616,7 +2616,7 @@ var Keyboard = {
 
   getKeyByKeyCode: function(keyCode) {
     for(var key in this.keyCode) {
-      if (this.keyCode[key] == keyCode) return key;
+      if (this.keyCode[key] === keyCode) return key;
     }
     return null;
   }
@@ -2667,13 +2667,13 @@ var _Strip = {
     var options = arguments[1] || {},
         position = arguments[2];
 
-    if (arguments[1] && $.type(arguments[1]) == 'number') {
+    if (arguments[1] && $.type(arguments[1]) === 'number') {
       position = arguments[1];
       options = {};
     }
 
     var views = [], object_type,
-        isElement = object && object.nodeType == 1;
+        isElement = object && object.nodeType === 1;
 
     switch ((object_type = $.type(object))) {
       case 'string':
@@ -2686,7 +2686,7 @@ var _Strip = {
 
           // if we have an element, look for other elements
           if (isElement) {
-            var elements = $('.strip[data-strip-group="' + $(object).data('strip-group') + '"]');
+            var elements = $('.strip[data-strip-group="' + $(object).attr('data-strip-group') + '"]');
 
             // find possible group options
             var groupOptions = {};
@@ -2697,7 +2697,7 @@ var _Strip = {
 
             elements.each(function(i, element) {
               // adjust the position if we find the given object position
-              if (!position && element == object) position = i + 1;
+              if (!position && element === object) position = i + 1;
               views.push(new View(element, $.extend({}, groupOptions, options)));
             });
           }
@@ -2742,7 +2742,7 @@ var _Strip = {
       // if we've clicked the exact same element it'll never re-enable
       // hideOnClickOutside delegation because Pages.show() won't let it
       // through, we re-enable it here in that case
-      if (positionInAPG == Window._position) {
+      if (positionInAPG === Window._position) {
         Window.bindHideOnClickOutside();
       }
 
@@ -2758,12 +2758,12 @@ var _Strip = {
     function getUrl(object) {
       var url, type = $.type(object);
 
-      if (type == 'string') {
+      if (type === 'string') {
         url = object;
-      } else if (type == 'array' && object[0]) {
+      } else if (type === 'array' && object[0]) {
         url = getUrl(object[0]);
       } else if (_.isElement(object) && $(object).attr('href')) {
-        var url = $(object).attr('href');
+        url = $(object).attr('href');
       } else if (object.url) {
         url = object.url;
       } else {
@@ -2823,9 +2823,9 @@ if (
     // old Android
     // added a version check because Firefox on Android doesn't have a
     // version number above 4.2 anymore
-    || ($.type(Browser.Android) == 'number' && Browser.Android < 3)
+    || ($.type(Browser.Android) === 'number' && Browser.Android < 3)
     // old WebKit
-    || (Browser.MobileSafari && ($.type(Browser.WebKit) == 'number' && Browser.WebKit < 533.18))
+    || (Browser.MobileSafari && ($.type(Browser.WebKit) === 'number' && Browser.WebKit < 533.18))
   ) {
   // we'll reset the show function
   _Strip.show = _Strip.showFallback;

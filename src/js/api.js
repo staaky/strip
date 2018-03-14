@@ -43,13 +43,13 @@ var _Strip = {
     var options = arguments[1] || {},
         position = arguments[2];
 
-    if (arguments[1] && $.type(arguments[1]) == 'number') {
+    if (arguments[1] && $.type(arguments[1]) === 'number') {
       position = arguments[1];
       options = {};
     }
 
     var views = [], object_type,
-        isElement = object && object.nodeType == 1;
+        isElement = object && object.nodeType === 1;
 
     switch ((object_type = $.type(object))) {
       case 'string':
@@ -73,7 +73,7 @@ var _Strip = {
 
             elements.each(function(i, element) {
               // adjust the position if we find the given object position
-              if (!position && element == object) position = i + 1;
+              if (!position && element === object) position = i + 1;
               views.push(new View(element, $.extend({}, groupOptions, options)));
             });
           }
@@ -118,7 +118,7 @@ var _Strip = {
       // if we've clicked the exact same element it'll never re-enable
       // hideOnClickOutside delegation because Pages.show() won't let it
       // through, we re-enable it here in that case
-      if (positionInAPG == Window._position) {
+      if (positionInAPG === Window._position) {
         Window.bindHideOnClickOutside();
       }
 
@@ -134,12 +134,12 @@ var _Strip = {
     function getUrl(object) {
       var url, type = $.type(object);
 
-      if (type == 'string') {
+      if (type === 'string') {
         url = object;
-      } else if (type == 'array' && object[0]) {
+      } else if (type === 'array' && object[0]) {
         url = getUrl(object[0]);
       } else if (_.isElement(object) && $(object).attr('href')) {
-        var url = $(object).attr('href');
+        url = $(object).attr('href');
       } else if (object.url) {
         url = object.url;
       } else {
@@ -199,9 +199,9 @@ if (
     // old Android
     // added a version check because Firefox on Android doesn't have a
     // version number above 4.2 anymore
-    || ($.type(Browser.Android) == 'number' && Browser.Android < 3)
+    || ($.type(Browser.Android) === 'number' && Browser.Android < 3)
     // old WebKit
-    || (Browser.MobileSafari && ($.type(Browser.WebKit) == 'number' && Browser.WebKit < 533.18))
+    || (Browser.MobileSafari && ($.type(Browser.WebKit) === 'number' && Browser.WebKit < 533.18))
   ) {
   // we'll reset the show function
   _Strip.show = _Strip.showFallback;

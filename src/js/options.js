@@ -94,7 +94,7 @@ var Options = {
     // keyboard
     if (options.keyboard) {
       // when keyboard is true, enable all keys
-      if ($.type(options.keyboard) == 'boolean') {
+      if ($.type(options.keyboard) === 'boolean') {
         options.keyboard = {};
         $.each(this.defaults.keyboard, function(key, bool) {
           options.keyboard[key] = true;
@@ -103,13 +103,13 @@ var Options = {
 
       // disable left and right keys for video, because players like
       // youtube use these keys
-      if (type == 'vimeo' || type == 'youtube') {
+      if (type === 'vimeo' || type === 'youtube') {
         $.extend(options.keyboard, { left: false, right: false });
       }
     }
 
     // vimeo & youtube always have no overlap
-    if (type == 'vimeo' || type == 'youtube') {
+    if (type === 'vimeo' || type === 'youtube') {
       options.overlap = false;
     }
 

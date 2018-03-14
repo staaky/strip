@@ -115,7 +115,7 @@ $.extend(Page.prototype, {
   // so that it doesn't interfere with our regular load
   preload: function() {
     if (this.preloading || this.preloaded
-      || this.view.type != 'image'
+      || this.view.type !== 'image'
       || !this.view.options.preload
       || this.loaded // page might be loaded before it's preloaded so also stop there
       ) {
@@ -254,7 +254,7 @@ $.extend(Page.prototype, {
       return;
     }
 
-    var protocol = 'http' + (window.location && window.location.protocol == 'https:' ? 's' : '') + ':',
+    var protocol = 'http' + (window.location && window.location.protocol === 'https:' ? 's' : '') + ':',
         playerVars = $.extend({}, this.view.options[this.view.type] || {}),
         queryString = $.param(playerVars),
         urls = {
@@ -282,7 +282,7 @@ $.extend(Page.prototype, {
     // no need to raise if we're already the topmost element
     // this helps avoid unnecessary detaching of the element
     var lastChild = Pages.element[0].lastChild;
-    if (lastChild && lastChild == this.element[0]) {
+    if (lastChild && lastChild === this.element[0]) {
       return;
     }
 
@@ -362,11 +362,11 @@ $.extend(Page.prototype, {
       var fx = 3;
 
       // store duration on resize and use it for the other animations
-      var z = this.getOrientation() == 'horizontal' ? 'width' : 'height';
+      var z = this.getOrientation() === 'horizontal' ? 'width' : 'height';
 
       // onShow callback
       var onShow = this.view && this.view.options.onShow;
-      if ($.type(onShow) == 'function') {
+      if ($.type(onShow) === 'function') {
         onShow.call(Strip);
       }
 
@@ -414,7 +414,7 @@ $.extend(Page.prototype, {
 
   _show: function(callback, alternateDuration) {
     var duration = !Window.visible ? 0 :
-                   ($.type(alternateDuration) == 'number') ? alternateDuration :
+                   ($.type(alternateDuration) === 'number') ? alternateDuration :
                    this.view.options.effects.transition.min;
 
     this.element.stop(true).show().fadeTo(duration || 0, 1, callback);
@@ -429,7 +429,7 @@ $.extend(Page.prototype, {
     this.abort();
 
     var duration = this.view.options.effects.transition.min;
-    if ($.type(alternateDuration) == 'number') duration = alternateDuration;
+    if ($.type(alternateDuration) === 'number') duration = alternateDuration;
 
     // hide video instantly
     var isVideo = this.isVideo();
@@ -507,7 +507,7 @@ $.extend(Page.prototype, {
   },
 
   getOrientation: function(side) {
-    return (this.view.options.side == 'left' || this.view.options.side == 'right') ? 'horizontal' : 'vertical';
+    return (this.view.options.side === 'left' || this.view.options.side === 'right') ? 'horizontal' : 'vertical';
   },
 
   fitToWindow: function() {
@@ -516,16 +516,16 @@ $.extend(Page.prototype, {
         viewport = Bounds.viewport(),
         bounds = $.extend({}, viewport),
         orientation = this.getOrientation(),
-        z = orientation == 'horizontal' ? 'width' : 'height';
+        z = orientation === 'horizontal' ? 'width' : 'height';
 
     var container = page.find('.strp-container');
 
     // add the safety
     Window.element.removeClass('strp-measured');
     var win = Window.element,
-        isFullscreen = (z == 'width') ? parseInt(win.css('min-width')) > 0 :
+        isFullscreen = (z === 'width') ? parseInt(win.css('min-width')) > 0 :
                        parseInt(win.css('min-height')) > 0,
-        safety = isFullscreen ? 0 : parseInt(win.css('margin-' + (z == 'width' ? 'left' : 'bottom')));
+        safety = isFullscreen ? 0 : parseInt(win.css('margin-' + (z === 'width' ? 'left' : 'bottom')));
     Window.element.addClass('strp-measured');
 
     bounds[z] -= safety;
@@ -559,7 +559,7 @@ $.extend(Page.prototype, {
       if (!pageVisible) page.show();
 
       // width
-      if (z == 'width') {
+      if (z === 'width') {
         page.css({
           width: (isFullscreen ? viewport.width : fitted.width + paddingX)
         });
@@ -595,7 +595,7 @@ $.extend(Page.prototype, {
                            this.position ? this.position.outerWidth() + paddingX : 0);
           content.show();
 
-          if (cH == previousCH && (newCW <= (fitted.width + paddingX - shrunkW))) {
+          if (cH === previousCH && (newCW <= (fitted.width + paddingX - shrunkW))) {
             // safe to keep this width, so store it
             fitted.width -= shrunkW;
           } else {
@@ -647,7 +647,7 @@ $.extend(Page.prototype, {
     // fullscreen mode uses viewport dimensions for the page
     if (isFullscreen) pageDimensions = viewport;
 
-    if (z == 'width') {
+    if (z === 'width') {
       page.css({ width: pageDimensions.width });
     } else {
       page.css({ height: pageDimensions.height });
