@@ -10,8 +10,6 @@ See [stripjs.com](http://www.stripjs.com) for demos and docs.
 
 ## Install
 
-Install with [Bower](http://bower.io): `bower install strip`
-
 [Install with npm](http://npmjs.com/package/@staaky/strip): `npm install @staaky/strip`
 
 ## License
