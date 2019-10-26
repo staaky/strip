@@ -1,4 +1,6 @@
-function Timers() { return this.initialize.apply(this, _slice.call(arguments)); };
+function Timers() {
+  return this.initialize.apply(this, _slice.call(arguments));
+}
 $.extend(Timers.prototype, {
   initialize: function() {
     this._timers = {};

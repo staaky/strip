@@ -1,3 +1,3 @@
 var Strip = {
-  version: '<%= pkg.version %>'
+  version: "<%= pkg.version %>"
 };

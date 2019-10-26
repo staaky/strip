@@ -13,12 +13,20 @@ var _Strip = {
   // click delegation
   startDelegating: function() {
     this.stopDelegating();
-    $(document.documentElement).on('click', '.strip[href]', this._delegateHandler = $.proxy(this.delegate, this));
+    $(document.documentElement).on(
+      "click",
+      ".strip[href]",
+      (this._delegateHandler = $.proxy(this.delegate, this))
+    );
   },
 
   stopDelegating: function() {
     if (this._delegateHandler) {
-      $(document.documentElement).off('click', '.strip[href]', this._delegateHandler);
+      $(document.documentElement).off(
+        "click",
+        ".strip[href]",
+        this._delegateHandler
+      );
       this._delegateHandler = null;
     }
   },
@@ -41,46 +49,59 @@ var _Strip = {
     }
 
     var options = arguments[1] || {},
-        position = arguments[2];
+      position = arguments[2];
 
-    if (arguments[1] && $.type(arguments[1]) === 'number') {
+    if (arguments[1] && $.type(arguments[1]) === "number") {
       position = arguments[1];
       options = {};
     }
 
-    var views = [], object_type,
-        isElement = object && object.nodeType === 1;
+    var views = [],
+      object_type,
+      isElement = object && object.nodeType === 1;
 
     switch ((object_type = $.type(object))) {
-      case 'string':
-      case 'object':
+      case "string":
+      case "object":
         var view = new View(object, options),
-            _dgo = "data-strip-group-options";
+          _dgo = "data-strip-group-options";
 
         if (view.group) {
           // extend the entire group
 
           // if we have an element, look for other elements
           if (isElement) {
-            var elements = $('.strip[data-strip-group="' + $(object).attr('data-strip-group') + '"]');
+            var elements = $(
+              '.strip[data-strip-group="' +
+                $(object).attr("data-strip-group") +
+                '"]'
+            );
 
             // find possible group options
             var groupOptions = {};
 
-            elements.filter('[' + _dgo + ']').each(function(i, element) {
-              $.extend(groupOptions, eval('({' + ($(element).attr(_dgo) || '') + '})'));
+            elements.filter("[" + _dgo + "]").each(function(i, element) {
+              $.extend(
+                groupOptions,
+                eval("({" + ($(element).attr(_dgo) || "") + "})")
+              );
             });
 
             elements.each(function(i, element) {
               // adjust the position if we find the given object position
               if (!position && element === object) position = i + 1;
-              views.push(new View(element, $.extend({}, groupOptions, options)));
+              views.push(
+                new View(element, $.extend({}, groupOptions, options))
+              );
             });
           }
         } else {
           var groupOptions = {};
-          if (isElement && $(object).is('[' + _dgo + ']')) {
-            $.extend(groupOptions, eval('({' + ($(object).attr(_dgo) || '') + '})'));
+          if (isElement && $(object).is("[" + _dgo + "]")) {
+            $.extend(
+              groupOptions,
+              eval("({" + ($(object).attr(_dgo) || "") + "})")
+            );
             // reset the view with group options applied
             view = new View(object, $.extend({}, groupOptions, options));
           }
@@ -89,8 +110,7 @@ var _Strip = {
         }
         break;
 
-
-      case 'array':
+      case "array":
         $.each(object, function(i, item) {
           var view = new View(item, options);
           views.push(view);
@@ -114,7 +134,10 @@ var _Strip = {
 
     // if we've clicked an element, search for it in the currently open pagegroup
     var positionInAPG;
-    if (isElement && (positionInAPG = Pages.getPositionInActivePageGroup(object))) {
+    if (
+      isElement &&
+      (positionInAPG = Pages.getPositionInActivePageGroup(object))
+    ) {
       // if we've clicked the exact same element it'll never re-enable
       // hideOnClickOutside delegation because Pages.show() won't let it
       // through, we re-enable it here in that case
@@ -127,19 +150,19 @@ var _Strip = {
       // otherwise start loading and open
       Window.load(views, position);
     }
-
   },
 
   showFallback: (function() {
     function getUrl(object) {
-      var url, type = $.type(object);
+      var url,
+        type = $.type(object);
 
-      if (type === 'string') {
+      if (type === "string") {
         url = object;
-      } else if (type === 'array' && object[0]) {
+      } else if (type === "array" && object[0]) {
         url = getUrl(object[0]);
-      } else if (_.isElement(object) && $(object).attr('href')) {
-        url = $(object).attr('href');
+      } else if (_.isElement(object) && $(object).attr("href")) {
+        url = $(object).attr("href");
       } else if (object.url) {
         url = object.url;
       } else {
@@ -191,25 +214,30 @@ $.extend(Strip, {
   }
 });
 
-
 // fallback for old browsers without full position:fixed support
 if (
-    // IE6
-    (Browser.IE && Browser.IE < 7)
-    // old Android
-    // added a version check because Firefox on Android doesn't have a
-    // version number above 4.2 anymore
-    || ($.type(Browser.Android) === 'number' && Browser.Android < 3)
-    // old WebKit
-    || (Browser.MobileSafari && ($.type(Browser.WebKit) === 'number' && Browser.WebKit < 533.18))
-  ) {
+  // IE6
+  (Browser.IE && Browser.IE < 7) ||
+  // old Android
+  // added a version check because Firefox on Android doesn't have a
+  // version number above 4.2 anymore
+  ($.type(Browser.Android) === "number" && Browser.Android < 3) ||
+  // old WebKit
+  (Browser.MobileSafari &&
+    ($.type(Browser.WebKit) === "number" && Browser.WebKit < 533.18))
+) {
   // we'll reset the show function
   _Strip.show = _Strip.showFallback;
 
   // disable some functions we don't want to run
-  $.each('startDelegating stopDelegating initialize'.split(' '), function(i, fn) {
-    _Strip[fn] = function() { };
+  $.each("startDelegating stopDelegating initialize".split(" "), function(
+    i,
+    fn
+  ) {
+    _Strip[fn] = function() {};
   });
 
-  Strip.hide = function() { return this; };
+  Strip.hide = function() {
+    return this;
+  };
 }

@@ -8,16 +8,16 @@ var Options = {
     },
     hideOnClickOutside: true,
     keyboard: {
-      left:  true,
+      left: true,
       right: true,
-      esc:   true
+      esc: true
     },
     loop: true,
     overlap: true,
-    preload: [1,2],
+    preload: [1, 2],
     position: true,
-    skin: 'strip',
-    side: 'right',
+    skin: "strip",
+    side: "right",
     spinner: true,
     toggle: true,
     uiDelay: 3000,
@@ -38,18 +38,18 @@ var Options = {
       loop: 0,
       modestbranding: 1,
       rel: 0,
-      vq: 'hd1080' // force hd: http://stackoverflow.com/a/12467865
+      vq: "hd1080" // force hd: http://stackoverflow.com/a/12467865
     },
 
     initialTypeOptions: {
-      'image': { },
-      'vimeo': {
+      image: {},
+      vimeo: {
         width: 1280
       },
       // Youtube needs both dimensions, it doesn't support fetching video dimensions like Vimeo yet.
       // Star this ticket if you'd like to get support for it at some point:
       // https://code.google.com/p/gdata-issues/issues/detail?id=4329
-      'youtube': {
+      youtube: {
         width: 1280,
         height: 720
       }
@@ -62,8 +62,13 @@ var Options = {
 
     opts.skin = opts.skin || this.defaults.skin;
 
-    var selected = opts.skin ? $.extend({}, Strip.Skins[opts.skin] || Strip.Skins[this.defaults.skin]) : {},
-        merged = $.extend(true, {}, this.defaults, selected);
+    var selected = opts.skin
+        ? $.extend(
+            {},
+            Strip.Skins[opts.skin] || Strip.Skins[this.defaults.skin]
+          )
+        : {},
+      merged = $.extend(true, {}, this.defaults, selected);
 
     // merge initial type options
     if (merged.initialTypeOptions) {
@@ -82,7 +87,9 @@ var Options = {
     if (!options.effects || (Browser.IE && Browser.IE < 9)) {
       options.effects = {};
       $.each(this.defaults.effects, function(name, effect) {
-        $.each((options.effects[name] = $.extend({}, effect)), function(option) {
+        $.each((options.effects[name] = $.extend({}, effect)), function(
+          option
+        ) {
           options.effects[name][option] = 0;
         });
       });
@@ -94,7 +101,7 @@ var Options = {
     // keyboard
     if (options.keyboard) {
       // when keyboard is true, enable all keys
-      if ($.type(options.keyboard) === 'boolean') {
+      if ($.type(options.keyboard) === "boolean") {
         options.keyboard = {};
         $.each(this.defaults.keyboard, function(key, bool) {
           options.keyboard[key] = true;
@@ -103,13 +110,13 @@ var Options = {
 
       // disable left and right keys for video, because players like
       // youtube use these keys
-      if (type === 'vimeo' || type === 'youtube') {
+      if (type === "vimeo" || type === "youtube") {
         $.extend(options.keyboard, { left: false, right: false });
       }
     }
 
     // vimeo & youtube always have no overlap
-    if (type === 'vimeo' || type === 'youtube') {
+    if (type === "vimeo" || type === "youtube") {
       options.overlap = false;
     }
 

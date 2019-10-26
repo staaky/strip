@@ -4,10 +4,7 @@
  *
  * http://www.stripjs.com
  *
- * Licensing:
- * - Commercial: http://www.stripjs.com/license
- * - Non-commercial: http://creativecommons.org/licenses/by-nc-nd/3.0
- *
+ * @license: https://creativecommons.org/licenses/by/4.0
  */
 
 // UMD wrapper

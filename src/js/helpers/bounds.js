@@ -1,7 +1,7 @@
 var Bounds = {
   viewport: function() {
     var dimensions = {
-      width:  $(window).width()
+      width: $(window).width()
     };
 
     // Mobile Safari has a bugged viewport height after scrolling
