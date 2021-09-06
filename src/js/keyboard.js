@@ -6,24 +6,24 @@ var Keyboard = {
   keyCode: {
     left: 37,
     right: 39,
-    esc: 27
+    esc: 27,
   },
 
   // enable is passed the keyboard option of a page, which can be false
   // or contains multiple buttons to toggle
-  enable: function(enabled) {
+  enable: function (enabled) {
     this.disable();
 
     if (!enabled) return;
 
     $(document)
-      .on("keydown", (this._onKeyDownHandler = $.proxy(this.onKeyDown, this)))
-      .on("keyup", (this._onKeyUpHandler = $.proxy(this.onKeyUp, this)));
+      .on("keydown", (this._onKeyDownHandler = this.onKeyDown.bind(this)))
+      .on("keyup", (this._onKeyUpHandler = this.onKeyUp.bind(this)));
 
     this.enabled = enabled;
   },
 
-  disable: function() {
+  disable: function () {
     this.enabled = false;
 
     if (this._onKeyUpHandler) {
@@ -34,7 +34,7 @@ var Keyboard = {
     }
   },
 
-  onKeyDown: function(event) {
+  onKeyDown: function (event) {
     if (!this.enabled || !Window.visible) return;
 
     var key = this.getKeyByKeyCode(event.keyCode);
@@ -54,7 +54,7 @@ var Keyboard = {
     }
   },
 
-  onKeyUp: function(event) {
+  onKeyUp: function (event) {
     if (!this.enabled || !Window.visible) return;
 
     var key = this.getKeyByKeyCode(event.keyCode);
@@ -68,10 +68,10 @@ var Keyboard = {
     }
   },
 
-  getKeyByKeyCode: function(keyCode) {
+  getKeyByKeyCode: function (keyCode) {
     for (var key in this.keyCode) {
       if (this.keyCode[key] === keyCode) return key;
     }
     return null;
-  }
+  },
 };

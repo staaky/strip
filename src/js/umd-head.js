@@ -2,7 +2,7 @@
  * Strip - An Unobtrusive Responsive Lightbox - v<%= pkg.version %>
  * (c) 2014-<%= grunt.template.today("yyyy") %> Nick Stakenburg
  *
- * http://www.stripjs.com
+ * https://github.com/staaky/strip
  *
  * @license: https://creativecommons.org/licenses/by/4.0
  */

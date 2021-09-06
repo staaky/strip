@@ -1,9 +1,9 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
   // Config
   grunt.initConfig({
     pkg: grunt.file.readJSON("package.json"),
     dirs: {
-      dest: "dist"
+      dest: "dist",
     },
 
     vars: {},
@@ -11,7 +11,7 @@ module.exports = function(grunt) {
     concat: {
       js: {
         options: {
-          process: true
+          process: true,
         },
         src: [
           "src/js/umd-head.js",
@@ -39,17 +39,17 @@ module.exports = function(grunt) {
 
           "src/js/api.js",
 
-          "src/js/umd-tail.js"
+          "src/js/umd-tail.js",
         ],
-        dest: "<%= dirs.dest %>/js/strip.pkgd.js"
+        dest: "<%= dirs.dest %>/js/strip.pkgd.js",
       },
       css: {
         options: {
-          process: true
+          process: true,
         },
         src: ["src/css/strip.css"],
-        dest: "<%= dirs.dest %>/css/strip.css"
-      }
+        dest: "<%= dirs.dest %>/css/strip.css",
+      },
     },
 
     copy: {
@@ -59,22 +59,22 @@ module.exports = function(grunt) {
             expand: true,
             cwd: "src/css/strip-skins/",
             src: ["**"],
-            dest: "<%= dirs.dest %>/css/strip-skins/"
-          }
-        ]
-      }
+            dest: "<%= dirs.dest %>/css/strip-skins/",
+          },
+        ],
+      },
     },
 
     uglify: {
       js: {
         options: {
           output: {
-            comments: "some"
-          }
+            comments: "some",
+          },
         },
         src: ["<%= dirs.dest %>/js/strip.pkgd.js"],
-        dest: "<%= dirs.dest %>/js/strip.pkgd.min.js"
-      }
+        dest: "<%= dirs.dest %>/js/strip.pkgd.min.js",
+      },
     },
 
     svgmin: {
@@ -82,8 +82,8 @@ module.exports = function(grunt) {
         plugins: [
           { removeViewBox: false },
           { removeUselessStrokeAndFill: false },
-          { removeEmptyAttrs: false }
-        ]
+          { removeEmptyAttrs: false },
+        ],
       },
       dist: {
         files: [
@@ -91,15 +91,15 @@ module.exports = function(grunt) {
             expand: true,
             cwd: "src/css/",
             src: ["**/*.svg"],
-            dest: "src/css/"
-          }
-        ]
-      }
+            dest: "src/css/",
+          },
+        ],
+      },
     },
 
     clean: {
-      dest: "<%= dirs.dest %>/*"
-    }
+      dest: "<%= dirs.dest %>/*",
+    },
   });
 
   // Load plugins
@@ -108,7 +108,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-uglify");
   grunt.loadNpmTasks("grunt-contrib-clean");
   grunt.loadNpmTasks("grunt-svgmin");
-  grunt.loadNpmTasks("grunt-sync");
 
   // Tasks
   grunt.registerTask("default", [
@@ -116,7 +115,7 @@ module.exports = function(grunt) {
     "concat:js",
     "uglify:js",
     "concat:css",
-    "copy:css"
+    "copy:css",
   ]);
 
   grunt.registerTask("svg", ["svgmin"]);

@@ -4,13 +4,13 @@ var Options = {
       spinner: { show: 200, hide: 200 },
       transition: { min: 175, max: 250 },
       ui: { show: 0, hide: 200 },
-      window: { show: 300, hide: 300 }
+      window: { show: 300, hide: 300 },
     },
     hideOnClickOutside: true,
     keyboard: {
       left: true,
       right: true,
-      esc: true
+      esc: true,
     },
     loop: true,
     overlap: true,
@@ -27,7 +27,7 @@ var Options = {
       title: 1,
       byline: 1,
       portrait: 0,
-      loop: 0
+      loop: 0,
     },
     youtube: {
       autoplay: 1,
@@ -38,25 +38,25 @@ var Options = {
       loop: 0,
       modestbranding: 1,
       rel: 0,
-      vq: "hd1080" // force hd: http://stackoverflow.com/a/12467865
+      vq: "hd1080", // force hd: http://stackoverflow.com/a/12467865
     },
 
     initialTypeOptions: {
       image: {},
       vimeo: {
-        width: 1280
+        width: 1280,
       },
       // Youtube needs both dimensions, it doesn't support fetching video dimensions like Vimeo yet.
       // Star this ticket if you'd like to get support for it at some point:
       // https://code.google.com/p/gdata-issues/issues/detail?id=4329
       youtube: {
         width: 1280,
-        height: 720
-      }
-    }
+        height: 720,
+      },
+    },
   },
 
-  create: function(opts, type, data) {
+  create: function (opts, type, data) {
     opts = opts || {};
     data = data || {};
 
@@ -86,12 +86,13 @@ var Options = {
     // IE8 and below never use effects
     if (!options.effects || (Browser.IE && Browser.IE < 9)) {
       options.effects = {};
-      $.each(this.defaults.effects, function(name, effect) {
-        $.each((options.effects[name] = $.extend({}, effect)), function(
-          option
-        ) {
-          options.effects[name][option] = 0;
-        });
+      $.each(this.defaults.effects, function (name, effect) {
+        $.each(
+          (options.effects[name] = $.extend({}, effect)),
+          function (option) {
+            options.effects[name][option] = 0;
+          }
+        );
       });
 
       // disable the spinner when effects are disabled
@@ -101,9 +102,9 @@ var Options = {
     // keyboard
     if (options.keyboard) {
       // when keyboard is true, enable all keys
-      if ($.type(options.keyboard) === "boolean") {
+      if (typeof options.keyboard === "boolean") {
         options.keyboard = {};
-        $.each(this.defaults.keyboard, function(key, bool) {
+        $.each(this.defaults.keyboard, function (key, bool) {
           options.keyboard[key] = true;
         });
       }
@@ -121,5 +122,5 @@ var Options = {
     }
 
     return options;
-  }
+  },
 };

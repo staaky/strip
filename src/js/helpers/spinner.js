@@ -8,7 +8,7 @@ function Spinner() {
 Spinner.supported = Support.css.transform && Support.css.animation;
 
 $.extend(Spinner.prototype, {
-  initialize: function(element) {
+  initialize: function (element) {
     this.element = $(element);
     if (!this.element[0]) return;
 
@@ -25,17 +25,17 @@ $.extend(Spinner.prototype, {
     this.start();
   },
 
-  setOptions: function(options) {
+  setOptions: function (options) {
     this.options = $.extend(
       {
         show: 200,
-        hide: 200
+        hide: 200,
       },
       options || {}
     );
   },
 
-  build: function() {
+  build: function () {
     if (this._build) return;
 
     this._rotate.html("");
@@ -93,38 +93,38 @@ $.extend(Spinner.prototype, {
     this._build = true;
   },
 
-  start: function() {
+  start: function () {
     var rotateCSS = {};
     rotateCSS[Support.css.prefixed("animation")] =
       this.classPrefix + "spinner-spin 1s infinite steps(" + this.lines + ")";
     this._rotate.css(rotateCSS);
   },
 
-  stop: function() {
+  stop: function () {
     var rotateCSS = {};
     rotateCSS[Support.css.prefixed("animation")] = "none";
     this._rotate.css(rotateCSS);
   },
 
-  show: function(callback) {
+  show: function (callback) {
     this.build();
     this.start();
 
     this.element.stop(true).fadeTo(this.options.show, 1, callback); //deferred.resolve);
   },
 
-  hide: function(callback) {
+  hide: function (callback) {
     this.element.stop(true).fadeOut(
       this.options.hide,
-      $.proxy(function() {
+      function () {
         this.stop();
         if (callback) callback();
-      }, this)
+      }.bind(this)
     );
   },
 
-  refresh: function() {
+  refresh: function () {
     this._build = false;
     this.build();
-  }
+  },
 });

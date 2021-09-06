@@ -1,4 +1,4 @@
-var Browser = (function(uA) {
+var Browser = (function (uA) {
   function getVersion(identifier) {
     var version = new RegExp(identifier + "([\\d.]+)").exec(uA);
     return version ? parseFloat(version[1]) : true;
@@ -21,6 +21,6 @@ var Browser = (function(uA) {
     Chrome: uA.indexOf("Chrome") > -1 && getVersion("Chrome/"),
     ChromeMobile: uA.indexOf("CrMo") > -1 && getVersion("CrMo/"),
     Android: uA.indexOf("Android") > -1 && getVersion("Android "),
-    IEMobile: uA.indexOf("IEMobile") > -1 && getVersion("IEMobile/")
+    IEMobile: uA.indexOf("IEMobile") > -1 && getVersion("IEMobile/"),
   };
 })(navigator.userAgent);

@@ -1,12 +1,16 @@
 {
   "name": "@staaky/strip",
   "title": "Strip",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "An Unobtrusive Responsive Lightbox",
-  "homepage": "http://stripjs.com",
   "author": {
     "name": "Nick Stakenburg",
-    "url": "http://nickstakenburg.com"
+    "url": "https://github.com/staaky"
+  },
+  "main": "dist/js/strip.pkgd.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/staaky/strip.git"
   },
   "keywords": [
     "lightbox",
@@ -17,13 +21,18 @@
     "jquery-plugin"
   ],
   "license": "CC-BY-4.0",
+  "scripts": {
+    "build": "grunt",
+    "update": "ncu -u"
+  },
   "devDependencies": {
-    "grunt": "^1.0.4",
+    "grunt": "^1.4.1",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-uglify": "^4.0.1",
-    "grunt-svgmin": "^1.0.0",
-    "prettier": "1.18.2"
+    "grunt-contrib-uglify": "^5.0.1",
+    "grunt-svgmin": "^6.0.1",
+    "npm-check-updates": "^11.8.5",
+    "prettier": "2.3.2"
   }
 }

@@ -1,16 +1,16 @@
-var VimeoReady = (function() {
-  var VimeoReady = function() {
+var VimeoReady = (function () {
+  var VimeoReady = function () {
     return this.initialize.apply(this, _slice.call(arguments));
   };
   $.extend(VimeoReady.prototype, {
-    initialize: function(url, callback) {
+    initialize: function (url, callback) {
       this.url = url;
       this.callback = callback;
 
       this.load();
     },
 
-    load: function() {
+    load: function () {
       // first try the cache
       var cache = Cache.get(this.url);
 
@@ -31,33 +31,33 @@ var VimeoReady = (function() {
           "//vimeo.com/" +
           video_id +
           "&maxwidth=9999999&maxheight=9999999&callback=?",
-        $.proxy(function(_data) {
+        function (_data) {
           var data = {
             dimensions: {
               width: _data.width,
-              height: _data.height
-            }
+              height: _data.height,
+            },
           };
 
           Cache.set(this.url, data);
 
           if (this.callback) this.callback(data);
-        }, this)
+        }.bind(this)
       );
     },
 
-    abort: function() {
+    abort: function () {
       if (this._xhr) {
         this._xhr.abort();
         this._xhr = null;
       }
-    }
+    },
   });
 
   var Cache = {
     cache: [],
 
-    get: function(url) {
+    get: function (url) {
       var entry = null;
       for (var i = 0; i < this.cache.length; i++) {
         if (this.cache[i] && this.cache[i].url == url) entry = this.cache[i];
@@ -65,18 +65,18 @@ var VimeoReady = (function() {
       return entry;
     },
 
-    set: function(url, data) {
+    set: function (url, data) {
       this.remove(url);
       this.cache.push({ url: url, data: data });
     },
 
-    remove: function(url) {
+    remove: function (url) {
       for (var i = 0; i < this.cache.length; i++) {
         if (this.cache[i] && this.cache[i].url == url) {
           delete this.cache[i];
         }
       }
-    }
+    },
   };
 
   return VimeoReady;

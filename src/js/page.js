@@ -1,4 +1,4 @@
-var Page = (function() {
+var Page = (function () {
   var uid = 0,
     loadedUrlCache = {};
 
@@ -6,7 +6,7 @@ var Page = (function() {
     return this.initialize.apply(this, _slice.call(arguments));
   }
   $.extend(Page.prototype, {
-    initialize: function(view, position, total) {
+    initialize: function (view, position, total) {
       this.view = view;
       this.dimensions = { width: 0, height: 0 };
       this.uid = uid++;
@@ -24,7 +24,7 @@ var Page = (function() {
 
     // create the page, this doesn't mean it's loaded
     // should happen instantly
-    create: function() {
+    create: function () {
       if (this._created) return;
 
       Pages.element.append(
@@ -94,7 +94,7 @@ var Page = (function() {
     },
 
     // surrounding
-    _getSurroundingPages: function() {
+    _getSurroundingPages: function () {
       var preload;
       if (!(preload = this.view.options.preload)) return [];
 
@@ -117,20 +117,20 @@ var Page = (function() {
       return pages;
     },
 
-    preloadSurroundingImages: function() {
+    preloadSurroundingImages: function () {
       var pages = this._getSurroundingPages();
 
       $.each(
         pages,
-        $.proxy(function(i, page) {
+        function (_i, page) {
           page.preload();
-        }, this)
+        }.bind(this)
       );
     },
 
     // preload is a non-abortable preloader,
     // so that it doesn't interfere with our regular load
-    preload: function() {
+    preload: function () {
       if (
         this.preloading ||
         this.preloaded ||
@@ -148,16 +148,16 @@ var Page = (function() {
 
       new ImageReady(
         this.content[0],
-        $.proxy(function(imageReady) {
+        function (imageReady) {
           this.loaded = true;
           this.preloading = false;
           this.preloaded = true;
 
           this.dimensions = {
             width: imageReady.img.naturalWidth,
-            height: imageReady.img.naturalHeight
+            height: imageReady.img.naturalHeight,
           };
-        }, this),
+        }.bind(this),
         null,
         { method: "naturalWidth" }
       );
@@ -165,7 +165,7 @@ var Page = (function() {
 
     // the purpose of load is to set dimensions
     // we use it to set dimensions even for content that doesn't load like youtube
-    load: function(callback, isPreload) {
+    load: function (callback, isPreload) {
       // make sure the page is created
       this.create();
 
@@ -197,18 +197,18 @@ var Page = (function() {
 
           this.imageReady = new ImageReady(
             this.content[0],
-            $.proxy(function(imageReady) {
+            function (imageReady) {
               // mark as loaded
               this._markAsLoaded();
 
               this.dimensions = {
                 width: imageReady.img.naturalWidth,
-                height: imageReady.img.naturalHeight
+                height: imageReady.img.naturalHeight,
               };
 
               if (callback) callback();
-            }, this),
-            $.proxy(function() {
+            }.bind(this),
+            function () {
               // mark as loaded
               this._markAsLoaded();
 
@@ -220,11 +220,11 @@ var Page = (function() {
 
               this.dimensions = {
                 width: this.error.outerWidth(),
-                height: this.error.outerHeight()
+                height: this.error.outerHeight(),
               };
 
               if (callback) callback();
-            }, this),
+            }.bind(this),
             { method: "naturalWidth" }
           );
 
@@ -233,17 +233,17 @@ var Page = (function() {
         case "vimeo":
           this.vimeoReady = new VimeoReady(
             this.view.url,
-            $.proxy(function(data) {
+            function (data) {
               // mark as loaded
               this._markAsLoaded();
 
               this.dimensions = {
                 width: data.dimensions.width,
-                height: data.dimensions.height
+                height: data.dimensions.height,
               };
 
               if (callback) callback();
-            }, this)
+            }.bind(this)
           );
 
           break;
@@ -254,7 +254,7 @@ var Page = (function() {
 
           this.dimensions = {
             width: this.view.options.width,
-            height: this.view.options.height
+            height: this.view.options.height,
           };
 
           if (callback) callback();
@@ -263,7 +263,7 @@ var Page = (function() {
     },
 
     // helper for load()
-    _markAsLoaded: function() {
+    _markAsLoaded: function () {
       this.loading = false;
       this.loaded = true;
 
@@ -274,11 +274,11 @@ var Page = (function() {
       Window.stopLoading();
     },
 
-    isVideo: function() {
+    isVideo: function () {
       return /^(youtube|vimeo)$/.test(this.view.type);
     },
 
-    insertVideo: function(callback) {
+    insertVideo: function (callback) {
       // don't insert a video twice
       // and stop if not a video
       if (this.playerIframe || !this.isVideo()) {
@@ -296,7 +296,7 @@ var Page = (function() {
         queryString = $.param(playerVars),
         urls = {
           vimeo: protocol + "//player.vimeo.com/video/{id}?{queryString}",
-          youtube: protocol + "//www.youtube.com/embed/{id}?{queryString}"
+          youtube: protocol + "//www.youtube.com/embed/{id}?{queryString}",
         },
         src = urls[this.view.type]
           .replace("{id}", this.view._data.id)
@@ -309,14 +309,14 @@ var Page = (function() {
           src: src,
           height: this.contentDimensions.height,
           width: this.contentDimensions.width,
-          frameborder: 0
+          frameborder: 0,
         }))
       );
 
       if (callback) callback();
     },
 
-    raise: function() {
+    raise: function () {
       // no need to raise if we're already the topmost element
       // this helps avoid unnecessary detaching of the element
       var lastChild = Pages.element[0].lastChild;
@@ -327,27 +327,27 @@ var Page = (function() {
       Pages.element.append(this.element);
     },
 
-    show: function(callback) {
+    show: function (callback) {
       var shq = this.queues.showhide;
       shq.queue([]); // clear queue
 
       this.animated = true;
       this.animatingWindow = false;
 
-      shq.queue(function(next_stopped_inactive) {
+      shq.queue(function (next_stopped_inactive) {
         Pages.stopInactive();
         next_stopped_inactive();
       });
 
       shq.queue(
-        $.proxy(function(next_side) {
+        function (next_side) {
           Window.setSide(this.view.options.side, next_side);
-        }, this)
+        }.bind(this)
       );
 
       // make sure the current page is inserted
       shq.queue(
-        $.proxy(function(next_loaded) {
+        function (next_loaded) {
           // give the spinner the options of this page
           if (this.view.options.spinner && Window._spinner) {
             Window.setSpinnerSkin(this.view.options.skin);
@@ -357,16 +357,16 @@ var Page = (function() {
 
           // load
           this.load(
-            $.proxy(function() {
+            function () {
               this.preloadSurroundingImages();
               next_loaded();
-            }, this)
+            }.bind(this)
           );
-        }, this)
+        }.bind(this)
       );
 
       shq.queue(
-        $.proxy(function(next_utility) {
+        function (next_utility) {
           this.raise();
 
           Window.setSkin(this.view.options.skin);
@@ -378,39 +378,37 @@ var Page = (function() {
           this.fitToWindow();
 
           next_utility();
-        }, this)
+        }.bind(this)
       );
 
       // we bind hide on click outside with a delay so API calls can pass through.
       // more on this in api.js
       shq.queue(
-        $.proxy(function(next_bind_hide_on_click_outside) {
+        function (next_bind_hide_on_click_outside) {
           Window.timers.set(
             "bind-hide-on-click-outside",
-            $.proxy(function() {
+            function () {
               Window.bindHideOnClickOutside();
               next_bind_hide_on_click_outside();
-            }, this),
+            }.bind(this),
             1
           );
-        }, this)
+        }.bind(this)
       );
 
       // vimeo and youtube use this for insertion
       if (this.isVideo()) {
         shq.queue(
-          $.proxy(function(next_video_inserted) {
-            this.insertVideo(
-              $.proxy(function() {
-                next_video_inserted();
-              })
-            );
-          }, this)
+          function (next_video_inserted) {
+            this.insertVideo(function () {
+              next_video_inserted();
+            });
+          }.bind(this)
         );
       }
 
       shq.queue(
-        $.proxy(function(next_shown_and_resized) {
+        function (next_shown_and_resized) {
           this.animatingWindow = true; // we're modifying Window size
 
           var fx = 3;
@@ -420,23 +418,23 @@ var Page = (function() {
 
           // onShow callback
           var onShow = this.view && this.view.options.onShow;
-          if ($.type(onShow) === "function") {
+          if (typeof onShow === "function") {
             onShow.call(Strip);
           }
 
           var duration = Window.resize(
             this[z],
-            function() {
+            function () {
               if (--fx < 1) next_shown_and_resized();
             },
             duration
           );
 
-          this._show(function() {
+          this._show(function () {
             if (--fx < 1) next_shown_and_resized();
           }, duration);
 
-          Window.adjustPrevNext(function() {
+          Window.adjustPrevNext(function () {
             if (--fx < 1) next_shown_and_resized();
           }, duration);
 
@@ -450,11 +448,11 @@ var Page = (function() {
 
           // we also don't track this
           Pages.hideVisibleInactive(duration);
-        }, this)
+        }.bind(this)
       );
 
       shq.queue(
-        $.proxy(function(next_set_visible) {
+        function (next_set_visible) {
           // Window.resize takes this into account
           this.animatingWindow = false;
 
@@ -468,14 +466,14 @@ var Page = (function() {
           if (callback) callback();
 
           next_set_visible();
-        }, this)
+        }.bind(this)
       );
     },
 
-    _show: function(callback, alternateDuration) {
+    _show: function (callback, alternateDuration) {
       var duration = !Window.visible
         ? 0
-        : $.type(alternateDuration) === "number"
+        : typeof alternateDuration === "number"
         ? alternateDuration
         : this.view.options.effects.transition.min;
 
@@ -485,7 +483,7 @@ var Page = (function() {
         .fadeTo(duration || 0, 1, callback);
     },
 
-    hide: function(callback, alternateDuration) {
+    hide: function (callback, alternateDuration) {
       if (!this.element) return; // nothing to hide yet
 
       this.removeVideo();
@@ -494,7 +492,7 @@ var Page = (function() {
       this.abort();
 
       var duration = this.view.options.effects.transition.min;
-      if ($.type(alternateDuration) === "number") duration = alternateDuration;
+      if (typeof alternateDuration === "number") duration = alternateDuration;
 
       // hide video instantly
       var isVideo = this.isVideo();
@@ -509,7 +507,7 @@ var Page = (function() {
           duration,
           0,
           "stripEaseInCubic",
-          $.proxy(function() {
+          $.proxy(function () {
             this.element.hide();
             this.visible = false;
             if (callback) callback();
@@ -518,7 +516,7 @@ var Page = (function() {
     },
 
     // stop everything
-    stop: function() {
+    stop: function () {
       var shq = this.queues.showhide;
       shq.queue([]); // clear queue
 
@@ -529,7 +527,7 @@ var Page = (function() {
       this.abort();
     },
 
-    removeVideo: function() {
+    removeVideo: function () {
       if (this.playerIframe) {
         // this fixes a bug where sound keep playing after
         // removing the iframe in IE10+
@@ -540,7 +538,7 @@ var Page = (function() {
       }
     },
 
-    remove: function() {
+    remove: function () {
       this.stop();
       this.removeVideo();
       if (this.element) this.element.remove();
@@ -548,7 +546,7 @@ var Page = (function() {
       this.removed = true;
     },
 
-    abort: function() {
+    abort: function () {
       if (this.imageReady && !this.preloading) {
         this.imageReady.abort();
         this.imageReady = null;
@@ -563,7 +561,7 @@ var Page = (function() {
       Window.stopLoading();
     },
 
-    _getDimensionsFitToView: function() {
+    _getDimensionsFitToView: function () {
       var bounds = $.extend({}, this.dimensions),
         dimensions = $.extend({}, this.dimensions);
 
@@ -576,14 +574,14 @@ var Page = (function() {
       return dimensions;
     },
 
-    getOrientation: function(side) {
+    getOrientation: function (side) {
       return this.view.options.side === "left" ||
         this.view.options.side === "right"
         ? "horizontal"
         : "vertical";
     },
 
-    fitToWindow: function() {
+    fitToWindow: function () {
       var page = this.element,
         dimensions = this._getDimensionsFitToView(),
         viewport = Bounds.viewport(),
@@ -642,7 +640,7 @@ var Page = (function() {
         // width
         if (z === "width") {
           page.css({
-            width: isFullscreen ? viewport.width : fitted.width + paddingX
+            width: isFullscreen ? viewport.width : fitted.width + paddingX,
           });
 
           var initialBoundsHeight = bounds.height;
@@ -729,7 +727,7 @@ var Page = (function() {
       // page needs a fixed width to remain properly static during animation
       var pageDimensions = {
         width: fitted.width + paddingX,
-        height: fitted.height + paddingY + cH
+        height: fitted.height + paddingY + cH,
       };
       // fullscreen mode uses viewport dimensions for the page
       if (isFullscreen) pageDimensions = viewport;
@@ -755,7 +753,7 @@ var Page = (function() {
       content.css(
         $.extend({}, contentDimensions, {
           "margin-left": mLeft,
-          "margin-top": mTop
+          "margin-top": mTop,
         })
       );
 
@@ -770,7 +768,7 @@ var Page = (function() {
       this.height = pageDimensions.height;
 
       this.z = this[z];
-    }
+    },
   });
 
   return Page;

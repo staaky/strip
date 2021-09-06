@@ -5,22 +5,22 @@ var _Strip = {
   _disabled: false,
   _fallback: true,
 
-  initialize: function() {
+  initialize: function () {
     Window.initialize();
     if (!this._disabled) this.startDelegating();
   },
 
   // click delegation
-  startDelegating: function() {
+  startDelegating: function () {
     this.stopDelegating();
     $(document.documentElement).on(
       "click",
       ".strip[href]",
-      (this._delegateHandler = $.proxy(this.delegate, this))
+      (this._delegateHandler = this.delegate.bind(this))
     );
   },
 
-  stopDelegating: function() {
+  stopDelegating: function () {
     if (this._delegateHandler) {
       $(document.documentElement).off(
         "click",
@@ -31,7 +31,7 @@ var _Strip = {
     }
   },
 
-  delegate: function(event) {
+  delegate: function (event) {
     if (this._disabled) return;
 
     event.stopPropagation();
@@ -42,7 +42,7 @@ var _Strip = {
     _Strip.show(element);
   },
 
-  show: function(object) {
+  show: function (object) {
     if (this._disabled) {
       this.showFallback.apply(_Strip, _slice.call(arguments));
       return;
@@ -51,7 +51,7 @@ var _Strip = {
     var options = arguments[1] || {},
       position = arguments[2];
 
-    if (arguments[1] && $.type(arguments[1]) === "number") {
+    if (arguments[1] && typeof arguments[1] === "number") {
       position = arguments[1];
       options = {};
     }
@@ -60,7 +60,7 @@ var _Strip = {
       object_type,
       isElement = object && object.nodeType === 1;
 
-    switch ((object_type = $.type(object))) {
+    switch ((object_type = typeof object)) {
       case "string":
       case "object":
         var view = new View(object, options),
@@ -80,14 +80,14 @@ var _Strip = {
             // find possible group options
             var groupOptions = {};
 
-            elements.filter("[" + _dgo + "]").each(function(i, element) {
+            elements.filter("[" + _dgo + "]").each(function (i, element) {
               $.extend(
                 groupOptions,
                 eval("({" + ($(element).attr(_dgo) || "") + "})")
               );
             });
 
-            elements.each(function(i, element) {
+            elements.each(function (i, element) {
               // adjust the position if we find the given object position
               if (!position && element === object) position = i + 1;
               views.push(
@@ -111,7 +111,7 @@ var _Strip = {
         break;
 
       case "array":
-        $.each(object, function(i, item) {
+        $.each(object, function (i, item) {
           var view = new View(item, options);
           views.push(view);
         });
@@ -152,10 +152,10 @@ var _Strip = {
     }
   },
 
-  showFallback: (function() {
+  showFallback: (function () {
     function getUrl(object) {
       var url,
-        type = $.type(object);
+        type = typeof object;
 
       if (type === "string") {
         url = object;
@@ -172,46 +172,46 @@ var _Strip = {
       return url;
     }
 
-    return function(object) {
+    return function (object) {
       if (!_Strip._fallback) return;
       var url = getUrl(object);
       if (url) window.location.href = url;
     };
-  })()
+  })(),
 };
 
 $.extend(Strip, {
-  show: function(object) {
+  show: function (object) {
     _Strip.show.apply(_Strip, _slice.call(arguments));
     return this;
   },
 
-  hide: function() {
+  hide: function () {
     Window.hide();
     return this;
   },
 
-  disable: function() {
+  disable: function () {
     _Strip.stopDelegating();
     _Strip._disabled = true;
     return this;
   },
 
-  enable: function() {
+  enable: function () {
     _Strip._disabled = false;
     _Strip.startDelegating();
     return this;
   },
 
-  fallback: function(fallback) {
+  fallback: function (fallback) {
     _Strip._fallback = fallback;
     return this;
   },
 
-  setDefaultSkin: function(skin) {
+  setDefaultSkin: function (skin) {
     Options.defaults.skin = skin;
     return this;
-  }
+  },
 });
 
 // fallback for old browsers without full position:fixed support
@@ -221,23 +221,24 @@ if (
   // old Android
   // added a version check because Firefox on Android doesn't have a
   // version number above 4.2 anymore
-  ($.type(Browser.Android) === "number" && Browser.Android < 3) ||
+  (typeof Browser.Android === "number" && Browser.Android < 3) ||
   // old WebKit
   (Browser.MobileSafari &&
-    ($.type(Browser.WebKit) === "number" && Browser.WebKit < 533.18))
+    typeof Browser.WebKit === "number" &&
+    Browser.WebKit < 533.18)
 ) {
   // we'll reset the show function
   _Strip.show = _Strip.showFallback;
 
   // disable some functions we don't want to run
-  $.each("startDelegating stopDelegating initialize".split(" "), function(
-    i,
-    fn
-  ) {
-    _Strip[fn] = function() {};
-  });
+  $.each(
+    "startDelegating stopDelegating initialize".split(" "),
+    function (i, fn) {
+      _Strip[fn] = function () {};
+    }
+  );
 
-  Strip.hide = function() {
+  Strip.hide = function () {
     return this;
   };
 }

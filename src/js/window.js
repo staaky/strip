@@ -1,5 +1,5 @@
 var Window = {
-  initialize: function() {
+  initialize: function () {
     this.queues = [];
     this.queues.hide = $({});
 
@@ -11,7 +11,7 @@ var Window = {
     this.setSkin(Options.defaults.skin);
   },
 
-  build: function() {
+  build: function () {
     // spinner
     if (Spinner.supported) {
       $(document.body).append(
@@ -74,32 +74,32 @@ var Window = {
     // events
     this._close.on(
       "click",
-      $.proxy(function(event) {
+      function (event) {
         event.preventDefault();
         this.hide();
-      }, this)
+      }.bind(this)
     );
 
     this._previous.on(
       "click",
-      $.proxy(function(event) {
+      function (event) {
         this.previous();
         this._onMouseMove(event); // update cursor
-      }, this)
+      }.bind(this)
     );
 
     this._next.on(
       "click",
-      $.proxy(function(event) {
+      function (event) {
         this.next();
         this._onMouseMove(event); // update cursor
-      }, this)
+      }.bind(this)
     );
 
     this.hideUI(null, 0); // start with hidden <>
   },
 
-  setSkin: function(skin) {
+  setSkin: function (skin) {
     if (this._skin) {
       this.element.removeClass("strp-window-skin-" + this._skin);
     }
@@ -108,7 +108,7 @@ var Window = {
     this._skin = skin;
   },
 
-  setSpinnerSkin: function(skin) {
+  setSpinnerSkin: function (skin) {
     if (!this.spinnerMove) return;
 
     if (this._spinnerSkin) {
@@ -125,16 +125,16 @@ var Window = {
   },
 
   // Resize
-  startObservingResize: function() {
+  startObservingResize: function () {
     if (this._isObservingResize) return;
 
-    this._onWindowResizeHandler = $.proxy(this._onWindowResize, this);
+    this._onWindowResizeHandler = this._onWindowResize.bind(this);
     $(window).on("resize orientationchange", this._onWindowResizeHandler);
 
     this._isObservingResize = true;
   },
 
-  stopObservingResize: function() {
+  stopObservingResize: function () {
     if (this._onWindowResizeHandler) {
       $(window).off("resize orientationchange", this._onWindowResizeHandler);
       this._onWindowResizeHandler = null;
@@ -143,7 +143,7 @@ var Window = {
     this._isObservingResize = false;
   },
 
-  _onWindowResize: function() {
+  _onWindowResize: function () {
     var page;
     if (!(page = Pages.page)) return;
 
@@ -160,7 +160,7 @@ var Window = {
     }
   },
 
-  resize: function(wh, callback, alternateDuration) {
+  resize: function (wh, callback, alternateDuration) {
     var orientation = this.getOrientation(),
       Z = orientation === "vertical" ? "Height" : "Width",
       z = Z.toLowerCase();
@@ -180,7 +180,7 @@ var Window = {
       // add opening class
       this.element.addClass("strp-opening");
       this.opening = true;
-    } else if ($.type(alternateDuration) === "number") {
+    } else if (typeof alternateDuration === "number") {
       // alternate when set
       duration = alternateDuration;
     } else {
@@ -218,26 +218,26 @@ var Window = {
     this._offsetLeft = null;
 
     var onResize = this.view.options.onResize,
-      hasOnResize = $.type(onResize) === "function";
+      hasOnResize = typeof onResize === "function";
 
     this.element.stop(true).animate(
       css,
       $.extend(
         {
           duration: duration,
-          complete: $.proxy(function() {
+          complete: function () {
             if (--fx < 1) this._afterResize(callback);
-          }, this)
+          }.bind(this),
         },
         !hasOnResize
           ? {}
           : {
               // we only add step if there's an onResize callback
-              step: $.proxy(function(now, fx) {
+              step: function (now, fx) {
                 if (fx.prop === z) {
                   onResize.call(Strip, fx.prop, now, this.side);
                 }
-              }, this)
+              }.bind(this),
             }
       )
     );
@@ -247,9 +247,9 @@ var Window = {
       this.spinnerMove.stop(true).animate(
         css,
         duration,
-        $.proxy(function() {
+        function () {
           if (--fx < 1) this._afterResize(callback);
-        }, this)
+        }.bind(this)
       );
     }
 
@@ -257,7 +257,7 @@ var Window = {
     return duration;
   },
 
-  _afterResize: function(callback) {
+  _afterResize: function (callback) {
     this.opening = false;
     this.closing = false;
     this.element.removeClass("strp-opening strp-closing");
@@ -269,7 +269,7 @@ var Window = {
     if (callback) callback();
   },
 
-  adjustPrevNext: function(callback, alternateDuration) {
+  adjustPrevNext: function (callback, alternateDuration) {
     if (!this.view || !Pages.page) return;
     var page = Pages.page;
 
@@ -291,7 +291,7 @@ var Window = {
       css = { "margin-top": pnMarginTop - iH * 0.5 };
 
     var duration = this.view.options.effects.transition.min;
-    if ($.type(alternateDuration) === "number") duration = alternateDuration;
+    if (typeof alternateDuration === "number") duration = alternateDuration;
 
     // adjust <> instantly when opening
     if (this.opening) duration = 0;
@@ -302,13 +302,13 @@ var Window = {
     this._next[this.mayNext() ? "show" : "hide"]();
   },
 
-  resetPrevNext: function() {
+  resetPrevNext: function () {
     var buttons = this._previous.add(this._next);
     buttons.stop(true).removeAttr("style");
   },
 
   // Load
-  load: function(views, position) {
+  load: function (views, position) {
     this.views = views;
 
     Pages.add(views);
@@ -320,7 +320,7 @@ var Window = {
 
   // adjust the size based on the current view
   // this might require closing the window first
-  setSide: function(side, callback) {
+  setSide: function (side, callback) {
     if (this.side === side) {
       if (callback) callback();
       return;
@@ -341,7 +341,7 @@ var Window = {
       // hide
       this.resize(
         0,
-        $.proxy(function() {
+        function () {
           // some of the things we'd normally do in hide
           this._safeResetsAfterSwitchSide();
 
@@ -349,7 +349,7 @@ var Window = {
           Pages.hideVisibleInactive(0);
 
           this._setSide(side, callback);
-        }, this)
+        }.bind(this)
       );
 
       // show the UI on the next resize
@@ -359,7 +359,7 @@ var Window = {
     }
   },
 
-  _setSide: function(side, callback) {
+  _setSide: function (side, callback) {
     this.side = side;
 
     var orientation = this.getOrientation();
@@ -379,21 +379,21 @@ var Window = {
     if (callback) callback();
   },
 
-  getOrientation: function(side) {
+  getOrientation: function (side) {
     return this.side === "left" || this.side === "right"
       ? "horizontal"
       : "vertical";
   },
 
   // loading indicator
-  startLoading: function() {
+  startLoading: function () {
     if (!this._spinner) return;
 
     this.spinnerMove.show();
     this._spinner.show();
   },
 
-  stopLoading: function() {
+  stopLoading: function () {
     if (!this._spinner) return;
 
     // we only stop loading if there are no loading pages anymore
@@ -401,14 +401,14 @@ var Window = {
 
     if (loadingCount < 1) {
       this._spinner.hide(
-        $.proxy(function() {
+        function () {
           this.spinnerMove.hide();
-        }, this)
+        }.bind(this)
       );
     }
   },
 
-  setPosition: function(position, callback) {
+  setPosition: function (position, callback) {
     this._position = position;
 
     // store the current view
@@ -422,31 +422,31 @@ var Window = {
     // store the page and show it
     this.page = Pages.show(
       position,
-      $.proxy(function() {
+      function () {
         var afterPosition = this.view.options.afterPosition;
-        if ($.type(afterPosition) === "function") {
+        if (typeof afterPosition === "function") {
           afterPosition.call(Strip, position);
         }
         if (callback) callback();
-      }, this)
+      }.bind(this)
     );
   },
 
-  hide: function(callback) {
+  hide: function (callback) {
     if (!this.view) return;
 
     var hideQueue = this.queues.hide;
     hideQueue.queue([]); // clear queue
 
     hideQueue.queue(
-      $.proxy(function(next_stop) {
+      function (next_stop) {
         Pages.stop();
         next_stop();
-      }, this)
+      }.bind(this)
     );
 
     hideQueue.queue(
-      $.proxy(function(next_unbinds) {
+      function (next_unbinds) {
         // ui
         var duration = this.view ? this.view.options.effects.window.hide : 0;
         this.unbindUI();
@@ -459,11 +459,11 @@ var Window = {
         Keyboard.disable();
 
         next_unbinds();
-      }, this)
+      }.bind(this)
     );
 
     hideQueue.queue(
-      $.proxy(function(next_zero) {
+      function (next_zero) {
         // active classes should removed right as the closing effect starts
         // because clicking an element as it closes will re-open it,
         // that needs to be reflected in the class
@@ -473,13 +473,13 @@ var Window = {
 
         // after we initiate the hide resize, the next resize should bring up the UI again
         this._showUIOnResize = true;
-      }, this)
+      }.bind(this)
     );
 
     // callbacks after resize in a separate queue
     // so we can stop the hideQueue without stopping the resize
     hideQueue.queue(
-      $.proxy(function(next_after_resize) {
+      function (next_after_resize) {
         this._safeResetsAfterSwitchSide();
 
         this.stopObservingResize();
@@ -492,22 +492,22 @@ var Window = {
 
         // afterHide callback
         var afterHide = this.view && this.view.options.afterHide;
-        if ($.type(afterHide) === "function") {
+        if (typeof afterHide === "function") {
           afterHide.call(Strip);
         }
 
         this.view = null;
 
         next_after_resize();
-      }, this)
+      }.bind(this)
     );
 
-    if ($.type(callback) === "function") {
+    if (typeof callback === "function") {
       hideQueue.queue(
-        $.proxy(function(next_callback) {
+        function (next_callback) {
           callback();
           next_callback();
-        }, this)
+        }.bind(this)
       );
     }
   },
@@ -515,12 +515,12 @@ var Window = {
   // stop all callbacks possibly queued up into a hide animation
   // this allows the hide animation to finish as we start showing/loading
   // a new page, a callback could otherwise interrupt this
-  stopHideQueue: function() {
+  stopHideQueue: function () {
     this.queues.hide.queue([]);
   },
 
   // these are things we can safely call when switching side as well
-  _safeResetsAfterSwitchSide: function() {
+  _safeResetsAfterSwitchSide: function () {
     // remove styling from window, so no width: 100%; height: 0 issues
     this.element.removeAttr("style");
     if (this.spinnerMove) this.spinnerMove.removeAttr("style");
@@ -537,7 +537,7 @@ var Window = {
   },
 
   // Previous / Next
-  mayPrevious: function() {
+  mayPrevious: function () {
     return (
       (this.view &&
         this.view.options.loop &&
@@ -547,7 +547,7 @@ var Window = {
     );
   },
 
-  previous: function(force) {
+  previous: function (force) {
     var mayPrevious = this.mayPrevious();
 
     if (force || mayPrevious) {
@@ -555,7 +555,7 @@ var Window = {
     }
   },
 
-  mayNext: function() {
+  mayNext: function () {
     var hasViews = this.views && this.views.length > 1;
 
     return (
@@ -564,7 +564,7 @@ var Window = {
     );
   },
 
-  next: function(force) {
+  next: function (force) {
     var mayNext = this.mayNext();
 
     if (force || mayNext) {
@@ -573,7 +573,7 @@ var Window = {
   },
 
   // surrounding
-  getSurroundingIndexes: function() {
+  getSurroundingIndexes: function () {
     if (!this.views) return {};
 
     var pos = this._position,
@@ -584,23 +584,20 @@ var Window = {
 
     return {
       previous: previous,
-      next: next
+      next: next,
     };
   },
 
   // close when clicking outside of strip or an element opening strip
-  bindHideOnClickOutside: function() {
+  bindHideOnClickOutside: function () {
     this.unbindHideOnClickOutside();
     $(document.documentElement).on(
       "click",
-      (this._delegateHideOutsideHandler = $.proxy(
-        this._delegateHideOutside,
-        this
-      ))
+      (this._delegateHideOutsideHandler = this._delegateHideOutside.bind(this))
     );
   },
 
-  unbindHideOnClickOutside: function() {
+  unbindHideOnClickOutside: function () {
     if (this._delegateHideOutsideHandler) {
       $(document.documentElement).off(
         "click",
@@ -610,7 +607,7 @@ var Window = {
     }
   },
 
-  _delegateHideOutside: function(event) {
+  _delegateHideOutside: function (event) {
     var page = Pages.page;
     if (!this.visible || !(page && page.view.options.hideOnClickOutside))
       return;
@@ -623,17 +620,17 @@ var Window = {
   },
 
   // UI
-  bindUI: function() {
+  bindUI: function () {
     this.unbindUI();
 
     if (!Support.mobileTouch) {
       this.element
-        .on("mouseenter", (this._showUIHandler = $.proxy(this.showUI, this)))
-        .on("mouseleave", (this._hideUIHandler = $.proxy(this.hideUI, this)));
+        .on("mouseenter", (this._showUIHandler = this.showUI.bind(this)))
+        .on("mouseleave", (this._hideUIHandler = this.hideUI.bind(this)));
 
       this.element.on(
         "mousemove",
-        (this._mousemoveUIHandler = $.proxy(function(event) {
+        (this._mousemoveUIHandler = function (event) {
           // Chrome has a bug that triggers mousemove events incorrectly
           // we have to work around this by comparing cursor positions
           // so only true mousemove events pass through:
@@ -651,7 +648,7 @@ var Window = {
 
           this.showUI();
           this.startUITimer();
-        }, this))
+        }.bind(this))
       );
 
       // delegate <> mousemove/click states
@@ -659,17 +656,17 @@ var Window = {
         .on(
           "mousemove",
           ".strp-container",
-          (this._onMouseMoveHandler = $.proxy(this._onMouseMove, this))
+          (this._onMouseMoveHandler = this._onMouseMove.bind(this))
         )
         .on(
           "mouseleave",
           ".strp-container",
-          (this._onMouseLeaveHandler = $.proxy(this._onMouseLeave, this))
+          (this._onMouseLeaveHandler = this._onMouseLeave.bind(this))
         )
         .on(
           "mouseenter",
           ".strp-container",
-          (this._onMouseEnterHandler = $.proxy(this._onMouseEnter, this))
+          (this._onMouseEnterHandler = this._onMouseEnter.bind(this))
         );
 
       // delegate moving onto the <> buttons
@@ -678,29 +675,28 @@ var Window = {
         .on(
           "mouseenter",
           ".strp-nav",
-          (this._onNavMouseEnterHandler = $.proxy(this._onNavMouseEnter, this))
+          (this._onNavMouseEnterHandler = this._onNavMouseEnter.bind(this))
         )
         .on(
           "mouseleave",
           ".strp-nav",
-          (this._onNavMouseLeaveHandler = $.proxy(this._onNavMouseLeave, this))
+          (this._onNavMouseLeaveHandler = this._onNavMouseLeave.bind(this))
         );
 
       $(window).on(
         "scroll",
-        (this._onScrollHandler = $.proxy(this._onScroll, this))
+        (this._onScrollHandler = this._onScroll.bind(this))
       );
     }
 
     this._pages.on(
       "click",
       ".strp-container",
-      (this._onClickHandler = $.proxy(this._onClick, this))
+      (this._onClickHandler = this._onClick.bind(this))
     );
   },
 
-  // TODO: switch to jQuery.on/off
-  unbindUI: function() {
+  unbindUI: function () {
     if (this._showUIHandler) {
       this.element
         .off("mouseenter", this._showUIHandler)
@@ -729,12 +725,12 @@ var Window = {
 
   // reset cached offsetLeft and outerWidth so they are recalculated after scrolling,
   // the cached values might be incorrect after scrolling left/right
-  _onScroll: function() {
+  _onScroll: function () {
     this._offsetLeft = this._outerWidth = null;
   },
 
   // events bounds by bindUI
-  _onMouseMove: function(event) {
+  _onMouseMove: function (event) {
     var Side = this._getEventSide(event),
       side = Side.toLowerCase();
 
@@ -749,7 +745,7 @@ var Window = {
     );
   },
 
-  _onMouseLeave: function(event) {
+  _onMouseLeave: function () {
     this.element.removeClass("strp-hovering-clickable");
     this._previous
       .removeClass("strp-nav-previous-hover")
@@ -757,7 +753,7 @@ var Window = {
       .removeClass("strp-nav-hover");
   },
 
-  _onClick: function(event) {
+  _onClick: function (event) {
     var Side = this._getEventSide(event),
       side = Side.toLowerCase();
 
@@ -768,7 +764,7 @@ var Window = {
     this._onMouseMove(event);
   },
 
-  _onMouseEnter: function(event) {
+  _onMouseEnter: function (event) {
     // this solves clicking an area and not having an updating cursor
     // when not moving cursor after click. When an overlapping page comes into view
     // it'll trigger a mouseenter after the mouseout on the disappearing page
@@ -776,7 +772,7 @@ var Window = {
     this._onMouseMove(event);
   },
 
-  _getEventSide: function(event) {
+  _getEventSide: function (event) {
     var offsetLeft = this._offsetLeft || this.element.offset().left,
       left = event.pageX - offsetLeft,
       width = this._outerWidth || this.element.outerWidth();
@@ -784,18 +780,18 @@ var Window = {
     return left < 0.5 * width ? "Previous" : "Next";
   },
 
-  _onNavMouseEnter: function(event) {
+  _onNavMouseEnter: function (event) {
     this._hoveringNav = true;
     this.clearUITimer();
   },
 
-  _onNavMouseLeave: function(event) {
+  _onNavMouseLeave: function (event) {
     this._hoveringNav = false;
     this.startUITimer();
   },
 
   // Actual UI actions
-  showUI: function(callback, alternateDuration) {
+  showUI: function (callback, alternateDuration) {
     // clear the timer everytime so we can keep clicking elements and fading
     // in the ui while not having the timer interupt that with a hide
     this.clearUITimer();
@@ -804,48 +800,48 @@ var Window = {
     var elements = this.element.find(".strp-nav-button");
 
     var duration = this.view ? this.view.options.effects.ui.show : 0;
-    if ($.type(alternateDuration) === "number") duration = alternateDuration;
+    if (typeof alternateDuration === "number") duration = alternateDuration;
 
     elements.stop(true).fadeTo(
       duration,
       1,
       "stripEaseInSine",
-      $.proxy(function() {
+      function () {
         this.startUITimer();
-        if ($.type(callback) === "function") callback();
-      }, this)
+        if (typeof callback === "function") callback();
+      }.bind(this)
     );
   },
 
-  hideUI: function(callback, alternateDuration) {
+  hideUI: function (callback, alternateDuration) {
     var elements = this.element.find(".strp-nav-button");
 
     var duration = this.view ? this.view.options.effects.ui.hide : 0;
-    if ($.type(alternateDuration) === "number") duration = alternateDuration;
+    if (typeof alternateDuration === "number") duration = alternateDuration;
 
-    elements.stop(true).fadeOut(duration, "stripEaseOutSine", function() {
-      if ($.type(callback) === "function") callback();
+    elements.stop(true).fadeOut(duration, "stripEaseOutSine", function () {
+      if (typeof callback === "function") callback();
     });
   },
 
   // UI Timer
   // not used on mobile-touch based devices
-  clearUITimer: function() {
+  clearUITimer: function () {
     if (Support.mobileTouch) return;
 
     this.timers.clear("ui");
   },
 
-  startUITimer: function() {
+  startUITimer: function () {
     if (Support.mobileTouch) return;
 
     this.clearUITimer();
     this.timers.set(
       "ui",
-      $.proxy(function() {
+      function () {
         this.hideUI();
-      }, this),
+      }.bind(this),
       this.view ? this.view.options.uiDelay : 0
     );
-  }
+  },
 };

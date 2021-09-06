@@ -2,3 +2,4 @@ node_modules/
 strip-*.zip
 *.log
 .idea
+.history

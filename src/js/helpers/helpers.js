@@ -2,11 +2,11 @@ var _slice = Array.prototype.slice;
 
 // Fit
 var Fit = {
-  within: function(bounds, dimensions) {
+  within: function (bounds, dimensions) {
     var options = $.extend(
       {
         height: true,
-        width: true
+        width: true,
       },
       arguments[2] || {}
     );
@@ -42,7 +42,7 @@ var Fit = {
       // adjust current size, based on original dimensions
       size = {
         width: Math.round(dimensions.width * scale),
-        height: Math.round(dimensions.height * scale)
+        height: Math.round(dimensions.height * scale),
       };
       //}
 
@@ -54,21 +54,21 @@ var Fit = {
     size.height = Math.max(size.height, 0);
 
     return size;
-  }
+  },
 };
 
 // we only uses some of the jQueryUI easing functions
 // add those with a prefix to prevent conflicts
 $.extend($.easing, {
-  stripEaseInCubic: function(x, t, b, c, d) {
+  stripEaseInCubic: function (x, t, b, c, d) {
     return c * (t /= d) * t * t + b;
   },
 
-  stripEaseInSine: function(x, t, b, c, d) {
+  stripEaseInSine: function (x, t, b, c, d) {
     return -c * Math.cos((t / d) * (Math.PI / 2)) + c + b;
   },
 
-  stripEaseOutSine: function(x, t, b, c, d) {
+  stripEaseOutSine: function (x, t, b, c, d) {
     return c * Math.sin((t / d) * (Math.PI / 2)) + b;
-  }
+  },
 });

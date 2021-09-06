@@ -1,11 +1,11 @@
 var Pages = {
-  initialize: function(element) {
+  initialize: function (element) {
     this.element = element;
     this.pages = {};
     this.uid = 1;
   },
 
-  add: function(views) {
+  add: function (views) {
     this.uid++;
 
     this.views = views;
@@ -18,13 +18,13 @@ var Pages = {
     // add pages for all these views
     $.each(
       views,
-      $.proxy(function(i, view) {
+      function (i, view) {
         this.pages[this.uid].push(new Page(view, i + 1, this.views.length));
-      }, this)
+      }.bind(this)
     );
   },
 
-  show: function(position, callback) {
+  show: function (position, callback) {
     var page = this.pages[this.uid][position - 1];
 
     // never try to reload the exact same frame
@@ -48,19 +48,19 @@ var Pages = {
 
     this.removeHiddenAndLoadingInactive();
     page.show(
-      $.proxy(function() {
+      function () {
         // once a page has been fully shown we mark Pages as not being switched anymore
         this._switched = false;
         if (callback) callback();
-      }, this)
+      }.bind(this)
     );
   },
 
-  getLoadingCount: function() {
+  getLoadingCount: function () {
     // we only stop loading if all the frames we have are not loading anymore
     var count = 0;
-    $.each(this.pages, function(id, pages) {
-      $.each(pages, function(j, page) {
+    $.each(this.pages, function (_id, pages) {
+      $.each(pages, function (_j, page) {
         if (page.loading) count++;
       });
     });
@@ -69,12 +69,12 @@ var Pages = {
 
   // used by the API when opening
   // checks if the page is in the currently open group
-  getPositionInActivePageGroup: function(element) {
+  getPositionInActivePageGroup: function (element) {
     var position = 0,
       activeGroup = this.pages[this.uid];
 
     if (activeGroup) {
-      $.each(activeGroup, function(i, page) {
+      $.each(activeGroup, function (i, page) {
         if (page.view.element && page.view.element == element) {
           position = i + 1;
         }
@@ -85,10 +85,10 @@ var Pages = {
   },
 
   // remove pages not matching the current id
-  removeExpired: function(instantly) {
-    $.each(this.pages, function(id, pages) {
+  removeExpired: function (instantly) {
+    $.each(this.pages, function (id, pages) {
       if (id != this._id) {
-        $.each(pages, function(j, page) {
+        $.each(pages, function (_j, page) {
           page.remove(instantly);
         });
       }
@@ -96,9 +96,9 @@ var Pages = {
   },
 
   // Window.hide will call this when fully closed
-  removeAll: function() {
-    $.each(this.pages, function(id, pages) {
-      $.each(pages, function(j, page) {
+  removeAll: function () {
+    $.each(this.pages, function (_id, pages) {
+      $.each(pages, function (_j, page) {
         page.remove();
       });
     });
@@ -107,60 +107,60 @@ var Pages = {
     this.pages = {};
   },
 
-  hideVisibleInactive: function(alternateDuration) {
+  hideVisibleInactive: function (alternateDuration) {
     $.each(
       this.pages,
-      $.proxy(function(id, pages) {
+      function (_id, pages) {
         $.each(
           pages,
-          $.proxy(function(j, page) {
+          function (_j, page) {
             if (page.uid != this.page.uid) {
               page.hide(null, alternateDuration);
             }
-          }, this)
+          }.bind(this)
         );
-      }, this)
+      }.bind(this)
     );
   },
 
-  stopInactive: function() {
+  stopInactive: function () {
     $.each(
       this.pages,
-      $.proxy(function(id, pages) {
+      function (_id, pages) {
         $.each(
           pages,
-          $.proxy(function(j, page) {
+          function (_j, page) {
             if (page.uid != this.page.uid && !page.preloading) {
               page.stop();
             }
-          }, this)
+          }.bind(this)
         );
-      }, this)
+      }.bind(this)
     );
   },
 
   // TODO: might be nice to have a hide animation before removal, it's instant now
-  removeHiddenAndLoadingInactive: function() {
+  removeHiddenAndLoadingInactive: function () {
     // track which inactive page groups are empty
     var empty = [];
 
     $.each(
       this.pages,
-      $.proxy(function(uid, pages) {
+      function (uid, pages) {
         // only remove pages in the groups that are currently not active
         if (uid != this.uid) {
           var removed = 0;
 
           $.each(
             pages,
-            $.proxy(function(j, page) {
+            function (_j, page) {
               // remove hidden or loading, but dont'remove frames in animation
               if ((!page.visible || page.loading) && !page.animatingWindow) {
                 page.remove();
               }
 
               if (page.removed) removed++; // count all, not those we remove now
-            }, this)
+            }.bind(this)
           );
 
           // if we've removed all pages from this group it's safe to remove it
@@ -169,27 +169,27 @@ var Pages = {
             empty.push(uid);
           }
         }
-      }, this)
+      }.bind(this)
     );
 
     // now remove all empty page groups
     $.each(
       empty,
-      $.proxy(function(i, uid) {
+      function (_i, uid) {
         delete this.pages[uid];
-      }, this)
+      }.bind(this)
     );
   },
 
-  stop: function() {
-    $.each(this.pages, function(id, pages) {
-      $.each(pages, function(j, page) {
+  stop: function () {
+    $.each(this.pages, function (id, pages) {
+      $.each(pages, function (_j, page) {
         page.stop();
       });
     });
   },
 
-  setActiveClass: function(page) {
+  setActiveClass: function (page) {
     // switch the active element class
     this.removeActiveClasses();
 
@@ -208,9 +208,9 @@ var Pages = {
     }
   },
 
-  removeActiveClasses: function() {
+  removeActiveClasses: function () {
     $(".strip-active-group").removeClass(
       "strip-active-group strip-active-element"
     );
-  }
+  },
 };

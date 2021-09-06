@@ -1,4 +1,4 @@
-var Support = (function() {
+var Support = (function () {
   var testElement = document.createElement("div"),
     domPrefixes = "Webkit Moz O ms Khtml".split(" ");
 
@@ -32,7 +32,7 @@ var Support = (function() {
     css: {
       animation: testAllProperties("animation"),
       transform: testAllProperties("transform"),
-      prefixed: prefixed
+      prefixed: prefixed,
     },
 
     svg:
@@ -40,7 +40,7 @@ var Support = (function() {
       !!document.createElementNS("http://www.w3.org/2000/svg", "svg")
         .createSVGRect,
 
-    touch: (function() {
+    touch: (function () {
       try {
         return !!(
           "ontouchstart" in window ||
@@ -49,7 +49,7 @@ var Support = (function() {
       } catch (e) {
         return false;
       }
-    })()
+    })(),
   };
 })();
 

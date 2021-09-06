@@ -1,21 +1,20 @@
 /*!
- * Strip - An Unobtrusive Responsive Lightbox - v1.7.0
- * (c) 2014-2019 Nick Stakenburg
+ * Strip - An Unobtrusive Responsive Lightbox - v1.8.0
+ * (c) 2014-2021 Nick Stakenburg
  *
- * http://www.stripjs.com
+ * https://github.com/staaky/strip
  *
- * Licensing:
- * - Commercial: http://www.stripjs.com/license
- * - Non-commercial: http://creativecommons.org/licenses/by-nc-nd/3.0
+ * @license: https://creativecommons.org/licenses/by/4.0
  */
 
 .strp-window {
-	position: fixed;
-	width: 0;
-	height: 100%;
+  position: fixed;
+  width: 0;
+  height: 100%;
   overflow: hidden;
   background: #292929;
-  font: 13px/20px "Lucida Sans", "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, sans-serif;
+  font: 13px/20px "Lucida Sans", "Lucida Sans Unicode", "Lucida Grande", Verdana,
+    Arial, sans-serif;
 }
 
 .strp-window.strp-vertical {
@@ -26,22 +25,30 @@
 /* margin is added around the window to keep a visual reference
  * to the underlying page at all times.
  */
-.strp-window { margin-left: 40px; }
-.strp-window.strp-vertical { margin-left: 0; margin-bottom: 40px; }
+.strp-window {
+  margin-left: 40px;
+}
+.strp-window.strp-vertical {
+  margin-left: 0;
+  margin-bottom: 40px;
+}
 
 /* fullscreen on smaller screens (iPhone 6+ and smaller)
  * since min-width is used to make this work it won't show on IE8, but
  * we're not expecting that browser to have a mobile sized screen anyway
  */
 @media all and (max-width: 414px) and (orientation: portrait),
-       all and (max-width: 736px) and (max-height: 414px) {
-  .strp-window.strp-horizontal { min-width: 100%; }
+  all and (max-width: 736px) and (max-height: 414px) {
+  .strp-window.strp-horizontal {
+    min-width: 100%;
+  }
 }
 @media all and (max-height: 414px) and (orientation: landscape),
-       all and (max-height: 736px) and (max-width: 414px){
-  .strp-window.strp-vertical { min-height: 100%; }
+  all and (max-height: 736px) and (max-width: 414px) {
+  .strp-window.strp-vertical {
+    min-height: 100%;
+  }
 }
-
 
 /* z-index */
 .strp-window,
@@ -51,14 +58,16 @@
 
 /* reset box-sizing */
 .strp-window,
-.strp-window [class^='strp-'],
+.strp-window [class^="strp-"],
 .strp-spinner-move,
-.strp-spinner-move [class^='strp-'] {
+.strp-spinner-move [class^="strp-"] {
   box-sizing: border-box;
 }
 
 /* Chrome hack, this fixes a visual glitch when quickly toggling a video */
-.strp-window { transform: translateZ(0px); }
+.strp-window {
+  transform: translateZ(0px);
+}
 
 /* some properties on the window are used to toggle things
  * like margin and the fullscreen mode,
@@ -78,25 +87,73 @@
 }
 
 /* sides */
-.strp-side-right { top: 0; right: 0; }
-.strp-side-right .strp-pages { top: 0; right: 0; }
-.strp-side-right .strp-page { top: 0; right: 0; }
-.strp-side-right .strp-close { top: 0; right: 0; }
+.strp-side-right {
+  top: 0;
+  right: 0;
+}
+.strp-side-right .strp-pages {
+  top: 0;
+  right: 0;
+}
+.strp-side-right .strp-page {
+  top: 0;
+  right: 0;
+}
+.strp-side-right .strp-close {
+  top: 0;
+  right: 0;
+}
 
-.strp-side-left { top: 0; left: 0; }
-.strp-side-left .strp-pages { top: 0; left: 0; }
-.strp-side-left .strp-page { top: 0; left: 0; }
-.strp-side-left .strp-close { top: 0; right: 0; }
+.strp-side-left {
+  top: 0;
+  left: 0;
+}
+.strp-side-left .strp-pages {
+  top: 0;
+  left: 0;
+}
+.strp-side-left .strp-page {
+  top: 0;
+  left: 0;
+}
+.strp-side-left .strp-close {
+  top: 0;
+  right: 0;
+}
 
-.strp-side-top { top: 0; left: 0; }
-.strp-side-top .strp-pages { top: 0; left: 0; }
-.strp-side-top .strp-page { top: 0; left: 0; }
-.strp-side-top .strp-close { top: 0; right: 0; }
+.strp-side-top {
+  top: 0;
+  left: 0;
+}
+.strp-side-top .strp-pages {
+  top: 0;
+  left: 0;
+}
+.strp-side-top .strp-page {
+  top: 0;
+  left: 0;
+}
+.strp-side-top .strp-close {
+  top: 0;
+  right: 0;
+}
 
-.strp-side-bottom { bottom: 0; left: 0; }
-.strp-side-bottom .strp-pages { bottom: 0; left: 0; }
-.strp-side-bottom .strp-page { bottom: 0; left: 0; }
-.strp-side-bottom .strp-close { top: 0; right: 0; }
+.strp-side-bottom {
+  bottom: 0;
+  left: 0;
+}
+.strp-side-bottom .strp-pages {
+  bottom: 0;
+  left: 0;
+}
+.strp-side-bottom .strp-page {
+  bottom: 0;
+  left: 0;
+}
+.strp-side-bottom .strp-close {
+  top: 0;
+  right: 0;
+}
 
 .strp-page {
   position: absolute;
@@ -124,14 +181,23 @@
    navbutton = 72 = 54 + (2 * 9 margin)
    closebutton = 48
 */
-.strp-no-overlap .strp-container { padding: 48px 72px; }
-.strp-no-overlap.strp-no-sides .strp-container { padding: 48px 0; }
+.strp-no-overlap .strp-container {
+  padding: 48px 72px;
+}
+.strp-no-overlap.strp-no-sides .strp-container {
+  padding: 48px 0;
+}
 
-.strp-vertical .strp-no-overlap .strp-container { padding: 0 72px; }
-.strp-vertical .strp-no-overlap.strp-no-sides .strp-container { padding: 0 48px; }
+.strp-vertical .strp-no-overlap .strp-container {
+  padding: 0 72px;
+}
+.strp-vertical .strp-no-overlap.strp-no-sides .strp-container {
+  padding: 0 48px;
+}
 
-.strp-hovering-clickable .strp-container { cursor: pointer; }
-
+.strp-hovering-clickable .strp-container {
+  cursor: pointer;
+}
 
 .strp-content-element {
   position: absolute;
@@ -196,9 +262,9 @@
   background: none;
   text-decoration: underline;
 }
-.strp-info a:hover { color: #eee; }
-
-
+.strp-info a:hover {
+  color: #eee;
+}
 
 /* < > */
 .strp-nav {
@@ -213,10 +279,17 @@
   -moz-user-select: none;
   user-select: none;
 }
-.strp-nav-previous { left: 0; }
-.strp-nav-next { right: 0; left: auto; }
+.strp-nav-previous {
+  left: 0;
+}
+.strp-nav-next {
+  right: 0;
+  left: auto;
+}
 
-.strp-nav-disabled { cursor: default; }
+.strp-nav-disabled {
+  cursor: default;
+}
 
 .strp-nav-button {
   float: left;
@@ -243,7 +316,6 @@
   background-repeat: no-repeat;
 }
 
-
 /* X */
 .strp-close {
   position: absolute;
@@ -268,13 +340,16 @@
 
 .strp-close-background {
   filter: alpha(opacity=80);
-  opacity: .8;
+  opacity: 0.8;
   background-color: #101010;
 }
-.strp-close:hover .strp-close-background { background-color: #161616; }
+.strp-close:hover .strp-close-background {
+  background-color: #161616;
+}
 
-
-.strp-has-error .strp-container { background-color: #ca3434; }
+.strp-has-error .strp-container {
+  background-color: #ca3434;
+}
 .strp-error {
   position: absolute;
   top: 50%;
@@ -285,9 +360,11 @@
   margin-top: -120px;
   background-position: 50% 50%;
   background-repeat: no-repeat;
-  background-image: url('strip-skins/strip/error.svg');
+  background-image: url("strip-skins/strip/error.svg");
 }
-.strp-no-svg .strp-error { background-image: url('strip-skins/strip/error.png'); }
+.strp-no-svg .strp-error {
+  background-image: url("strip-skins/strip/error.png");
+}
 
 /* Spinner - loading icon, wrapped by a div that moves it */
 .strp-spinner-move {
@@ -299,7 +376,10 @@
   /* ensure overflow during a jQuery animation */
   overflow: visible !important;
 }
-.strp-spinner-move.strp-vertical { width: 48px; height: 0; }
+.strp-spinner-move.strp-vertical {
+  width: 48px;
+  height: 0;
+}
 
 .strp-spinner {
   width: 48px;
@@ -309,18 +389,52 @@
 }
 
 /* different sides */
-.strp-spinner-move.strp-side-top { top: 0; right: 0; bottom: auto; left: auto; }
-.strp-spinner-move.strp-side-bottom { top: auto; right: 0; bottom: 0; left: auto; }
+.strp-spinner-move.strp-side-top {
+  top: 0;
+  right: 0;
+  bottom: auto;
+  left: auto;
+}
+.strp-spinner-move.strp-side-bottom {
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: auto;
+}
 
-.strp-spinner-move.strp-side-right .strp-spinner { margin-left: -48px; }
-.strp-spinner-move.strp-side-left .strp-spinner { margin-right: -48px; float: right; }
-.strp-spinner-move.strp-side-bottom .strp-spinner { margin-top: -48px; }
-.strp-spinner-move.strp-side-top .strp-spinner { position: absolute; bottom: 0; right: 0; margin-bottom: -48px; }
+.strp-spinner-move.strp-side-right .strp-spinner {
+  margin-left: -48px;
+}
+.strp-spinner-move.strp-side-left .strp-spinner {
+  margin-right: -48px;
+  float: right;
+}
+.strp-spinner-move.strp-side-bottom .strp-spinner {
+  margin-top: -48px;
+}
+.strp-spinner-move.strp-side-top .strp-spinner {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-bottom: -48px;
+}
 
-
-@-moz-keyframes strp-spinner-spin { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes strp-spinner-spin { 100% { -webkit-transform: rotate(360deg); } }
-@keyframes strp-spinner-spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+@-moz-keyframes strp-spinner-spin {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes strp-spinner-spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes strp-spinner-spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
 
 .strp-spinner-rotate,
 .strp-spinner-frame {
@@ -343,34 +457,62 @@
   color: inherit; /* color of the dots, inherited from text on the page */
 }
 
-
-
 /*
  * ===== Skin: strip =====
  */
- /* < > */
-.strp-window-skin-strip .strp-nav-button-background { background-color: transparent; }
-.strp-window-skin-strip .strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous.svg');  }
-.strp-window-skin-strip .strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next.svg'); }
+/* < > */
+.strp-window-skin-strip .strp-nav-button-background {
+  background-color: transparent;
+}
+.strp-window-skin-strip .strp-nav-previous .strp-nav-button-icon {
+  background-image: url("strip-skins/strip/previous.svg");
+}
+.strp-window-skin-strip .strp-nav-next .strp-nav-button-icon {
+  background-image: url("strip-skins/strip/next.svg");
+}
 /* IE7-8/no-svg (using a faded png) */
-.strp-window-skin-strip.strp-no-svg .strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous-faded.png'); opacity: 1; }
-.strp-window-skin-strip.strp-no-svg .strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next-faded.png'); opacity: 1; }
+.strp-window-skin-strip.strp-no-svg .strp-nav-previous .strp-nav-button-icon {
+  background-image: url("strip-skins/strip/previous-faded.png");
+  opacity: 1;
+}
+.strp-window-skin-strip.strp-no-svg .strp-nav-next .strp-nav-button-icon {
+  background-image: url("strip-skins/strip/next-faded.png");
+  opacity: 1;
+}
 
-.strp-window-skin-strip .strp-nav .strp-nav-button-icon { opacity: .6; } /* normal state */
-.strp-window-skin-strip.strp-mobile-touch .strp-nav .strp-nav-button-icon { opacity: 1; } /* mobile-touch always has normal states at full opacity */
+.strp-window-skin-strip .strp-nav .strp-nav-button-icon {
+  opacity: 0.6;
+} /* normal state */
+.strp-window-skin-strip.strp-mobile-touch .strp-nav .strp-nav-button-icon {
+  opacity: 1;
+} /* mobile-touch always has normal states at full opacity */
 
 /* < > : hover */
 .strp-window-skin-strip .strp-nav:hover .strp-nav-button-icon,
-.strp-window-skin-strip .strp-nav-hover .strp-nav-button-icon { opacity: 1; }
+.strp-window-skin-strip .strp-nav-hover .strp-nav-button-icon {
+  opacity: 1;
+}
 /* IE7-8/no-svg (unfaded png) */
-.strp-window-skin-strip.strp-no-svg .strp-nav.strp-nav-previous:hover .strp-nav-button-icon,
-.strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous.png'); }
-.strp-window-skin-strip.strp-no-svg .strp-nav.strp-nav-next:hover .strp-nav-button-icon,
-.strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next.png'); }
+.strp-window-skin-strip.strp-no-svg
+  .strp-nav.strp-nav-previous:hover
+  .strp-nav-button-icon,
+.strp-window-skin-strip.strp-no-svg
+  .strp-nav-hover.strp-nav-previous
+  .strp-nav-button-icon {
+  background-image: url("strip-skins/strip/previous.png");
+}
+.strp-window-skin-strip.strp-no-svg
+  .strp-nav.strp-nav-next:hover
+  .strp-nav-button-icon,
+.strp-window-skin-strip.strp-no-svg
+  .strp-nav-hover.strp-nav-next
+  .strp-nav-button-icon {
+  background-image: url("strip-skins/strip/next.png");
+}
 
 /* Reduce < > button size on narrow screens (iPhone 6 and smaller) */
 @media all and (max-width: 375px) and (orientation: portrait),
-       all and (max-height: 375px) and (max-width: 667px) {
+  all and (max-height: 375px) and (max-width: 667px) {
   .strp-window-skin-strip .strp-nav {
     width: 48px;
     height: 60px;
@@ -379,41 +521,78 @@
   }
 
   /* < > */
-  .strp-window-skin-strip .strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous-small.svg');  }
-  .strp-window-skin-strip .strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next-small.svg'); }
+  .strp-window-skin-strip .strp-nav-previous .strp-nav-button-icon {
+    background-image: url("strip-skins/strip/previous-small.svg");
+  }
+  .strp-window-skin-strip .strp-nav-next .strp-nav-button-icon {
+    background-image: url("strip-skins/strip/next-small.svg");
+  }
   /* IE7-8/no-svg (using a faded png) */
-  .strp-window-skin-strip.strp-no-svg .strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous-small-faded.png'); }
-  .strp-window-skin-strip.strp-no-svg .strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next-small-faded.png'); }
+  .strp-window-skin-strip.strp-no-svg .strp-nav-previous .strp-nav-button-icon {
+    background-image: url("strip-skins/strip/previous-small-faded.png");
+  }
+  .strp-window-skin-strip.strp-no-svg .strp-nav-next .strp-nav-button-icon {
+    background-image: url("strip-skins/strip/next-small-faded.png");
+  }
 
   /* IE7-8/no-svg (unfaded png) */
-  .strp-window-skin-strip.strp-no-svg .strp-nav.strp-nav-previous:hover .strp-nav-button-icon,
-  .strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-previous .strp-nav-button-icon { background-image: url('strip-skins/strip/previous-small.png'); }
-  .strp-window-skin-strip.strp-no-svg .strp-nav.strp-nav-next:hover .strp-nav-button-icon,
-  .strp-window-skin-strip.strp-no-svg .strp-nav-hover.strp-nav-next .strp-nav-button-icon { background-image: url('strip-skins/strip/next-small.png'); }
+  .strp-window-skin-strip.strp-no-svg
+    .strp-nav.strp-nav-previous:hover
+    .strp-nav-button-icon,
+  .strp-window-skin-strip.strp-no-svg
+    .strp-nav-hover.strp-nav-previous
+    .strp-nav-button-icon {
+    background-image: url("strip-skins/strip/previous-small.png");
+  }
+  .strp-window-skin-strip.strp-no-svg
+    .strp-nav.strp-nav-next:hover
+    .strp-nav-button-icon,
+  .strp-window-skin-strip.strp-no-svg
+    .strp-nav-hover.strp-nav-next
+    .strp-nav-button-icon {
+    background-image: url("strip-skins/strip/next-small.png");
+  }
 
   /* also reduce padding
      navbutton = 58 = 48 + (2 * 5 margin)
      closebutton = 48
    */
-  .strp-no-overlap .strp-container { padding: 48px 58px; }
-  .strp-no-overlap.strp-no-sides .strp-container { padding: 48px 0; }
+  .strp-no-overlap .strp-container {
+    padding: 48px 58px;
+  }
+  .strp-no-overlap.strp-no-sides .strp-container {
+    padding: 48px 0;
+  }
 
-  .strp-vertical .strp-no-overlap .strp-container { padding: 0 58px; }
-  .strp-vertical .strp-no-overlap.strp-no-sides .strp-container { padding: 0 48px; }
+  .strp-vertical .strp-no-overlap .strp-container {
+    padding: 0 58px;
+  }
+  .strp-vertical .strp-no-overlap.strp-no-sides .strp-container {
+    padding: 0 48px;
+  }
 }
 
 /* X */
-.strp-window-skin-strip .strp-close .strp-close-icon { background-image: url('strip-skins/strip/close.svg'); opacity: .8; }
-.strp-window-skin-strip .strp-close:hover .strp-close-icon { opacity: 1; }
+.strp-window-skin-strip .strp-close .strp-close-icon {
+  background-image: url("strip-skins/strip/close.svg");
+  opacity: 0.8;
+}
+.strp-window-skin-strip .strp-close:hover .strp-close-icon {
+  opacity: 1;
+}
 /* iOS 8.4.1 bug: when opacity changes it'll require 2 taps
    force a single opacity to fix this
 */
 .strp-window-skin-strip.strp-mobile-touch .strp-close .strp-close-icon,
-.strp-window-skin-strip.strp-mobile-touch .strp-close:hover .strp-close-icon { opacity: 1; }
+.strp-window-skin-strip.strp-mobile-touch .strp-close:hover .strp-close-icon {
+  opacity: 1;
+}
 
 /* IE7-8/no-svg */
-.strp-window-skin-strip.strp-no-svg .strp-close .strp-close-icon { background-image: url('strip-skins/strip/close.png'); opacity: 1; }
-
+.strp-window-skin-strip.strp-no-svg .strp-close .strp-close-icon {
+  background-image: url("strip-skins/strip/close.png");
+  opacity: 1;
+}
 
 /* here's how to have content slide in with the window when opening and closing  */
 /*

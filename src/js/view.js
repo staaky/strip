@@ -2,12 +2,12 @@ function View() {
   this.initialize.apply(this, _slice.call(arguments));
 }
 $.extend(View.prototype, {
-  initialize: function(object) {
+  initialize: function (object) {
     var options = arguments[1] || {},
       data = {};
 
     // string -> element
-    if ($.type(object) === "string") {
+    if (typeof object === "string") {
       // turn the string into an element
       object = { url: object };
     }
@@ -26,7 +26,7 @@ $.extend(View.prototype, {
         options:
           (element.attr("data-strip-options") &&
             eval("({" + element.attr("data-strip-options") + "})")) ||
-          {}
+          {},
       };
     }
 
@@ -63,5 +63,5 @@ $.extend(View.prototype, {
     $.extend(this, object);
 
     return this;
-  }
+  },
 });
